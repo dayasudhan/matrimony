@@ -12,7 +12,7 @@ var ProfileInfoSchema = new mongoose.Schema({
 	education:String,
 	logo:[{url:String}],
 	origin:String,
-	Summary:String,
+	summary:String,
 	interests:[{name:String}],
 	father:{name:String,occupation:String,phone:String},
 	mother:{name:String,occupation:String,phone:String},

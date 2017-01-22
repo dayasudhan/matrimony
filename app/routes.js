@@ -120,6 +120,16 @@ function getNextSequence(name,result)
     });
 
 }
+app.get('/p/admin_order', function (req, res) {
+    console.log(req.user);
+    res.render('admin_order', { user : req.user });
+});
+app.get('/p/vendor_details', function (req, res) {
+    res.render('vendor_details', { user : req.user });
+});
+app.get('/p/vendor_order', function (req, res) {
+    res.render('vendor_order', { user : req.user });
+});
 app.post( '/v1/profile', function( request, response ) {
 
   console.log(request.body);
@@ -148,9 +158,13 @@ app.post( '/v1/profile', function( request, response ) {
             gender: request.body.gender, 
             occupation: request.body.occupation, 
             education: request.body.education, 
-            Summary: request.body.Summary,
+            summary: request.body.summary,
             date:indiantime,
-            cast:request.body.cast
+            cast:request.body.cast,
+address:{addressLine1:request.body.Address1,addressLine2:request.body.Address2,
+        street:request.body.street, LandMark:request.body.Landmark, 
+        areaName:request.body.Areaname,city:request.body.City, zip:request.body.zip, 
+        latitude:request.body.latitude,longitude:request.body.longitude }
           });
        
         profile.save( function( err ) {
@@ -205,6 +219,32 @@ app.post( '/v1/admin/counters/:id', function( request, response ) {
     });
 });
 
+app.post( '/v1/profile/logo/:id', upload.single('file'),function( req, res ) {
+  console.log(req.params.id);
+  console.log(req.files);
+  console.log(req.file);
+  console.log(req.file.path);
+  console.log("VendorLogo post");
+  console.log(req.body);
+var url2 = req.protocol + '://' + req.get('host') +'\\' + req.file.path;
+console.log(url2);
+  ProfileInfoModel.update({ 'id':req.params.id},
+      {
+         $addToSet: {logo: {$each:[{url: url2}] }}
+       
+      },
+       function( err ) {
+        if( !err ) {
+            console.log( 'updated logo created' );
+           
+            return res.send('created');;
+        } else {
+         console.log( 'updated logo error' );
+            console.log( err );
+            return res.send('ERROR');
+        }
+    });
+});
 };
 
 

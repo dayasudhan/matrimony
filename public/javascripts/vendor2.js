@@ -3,40 +3,47 @@ app = angular.module("vendorModule", []);
   app.controller("mainController", function ($scope, $http, jsonFilter)
   {
   		 $scope.total2 = 123;
-
-  	  $scope.getOrders = function (param) {
-      console.log("getOrders");
-      var url = "/v1/vendor/order/";
-      url = url + param;
+$scope.main_url = 
+  	  $scope.getProfile = function (param) {
+      console.log("getprofile");
+      var url = "/v1/profile/all";
+      
       $http.get(url)
         .success(function (data, status, headers, config)
         {
-          $scope.orderlist = data;
-          $scope.total2 = data.length;
-          angular.forEach($scope.orderlist, function(item) {
-          var timestamp = item._id.toString().substring(0,8);
-          item.date = new Date( parseInt( timestamp, 16 ) * 1000 );
-          item.statusArrayList =[
-                      { id: 1, name: 'ORDERED',disabled:true},
-                      { id: 2, name: 'ACCEPTED', disabled: false },
-                      { id: 3, name: 'DELIVERED', disabled: false },
-                      { id: 4, name: 'CANCELLLED', disabled: false },
-                      { id: 5, name: 'REJECTED', disabled: false }
-                  ];
-          item.DisabledStatus = [];          
-          angular.forEach(item.tracker,function(st)
-          {           
-            item.DisabledStatus.push(st.status);
-          });
-        });
-          $scope.getOrderSummary(param);
-          // $scope.getMenuList(param);
+          $scope.profilelist = data;
+          console.log($scope.profilelist);
+          $scope.position = 0;
+          $scope.profile = $scope.profilelist[0];
         })
         .error(function (data, status, headers, config)
         {
           $scope.simpleGetCallResult = logResult("GET ERROR", data, status, headers, config);
         });
     };
+    $scope.nextProfile = function (param) {
+      console.log("nextProfile");
+     
+      if($scope.profilelist.length > ($scope.position+1))
+      {
+         $scope.position = $scope.position +1;
+      console.log($scope.position);
+        console.log('inside');
+          $scope.profile = $scope.profilelist[$scope.position];
+      }
+
+    };
+    $scope.previousProfile = function (param) {
+      console.log("previousProfile");
+
+      if($scope.position > 0)
+      {
+             $scope.position = $scope.position - 1;
+     console.log($scope.position);
+      $scope.profile = $scope.profilelist[$scope.position];
+    }
+  };
+    
 $scope.trackerUpdateStatus = function(param1)
 {
     console.log("trackerUpdateStatus");
@@ -173,12 +180,13 @@ $scope.trackerUpdateStatus = function(param1)
       console.log("addLogo");
       var fd = new FormData();
       console.log(files[0]);
-      console.log($scope.hotelId);
+      
     //Take the first selected file
       fd.append("file", files[0]);
       
-      var url4 = "/v1/vendor/logo/";
-      url4 = url4 + $scope.hotelId;
+      var url4 = "/v1/profile/logo/";
+      url4 = url4 + $scope.logoname;
+       console.log($scope.logoname);
       $http.post(url4, fd, {
         withCredentials: true,
         headers: {'Content-Type': undefined , 'enctype': 'multipart/form-data' },
@@ -194,119 +202,39 @@ $scope.trackerUpdateStatus = function(param1)
          
     };
 
-      $scope.addDetails = function (param) {
+      $scope.addDetails = function () {
       console.log("addDetails 1");
 
-      var bulktype = 0;
-      if($scope.isBulkVendor == 'nonBulkType')
-      {
-          bulktype =  0;
-      }
-      else if($scope.isBulkVendor == 'BulkType')
-      {
-          bulktype  = 2;
-      }
-      else
-      {
-          bulktype = 1;
-      }
 
-      var deliverAreas =  [];
-      if(bulktype ==0 || bulktype ==1)
-      {
-        angular.forEach($scope.deliverareas, function(item) {
-           var obj = new Object();
-            obj.name = item;
-            obj.isBulkAreaOnly = 0;
-            deliverAreas.push(obj);
-        })
-      }
 
-      if(bulktype ==2 || bulktype ==1)
-      {
-        angular.forEach($scope.bulkdeliverareas, function(item) {
 
-           var obj = new Object();
-            obj.name = item;
-
-            console.log(item,"2");
-            var exist = 0;
-            for (var i = 0; i < deliverAreas.length; i++) {
-                if (deliverAreas[i].name === item) {
-                  console.log("present 1");
-                   exist = 1;
-                }
-            }
-          
-
-            if(exist === 1)
-            {
-              console.log("present 2");
-             
-            }
-            else
-            {
-              console.log("present 3");
-              obj.isBulkAreaOnly = 1;
-              deliverAreas.push(obj);
-            }
-        })
-      }
+      var url = "/v1/profile";
       
-      console.log("deliverAreas",deliverAreas);
+      console.log($scope.name);
+      console.log($scope.phone);
+      console.log($scope.email);
+      console.log($scope.gender);
+      console.log($scope.occupation);
+      console.log($scope.education);
+      console.log($scope.cast);
+      console.log($scope.summary);
+      console.log($scope.fathername);
+      console.log($scope.mothername);
 
-      $scope.hotelcity = $scope.cityCoverage.citys[$scope.selectedCity]
-      console.log($scope.hotelcity);
-      console.log($scope.deliverareas);
-      console.log($scope.morningSupportTime);
-      console.log($scope.morningstarttime);
-      console.log($scope.morningendtime);
-     
-    var mornstartTimevalue = "",mornendTimevalue = "",lunchstartTimevalue="",lunchendTimevalue="",dinnerendTimevalue="",dinnerstartTimevalue="";
-    if($scope.morningSupportTime  == 'Yes')
-    {
-           mornstartTimevalue = ($scope.morningstarttime.getHours()) + ':' + ($scope.morningstarttime.getMinutes());
-          mornendTimevalue = ($scope.morningendtime.getHours()) + ':' + ($scope.morningendtime.getMinutes());
-     }
-     if($scope.lunchSupportTime  == 'Yes')  
-     {  
-          lunchstartTimevalue = ($scope.lunchstarttime.getHours()) + ':' + ($scope.lunchstarttime.getMinutes());
-          lunchendTimevalue = ($scope.lunchendtime.getHours()) + ':' + ($scope.lunchendtime.getMinutes());
-      }
-      if($scope.dinnerSupportTime  == 'Yes')
-      {  
-          dinnerendTimevalue = ($scope.dinnerendtime.getHours()) + ':' + ($scope.dinnerendtime.getMinutes());
-          dinnerstartTimevalue = ($scope.dinnerstarttime.getHours()) + ':' + ($scope.dinnerstarttime.getMinutes());
-      }
-      var orderAcceptTimingsValue = {Morning:{startTime:mornstartTimevalue,endTime:mornendTimevalue,available:$scope.morningSupportTime},
-                        Lunch:{startTime:lunchstartTimevalue,endTime:lunchendTimevalue,available:$scope.lunchSupportTime},
-                        Dinner:{startTime:dinnerstartTimevalue,endTime:dinnerendTimevalue,available:$scope.dinnerSupportTime}
-                            }
-      console.log(orderAcceptTimingsValue);
-
-
-
-      var url = "/v1/vendor/info/";
-      url = url + param;
-      var postData={Name:$scope.hotelName, username: param, id:$scope.hotelId,
-        Address1:$scope.hotelAddress1, phone:$scope.hotelphone,
+      var postData={name:$scope.name, 
+        Address1:$scope.hotelAddress1, phone:$scope.phone,
         Address2:"", street :"",Landmark:$scope.hotelLandmark, 
         Areaname:$scope.hotelAreaname, 
-        City:$scope.hotelcity, zip:$scope.hotelzip,latitude:$scope.latitude, longitude:$scope.longitude, logo:"",
-         vegornonveg:$scope.vegornonveg, 
-         speciality: $scope.speciality , 
-         deliverRange:$scope.deliverRange,
-         deliverCharge:$scope.deliverCharge,
-         deliveryTime:$scope.deliveryTime,
-         minimumOrder:$scope.minimumOrder,
-         orderAcceptTimings:orderAcceptTimingsValue,
-         deliverareas:deliverAreas,
-         isBulkVendor:bulktype,
-         bulkdeliverCharge:$scope.bulkdeliverCharge,
-         bulkdeliverRange: $scope.bulkdeliverRange,
-         bulkminimumOrder:$scope.bulkminimumOrder,
-         bulkdeliveryTime:$scope.bulkdeliveryTime
-
+        zip:$scope.hotelzip,latitude:$scope.latitude, longitude:$scope.longitude, logo:"",
+        gender:$scope.gender, 
+        email:$scope.email,
+        occupation:$scope.occupation,
+        education:$scope.eduction,
+        summary:$scope.summary,
+        gender:$scope.gender,
+        cast:$scope.cast,
+        fathername:$scope.fathername,
+        mothername:$scope.mothername
        };
 
       $http.post(url,postData)
