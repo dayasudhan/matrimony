@@ -6,6 +6,13 @@ var OtpModel = require('../app/models/otp');
 var Firebase = require("firebase");
 var multer = require('multer');
 var path = require('path');
+var PDF = require('pdfkit'); 
+var fs = require('fs'); 
+var gm = require('gm').subClass({imageMagick: true});
+var htmlConvert = require('html-convert');
+var pictureTube = require('picture-tube');
+var convert = htmlConvert();
+var pdfrequest = require('request');
 var Client = require('node-rest-client').Client;
 var client = new Client();
 var options = multer.diskStorage({ destination : 'public/images/logo/' ,
@@ -120,6 +127,21 @@ function getNextSequence(name,result)
     });
 
 }
+
+app.get('/vendor_logout', function(req, res) {
+    var redirect_url = '/vendor';
+    req.logout();
+    res.redirect(redirect_url);
+});
+app.get('/vendor', function (req, res) {
+    res.render('vendor_login', { user : req.user });
+});
+app.get('/p/vendor_login', function (req, res) {
+    res.render('vendor_login', { user : req.user });
+});
+app.get('/p/vendor_signup', function(req, res) {
+    res.render('vendor_signup', { });
+});
 app.get('/p/admin_order', function (req, res) {
     console.log(req.user);
     res.render('admin_order', { user : req.user });
@@ -130,6 +152,11 @@ app.get('/p/vendor_details', function (req, res) {
 app.get('/p/vendor_order', function (req, res) {
     res.render('vendor_order', { user : req.user });
 });
+
+app.get('/p/vendor_menu', function (req, res) {
+    res.render('vendor_menu', { user : req.user });
+});
+
 app.post( '/v1/profile', function( request, response ) {
 
   console.log(request.body);
@@ -245,6 +272,105 @@ console.log(url2);
         }
     });
 });
+
+
+
+app.post( '/v1/profile/pdf/:id', function( request, response ) {
+    console.log("post /v1/profile/pdf");
+  doc = new PDF();
+  doc.pipe(fs.createWriteStream('public/images/pdf/pdftesting_file.pdf'));
+//Now this is the code snippet to get the image using the url
+  console.log("post /v1/profile/pdf 2");
+            pdfrequest({
+                url: 'http://localhost:3000/public/images/logo/M1P2.jpg',
+                encoding: null // Prevents Request from converting response to string
+              }, function(err, response, body) {
+              if (err){ 
+                 console.log("post /v1/profile/pdf 3");
+                throw err;
+              }
+ 
+// Inject the image with the required attributes
+              console.log("post /v1/profile/pdf 4");
+              doc.image(body,10, 10,{height:250,width:250});
+              doc.text('HOLIDAYS - 125 Fortime',80,165,{align:'center'})
+              doc.text('Hello this is a demo file',100,200)
+              console.log("post /v1/profile/pdf 5");
+// Close document and, by extension, response
+              doc.end();  
+              console.log("post /v1/profile/pdf 6");
+             
+    });
+            // var pdf = scissors('public/images/pdf/pdftesting_file.pdf');
+            // pdf.pngStream(300).pipe(fs.createWriteStream('public/images/pdf/M1P9.png'));
+            //  return response.send("Success");
+});
+
+
+app.post( '/v1/profile/image/:id', function( request, response ) {
+    console.log("post /v1/profile/image");
+
+// pdfrequest({
+//                 url: 'http://localhost:3000/public/images/logo/M1P2.jpg',
+//                 encoding: null // Prevents Request from converting response to string
+//               }, function(err, response, body) {
+//               if (err){ 
+//                  console.log("post /v1/profile/pdf 3");
+//                 throw err;
+//               }
+//     gm('public/images/logo/M1P2.jpg')
+//       .stream('jpg', function (err, stdout, stderr) {
+ 
+//       stdout.pipe(writeStream);
+// });
+//       });
+       var input =  'public/images/pdf/ramya.jpg';
+ var output =  'public/images/pdf/r2.jpg';
+ var writeStream = fs.createWriteStream(output);
+      // var readStream = fs.createReadStream(input);
+      // gm(readStream)
+      // .stream(function (err, stdout, stderr) {
+      //   console.log("post /v1/profile/image 2");
+      //   
+
+      //   stdout.pipe(writeStream);
+      //   console.log("post /v1/profile/image 3");
+      // });
+      // console.log("post /v1/profile/image 4");
+      var Readable = require('stream').Readable
+
+
+var src1  = '<!DOCTYPE html><html><head><style>body {    background-color: #93B874;}</style></head><body><img src="http://localhost:3000/public/images/pdf/ramya.jpg"width="300" height="500"><h1>Dayasudhan kuruva</h1></body></html>';
+var s = new Readable
+s.push(src1)    // the string you want
+s.push(null) ;
+s.pipe(convert({format:'jpeg'}))
+  .pipe(writeStream);
+
+
+    // gm(input).resize(350).stream(function(err, stdout, stderr) {
+
+    //   var writeStream = fs.createWriteStream(output, {
+    //     encoding: 'base64'
+    //   });
+
+    //   stdout.pipe(writeStream);
+
+    // });
+    //        return response.send("Success");
+    //   });
+
+
+  // var buf = require('fs').readFileSync(input);
+   
+  // gm(buf, 'image.jpg')
+  // .noise('laplacian')
+  // .write(output, function (err) {
+  //   if (err) return handle(err);
+  //   console.log('Created an image from a Buffer!');
+  // });
+   return response.send("Success");
+   });
 };
 
 
