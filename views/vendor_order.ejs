@@ -31,7 +31,7 @@
   <body class="hold-transition skin-blue sidebar-mini" ng-app="vendorModule">
     <div class="wrapper"  ng-controller="mainController">
 
-      <header class="main-header" data-ng-init="getProfile()"  >
+      <header class="main-header" data-ng-init="getProfile('<%= user.local.email %>')"  >
         <!-- Logo -->
         <a href="../../index2.html" class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
@@ -78,7 +78,7 @@
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <img src="../../dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-                  <span class="hidden-xs"></span>
+                  <span class="hidden-xs"><%= user.local.email%></span>
                 </a>
                 <ul class="dropdown-menu">
                   <!-- User image -->
@@ -138,10 +138,10 @@
           <!-- sidebar menu: : style can be found in sidebar.less -->
           <ul class="sidebar-menu">
             <li class="header">LABELS</li>
-            <li><a href="/p/vendor_order"><i class="fa fa-circle-o text-red"></i> <span>Order List</span></a></li>
-            <li><a href="/p/vendor_summary"><i class="fa fa-circle-o text-yellow"></i> <span>Order summary</span></a></li>
-            <li><a href="/p/vendor_menu"><i class="fa fa-circle-o text-aqua"></i> <span>Menu</span></a></li>
-            <li><a href="/p/vendor_details"><i class="fa fa-circle-o text-aqua"></i> <span>About Me</span></a></li>
+            <li><a href="/p/vendor_order"><i class="fa fa-circle-o text-red"></i> <span>Profiles</span></a></li>
+            <li><a href="/p/vendor_details"><i class="fa fa-circle-o text-yellow"></i> <span>Add New Profile</span></a></li>
+            <li><a href="/p/vendor_details"><i class="fa fa-circle-o text-aqua"></i> <span>Update Profiel</span></a></li>
+            <li><a href="/p/profile_list"><i class="fa fa-circle-o text-aqua"></i> <span>About Me</span></a></li>
           </ul>
         </section>
         <!-- /.sidebar -->

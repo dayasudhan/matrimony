@@ -1,6 +1,6 @@
 
-var ProfileInfoModel = require('../app/models/ProfileInfo');
-
+//var ProfileInfoModel = require('../app/models/ProfileInfo');
+var VendorInfoModel = require('../app/models/vendorInfo');
 var CountersModel = require('../app/models/counters');
 var OtpModel = require('../app/models/otp');
 var Firebase = require("firebase");
@@ -17,7 +17,7 @@ var Client = require('node-rest-client').Client;
 var client = new Client();
 var options = multer.diskStorage({ destination : 'public/images/logo/' ,
   filename: function (req, file, cb) {
-    cb(null, req.params.id + path.extname(file.originalname));
+    cb(null, req.params.id +  Date.now() + path.extname(file.originalname));
   }
 });
 var upload = multer({ storage: options });
@@ -153,13 +153,208 @@ app.get('/p/vendor_order', function (req, res) {
     res.render('vendor_order', { user : req.user });
 });
 
-app.get('/p/vendor_menu', function (req, res) {
-    res.render('vendor_menu', { user : req.user });
+app.get('/p/profile_list', function (req, res) {
+    res.render('profile_list', { user : req.user });
+});
+app.post('/login', function(req, res, next) {
+    console.log('post /login');
+      console.log(req.body);
+  passport.authenticate('local-login', function(err, user, info) {
+   
+    if (err) {
+         console.log("error in login 0");
+        return next(err); }
+    if (!user) {
+         var redirect_url = '/';
+           if(req.body.role == 'vendor') 
+            {
+                redirect_url = '/p/vendor_signup';
+                return res.redirect(redirect_url); 
+            } 
+            
+    }
+    req.logIn(user, function(err) {
+      if (err) { return next(err); }
+      console.log(req.body.role);
+      var redirect_url = '/';
+      if(req.body.role == 'vendor') 
+      {
+          redirect_url = '/p/vendor_details';
+         return res.redirect(redirect_url);
+      }
+     
+    });
+  })(req, res, next);
 });
 
-app.post( '/v1/profile', function( request, response ) {
+app.post('/signup', function(req, res, next) {
+console.log(req.body);
+  if(req.body.password != req.body.password2)
+  {
+     
+  console.log("password mimatchmatch");
+     return res.send('ERROR');
+  }
+  else
+  {
+    console.log("password match");
+  }
+  console.log('/signup');
+    passport.authenticate('local-signup', function(err, user, info) {
+     console.log(req.body);
+      if (err) { 
+        return next(err); }
+      if (!user) { 
+          var redirect_url = '/';
+              if(req.body.role == 'vendor') 
+              {
+                  redirect_url = '/p/vendor_signup';
+              } 
+              return res.redirect(redirect_url); 
+       }
+      req.logIn(user, function(err) {
+        if (err) { return next(err); }
+        console.log(req.body.role);
+        var redirect_url;
+        if(req.body.role == 'vendor') 
+        {
+          redirect_url = '/p/vendor_details';
+          VendorInfoModel(req, res, next);
+          return res.redirect(redirect_url);
+        }
+        else
+        {
+          return res.redirect(redirect_url);
+        }
+      });
+    })(req, res, next);
+});
+
+function registerVendor(req, res, next) {
+  console.log("/registerVendor");
+  var hotel_id = "M";
+  var res = getNextSequence('vendor',function(data) {
+
+    hotel_id = hotel_id + data.sequence;
+    console.log(hotel_id);
+
+      var vendorInfo = new VendorInfoModel({
+        username:req.body.email,
+        id:hotel_id
+           });
+
+      vendorInfo.save( function( err ) {
+        if( !err ) {
+              console.log( 'registerVendor created' );
+              console.log(req.body.email);
+                  req.session.save(function (err) {
+                    if (err) {
+                        console.log( 'registerVendor save error' );
+                      return next(err);
+                    }
+                    console.log( 'registerVendor save complete' );
+                  });
+              return ;
+              } else {
+                console.log( 'registerVendor error' );
+                console.log( err );
+                return response.send('ERROR');
+              }
+        });
+    });
+};
+
+app.post( '/v1/vendor/info/:id', function( req, res ) {
+// if(checkVendorApiAunthaticated(req,1) == false && req.isAuthenticated() == false)
+// {
+//   return res.send("Not aunthiticated").status(403);
+// }
+  console.log("VendorInfo post");
+  console.log(req.body);
+            storeVendorInfo(req,res,function(req,res){
+           console.log("storeVendorInfo success");
+           
+        });
+
+  });
+function storeVendorInfo(request,response,callback,param)
+{
+console.log("storeVendorInfo");
+console.log(request.params.id);
+
+ VendorInfoModel.update({ 'username':request.params.id},
+      {
+        email: req.body.email,
+        name:req.body.name,
+        phone: req.body.phone, 
+        address:{
+          addressLine1:request.body.Address1,
+          addressLine2:request.body.Address2,
+          street:request.body.street, 
+          LandMark:request.body.Landmark, 
+          areaName:request.body.Areaname,
+          city:request.body.City, 
+          zip:request.body.zip, 
+          latitude:request.body.latitude,
+          longitude:request.body.longitude }
+      },
+       function( err ) {
+        if( !err ) {
+            console.log( 'storeVendorInfo created' );
+            callback(request,response);
+            return ;
+        } else {
+         console.log( 'storeVendorInfo error' );
+            console.log( err );
+            return response.send('ERROR');
+        }
+    });
+}
+
+
+app.post( '/v1/vendor/logo/:id', upload.single('file'),function( req, res ) {
+  console.log(req.params.id);
+  console.log(req.files);
+  console.log(req.file);
+  console.log(req.file.path);
+  console.log("VendorLogo post");
+  console.log(req.body);
+  // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file 
+  var sampleFile;
+  sampleFile = req.file;
+ var destination  = req.file.destination;
+
+  // Use the mv() method to place the file somewhere on your server 
+  sampleFile.mv('/public/images/logo/filename.jpg', function(err) {
+    if (err) {
+      res.status(500).send(err);
+    }
+    else {
+      res.send('File uploaded!');
+    }
+  });
+  VendorInfoModel.update({ 'username':req.params.id},
+      {
+        $set: { "logo": req.file.path } ,
+       
+      },
+       function( err ) {
+        if( !err ) {
+            console.log( 'updated logo created' );
+           
+            return res.send('created');;
+        } else {
+         console.log( 'updated logo error' );
+            console.log( err );
+            return res.send('ERROR');
+        }
+    });
+});
+
+app.post( '/v1/profile/:id', function( request, response ) {
 
   console.log(request.body);
+ // console.log(request.user.local.email);
   // if(checkVendorApiAunthaticated(request,2) == false && request.isAuthenticated() == false)
   // {
   //   return response.send("Not aunthiticated").status(403);
@@ -173,54 +368,136 @@ app.post( '/v1/profile', function( request, response ) {
     indiantime.setHours(indiantime.getHours() + 5);
     indiantime.setMinutes(indiantime.getMinutes() + 30);
     var dc;
-
-
-        console.log('post order');
-        var profile = new ProfileInfoModel({
+    return VendorInfoModel.update({ 'username':request.params.id},
+       { $addToSet: {profiles: {$each:[{
             id:order_id,
             name: request.body.name,
             email: request.body.email,
-            phone: request.body.phone,  
+            phone: request.body.phone ,
             dob: indiantime, 
-            gender: request.body.gender, 
-            occupation: request.body.occupation, 
-            education: request.body.education, 
-            summary: request.body.summary,
-            date:indiantime,
-            cast:request.body.cast,
-address:{addressLine1:request.body.Address1,addressLine2:request.body.Address2,
-        street:request.body.street, LandMark:request.body.Landmark, 
-        areaName:request.body.Areaname,city:request.body.City, zip:request.body.zip, 
-        latitude:request.body.latitude,longitude:request.body.longitude }
-          });
-       
-        profile.save( function( err ) {
-            if( !err ) {
-                console.log( 'created' );
-                 return response.send( 'created'  );
-                } else {
-                  console.log( 'error' );
-                  console.log( err );
-                  return response.send('ERROR');
-                }
-            });
+             gender: request.body.gender, 
+             occupation: request.body.occupation, 
+             education: request.body.education, 
+             summary: request.body.summary,
+             date:indiantime,
+             community:request.body.cast,
+             address:{
+               addressLine1:request.body.Address1,
+               addressLine2:request.body.Address2,
+               street:request.body.street, 
+               LandMark:request.body.Landmark, 
+               areaName:request.body.Areaname,
+               city:request.body.City 
+             }
+          }], }}},
+       function( err, order ) {
+       if( !err ) {
+           console.log("no error");
+           console.log(order);
+            console.log("no error2 ");
+           return response.send('Success');
+       } else {
+           console.log( err );
+           return response.send('ERROR');
+       }
+   });
+        console.log('post order');
     });
-
  });
-app.get( '/v1/profile/all', function( req, res ) {
+app.post( '/v1/profile2/:id', function( request, response ) {
+
+  console.log(request.body);
+ // console.log(request.user.local.email);
+  // if(checkVendorApiAunthaticated(request,2) == false && request.isAuthenticated() == false)
+  // {
+  //   return response.send("Not aunthiticated").status(403);
+  // }
+  var res = getNextSequence('profile',function(data) {
+    var order_id = "M1" ;
+    order_id = order_id + "P";
+    order_id = order_id + data.sequence;
+    console.log(order_id);
+    var indiantime = new Date();
+    indiantime.setHours(indiantime.getHours() + 5);
+    indiantime.setMinutes(indiantime.getMinutes() + 30);
+    var dc;
+    return VendorInfoModel.update({ 'username':request.params.id},
+       { $addToSet: {profiles: {$each:[{
+            id:order_id,
+            name: request.body.name,
+            email: request.body.email,
+            phone: request.body.phone ,
+            dob: indiantime, 
+             gender: request.body.gender, 
+             occupation: request.body.occupation, 
+             education: request.body.education, 
+             summary: request.body.summary,
+             date:indiantime,
+             community:request.body.cast,
+             address:{
+               addressLine1:request.body.Address1,
+               addressLine2:request.body.Address2,
+               street:request.body.street, 
+               LandMark:request.body.Landmark, 
+               areaName:request.body.Areaname,
+               city:request.body.City 
+             }
+          }], }}},
+       function( err, order ) {
+       if( !err ) {
+           console.log("no error");
+           console.log(order);
+            console.log("no error2 ");
+           return response.send('Success');
+       } else {
+           console.log( err );
+           return response.send('ERROR');
+       }
+   });
+        console.log('post order');
+    });
+ });
+app.get( '/v1/profile/all', function( request, response ) {
     console.log('/v1/profile/all');
   //   if(checkVendorApiAunthaticated(req,0) == false)
   // {
   //   return res.send("Not aunthiticated").status(403);
   // }
-    return ProfileInfoModel.find(function( err, profileInfo ) {
+       
+  return VendorInfoModel.find(function( err, order ) {
         if( !err ) {
-            return res.send( profileInfo );
+            return response.send( order );
         } else {
             console.log( err );
-            return res.send('ERROR');
+            return response.send('ERROR');
         }
     });
+
+});
+app.get( '/v1/profile/info/:id', function( request, response ) {
+    console.log('/v1/profile/info');
+    console.log(request.params.id);
+  //   if(checkVendorApiAunthaticated(req,0) == false)
+  // {
+  //   return res.send("Not aunthiticated").status(403);
+  // }
+       
+  return VendorInfoModel.find({ 'username':request.params.id},
+      function( err, vendorinfo ) {
+        if( !err ) {
+             console.log("no error");
+             var profile_array ;
+            if(vendorinfo.length > 0)
+              profile_array = vendorinfo[0].profiles;
+            else
+              profile_array =  vendorinfo ;
+            return response.send(profile_array);
+        } else {
+            console.log( err );
+            return response.send('ERROR');
+        }
+    });
+
 });
 app.post( '/v1/admin/counters/:id', function( request, response ) {
     console.log("post /v1/admin/counters");
@@ -255,7 +532,7 @@ app.post( '/v1/profile/logo/:id', upload.single('file'),function( req, res ) {
   console.log(req.body);
 var url2 = req.protocol + '://' + req.get('host') +'\\' + req.file.path;
 console.log(url2);
-  ProfileInfoModel.update({ 'id':req.params.id},
+  VendorInfoModel.update({ 'id':req.params.id},
       {
          $addToSet: {logo: {$each:[{url: url2}] }}
        

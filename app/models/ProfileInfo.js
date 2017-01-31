@@ -16,7 +16,7 @@ var ProfileInfoSchema = new mongoose.Schema({
 	interests:[{name:String}],
 	father:{name:String,occupation:String,phone:String},
 	mother:{name:String,occupation:String,phone:String},
-	address:{label:String, 
+	addresses:{label:String, 
 		addressLine1:String,
 		addressLine2:String,
 		street:String, 

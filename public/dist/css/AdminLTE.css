@@ -4727,3 +4727,148 @@ table.text-center th {
     white-space: normal!important;
   }
 }
+
+
+/*
+.selection {
+    background-color: gray;
+    padding: 1em;
+}
+*/
+
+.selection ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.selection ul li {
+    display: inline-block;
+    padding: 5px;
+    width: 24%;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -o-box-sizing: border-box;
+}
+
+.selection ul li select {
+    width: 100%;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 12px;
+    background-color: white;
+    font-family: "Raleway", sans-serif;
+    padding: 2.5px 20px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    appearance: none;
+}
+
+input[type=text] {
+    width: 100%;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 12px;
+    background-color: white;
+    background-image: url('../img/searchicon.png');
+    background-position: 5px 3px;
+    background-repeat: no-repeat;
+    padding: 6px 30px;
+    font-family: "Raleway", sans-serif;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -o-box-sizing: border-box;
+}
+
+.profiles {
+    border: 1px solid #D2D7D3;
+    padding: 5px;
+    float: left;
+    width: 100%;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -o-box-sizing: border-box;
+}
+
+.profiles ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.profiles ul li {
+    display: block;
+    margin: 0px auto;
+}
+
+.profiles ul li .wrapper {
+    width: 100%;
+    float: left;
+    max-height: 200px;
+    box-shadow: 1px 1px 1px #888888;
+    margin: 10px auto;
+    background: #ffffff;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 5px;
+}
+
+.profiles ul li .wrapper .banner {
+    padding: 2px;
+    text-align: center;
+    float: left;
+    width: 100px;
+    height: 100px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.profiles ul li .wrapper .banner img {
+    width: 100%;
+}
+
+.profiles ul li .wrapper .bandescription {
+    float: left;
+    margin: 0px 5px;
+}
+
+.profiles ul li .wrapper .bandescription h3 {
+    text-transform: capitalize;
+    text-align: left;
+    color: #000000;
+    text-shadow: 2px 2px 2px #00b16a;
+    margin: 0 auto;
+    font-family: "Raleway", sans-serif;
+}
+
+.profiles ul li .wrapper .bandescription p {
+    text-transform: capitalize;
+    text-align: left;
+    font-style: italic;
+    color: #000000;
+    margin: 0 auto;
+    font-family: "Raleway", sans-serif;
+}
+
+.kmenu {
+    margin: 5px auto;
+    width: 100%;
+}
+
+.kmenu .khlist li {
+    display: inline-block;
+    padding-right: 50px;
+}
+
+.kmenu .khlist li h4 {
+    color: #000000;
+}

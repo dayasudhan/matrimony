@@ -80,7 +80,7 @@
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <img src="../../dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-                  <span class="hidden-xs"></span>
+                  <span class="hidden-xs"><%= user.local.email%></span>
                 </a>
                 <ul class="dropdown-menu">
                   <!-- User image -->
@@ -132,7 +132,7 @@
               <img src="../../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
-              <p>daya</p>
+              <p><%= user.local.email%></p>
               <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
           </div>
@@ -140,10 +140,10 @@
           <!-- sidebar menu: : style can be found in sidebar.less -->
           <ul class="sidebar-menu">
             <li class="header">LABELS</li>
-            <li><a href="/p/vendor_order"><i class="fa fa-circle-o text-red"></i> <span>Order List</span></a></li>
-            <li><a href="/p/vendor_summary"><i class="fa fa-circle-o text-yellow"></i> <span>Order summary</span></a></li>
-            <li><a href="/p/vendor_menu"><i class="fa fa-circle-o text-aqua"></i> <span>Menu</span></a></li>
-                    <li><a href="/p/vendor_details"><i class="fa fa-circle-o text-aqua"></i> <span>About Me</span></a></li>
+            <li><a href="/p/vendor_order"><i class="fa fa-circle-o text-red"></i> <span>Profiles</span></a></li>
+            <li><a href="/p/vendor_details"><i class="fa fa-circle-o text-yellow"></i> <span>Add New Profile</span></a></li>
+            <li><a href="/p/vendor_details"><i class="fa fa-circle-o text-aqua"></i> <span>Update Profiel</span></a></li>
+            <li><a href="/p/add"><i class="fa fa-circle-o text-aqua"></i> <span>About Me</span></a></li>
           </ul>
         </section>
         <!-- /.sidebar -->
@@ -189,13 +189,13 @@
                     <div class="form-group">
                       <label for="inputEmail3"  class="col-sm-2 control-label">Email</label>
                       <div class="col-sm-10">
-                        <input type="text" class="form-control"  name="Speciality"  placeholder="email" ng-model = "email" required>
+                        <input type="text" class="form-control"    placeholder="email" ng-model = "email" value="test@test.com" required>
                       </div>
                     </div>
                     <div class="form-group">
                       <label for="inputEmail3"  class="col-sm-2 control-label">Gender</label>
                       <div class="col-sm-10">
-                          <select class="form-control select2" style="width: 100%;" ng-model = "gender" required>
+                          <select class="form-control select2" style="width: 100%;" ng-model = "gender" value="Male" required>
                             <option>Male</option>
                             <option>Female</option>
 
@@ -205,7 +205,7 @@
                     <div class="form-group">
                       <label for="inputEmail3"  class="col-sm-2 control-label">Phone</label>
                       <div class="col-sm-10">
-                        <input type="text" class="form-control"  name="phone" placeholder="0" ng-model = "phone" required>
+                        <input type="text" class="form-control"  name="phone" placeholder="0" ng-model = "phone" value="t79797" required>
                       </div>
                     </div>
 
@@ -300,7 +300,7 @@
 
                   </div><!-- /.box-body -->
                   <div class="box-footer">
-                    <button type="submit" class="btn btn-info pull-right" ng-click= "addDetails()">Submit</button>
+                    <button type="submit" class="btn btn-info pull-right" ng-click= "addDetails('<%= user.local.email %>')">Submit</button>
 
                      <!--button type="submit" class="btn btn-default" onclick="menu_add(this.form,'daya')">Submit</button>&nbsp;<a href="/"-->
                   </div><!-- /.box-footer -->
@@ -318,19 +318,12 @@
                   <div class="form-group">
                       <label for="exampleInputFile" class="col-sm-2 control-label">Logo</label>
                       <div class="col-sm-10">
-                                    <label for="inputEmail3"  class="col-sm-2 control-label">Logo Name</label>
-                      <div class="col-sm-10">
-                        <input type="text" class="form-control"  name="Name"   ng-model = "logoname" required>
-                        <input type="file" name="file" id="logoinputfile" onchange="angular.element(this).scope().addLogo('daya',this.files)">
+                        <input type="file" name="file" id="logoinputfile" onchange="angular.element(this).scope().addLogo('<%= user.local.email %>',this.files)">
                       </div>
                     </div>
-                    
-        
-                  
-                    </div>
-                  <div class="box-footer">
+                     <div class="box-footer">
 
-                    <button type="submit" class="btn btn-info pull-right" ng-click= "addLogo('daya')">Add Logo</button>
+                    <button type="submit" class="btn btn-info pull-right" ng-click= "addLogo('<%= user.local.email %>')">Add Logo</button>
 
                   </div><!-- /.box-footer -->
                 </form>
