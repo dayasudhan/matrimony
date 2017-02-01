@@ -404,9 +404,23 @@ app.post( '/v1/profile/:id', function( request, response ) {
         console.log('post order');
     });
  });
-app.post( '/v1/profile2/:id', function( request, response ) {
+app.post( '/v1/profile2/:id', upload.single('file'),function( request, response ) {
 
   console.log(request.body);
+  console.log(request.body.data);
+var receivedData =  JSON.parse(request.body.data);
+console.log(receivedData);
+console.log(receivedData.name);
+  console.log(request.params.id);
+   console.log(request.body.data.name);
+  console.log(request.files);
+  console.log(request.file);
+  console.log(request.file.path);
+  console.log("VendorLogo post");
+ 
+var url2 = request.protocol + '://' + request.get('host') +'\\' + request.file.path;
+console.log(url2);
+
  // console.log(request.user.local.email);
   // if(checkVendorApiAunthaticated(request,2) == false && request.isAuthenticated() == false)
   // {
@@ -424,23 +438,24 @@ app.post( '/v1/profile2/:id', function( request, response ) {
     return VendorInfoModel.update({ 'username':request.params.id},
        { $addToSet: {profiles: {$each:[{
             id:order_id,
-            name: request.body.name,
-            email: request.body.email,
-            phone: request.body.phone ,
+            name: receivedData.name,
+            email: receivedData.email,
+            phone: receivedData.phone ,
             dob: indiantime, 
-             gender: request.body.gender, 
-             occupation: request.body.occupation, 
-             education: request.body.education, 
-             summary: request.body.summary,
+             gender: receivedData.gender, 
+             occupation: receivedData.occupation, 
+             education: receivedData.education, 
+             summary: receivedData.summary,
              date:indiantime,
-             community:request.body.cast,
+             community:receivedData.cast,
+             logo:url2,
              address:{
-               addressLine1:request.body.Address1,
-               addressLine2:request.body.Address2,
-               street:request.body.street, 
-               LandMark:request.body.Landmark, 
-               areaName:request.body.Areaname,
-               city:request.body.City 
+               addressLine1:receivedData.Address1,
+               addressLine2:receivedData.Address2,
+               street:receivedData.street, 
+               LandMark:receivedData.Landmark, 
+               areaName:receivedData.Areaname,
+               city:receivedData.City 
              }
           }], }}},
        function( err, order ) {

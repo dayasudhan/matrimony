@@ -143,7 +143,7 @@
             <li><a href="/p/vendor_order"><i class="fa fa-circle-o text-red"></i> <span>Profiles</span></a></li>
             <li><a href="/p/vendor_details"><i class="fa fa-circle-o text-yellow"></i> <span>Add New Profile</span></a></li>
             <li><a href="/p/vendor_details"><i class="fa fa-circle-o text-aqua"></i> <span>Update Profiel</span></a></li>
-            <li><a href="/p/add"><i class="fa fa-circle-o text-aqua"></i> <span>About Me</span></a></li>
+            <li><a href="/p/profile_list"><i class="fa fa-circle-o text-aqua"></i> <span>About Me</span></a></li>
           </ul>
         </section>
         <!-- /.sidebar -->
@@ -311,21 +311,17 @@
 <!-- Horizontal Form -->
               <div class="box box-info">
                 <div class="box-header with-border">
-                  <h3 class="box-title">LogoAdd</h3>
+                  <h3 class="box-title">Add Photo</h3>
                 </div><!-- /.box-header -->
                 <!-- form start -->
                 <form class="form-horizontal">
                   <div class="form-group">
-                      <label for="exampleInputFile" class="col-sm-2 control-label">Logo</label>
+                      <label for="exampleInputFile" class="col-sm-2 control-label">Photo</label>
                       <div class="col-sm-10">
                         <input type="file" name="file" id="logoinputfile" onchange="angular.element(this).scope().addLogo('<%= user.local.email %>',this.files)">
                       </div>
                     </div>
-                     <div class="box-footer">
-
-                    <button type="submit" class="btn btn-info pull-right" ng-click= "addLogo('<%= user.local.email %>')">Add Logo</button>
-
-                  </div><!-- /.box-footer -->
+           
                 </form>
               </div><!-- /.box -->
               </div>

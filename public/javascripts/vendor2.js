@@ -84,7 +84,7 @@ $scope.main_url =
       console.log("addLogo");
       $scope.files = files;
       $scope.filePresent =  true;
-   if(files)
+
      var fd = new FormData();
      console.log(files[0]);
       
@@ -94,37 +94,38 @@ $scope.main_url =
       var url4 = "/v1/profile/logo/";
       url4 = url4 + param;
        console.log(param);
-      $http.post(url4, fd, {
-        withCredentials: true,
-        headers: {'Content-Type': undefined , 'enctype': 'multipart/form-data' },
-        transformRequest: angular.identity
-    }).success(function (data, status, headers, config)
-        {
-            console.log("addLogo success");
-        })
-        .error(function (data, status, headers, config)
-        {
-          console.log("addLogo error");
-        });
+    //   $http.post(url4, fd, {
+    //     withCredentials: true,
+    //     headers: {'Content-Type': undefined , 'enctype': 'multipart/form-data' },
+    //     transformRequest: angular.identity
+    // }).success(function (data, status, headers, config)
+    //     {
+    //         console.log("addLogo success");
+    //     })
+    //     .error(function (data, status, headers, config)
+    //     {
+    //       console.log("addLogo error");
+    //     });
          
     };
 
       $scope.addDetails = function (param) {
       console.log("addDetails 1");
-    // if($scope.filePresent == false)
-    // {
-    //   $window.alert("Image Empty");
-    // }
-    // else
-    // {
-    //   var fd = new FormData();
-    //   console.log( $scope.files[0]);
+     if(!$scope.files)
+     {
+       $window.alert("Image Empty");
+     }
+     else
+     {
+       var fd = new FormData();
+       console.log( $scope.files[0]);
       
     // //Take the first selected file
-    //   fd.append("file",  $scope.files[0]);
+    
+       fd.append("file",  $scope.files[0]);
 
 
-      var url = "/v1/profile/";
+      var url = "/v1/profile2/";
       url = url + param;
       console.log($scope.name);
       console.log($scope.phone);
@@ -156,9 +157,13 @@ $scope.main_url =
         fathername:$scope.fathername,
         mothername:$scope.mothername
        };
+       fd.append("data", JSON.stringify(postData));
 console.log(url);
-      $http.post(url,postData)
-        .success(function (data, status, headers, config)
+      $http.post(url,fd, {
+        withCredentials: true,
+        headers: {'Content-Type': undefined , 'enctype': 'multipart/form-data' },
+        transformRequest: angular.identity
+    }).success(function (data, status, headers, config)
         {
             console.log("addDetails success");
             alert("addDetails success");
@@ -169,8 +174,9 @@ console.log(url);
         {
           console.log("addDetails error");
            alert("addDetails error");
+           $scope.filePresent = false;
         });
-
+      }
     };
 
       $scope.getDetails = function (param) {
