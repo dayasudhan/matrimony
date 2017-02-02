@@ -1,11 +1,29 @@
 app = angular.module("vendorModule", []);
+app.service('items', function() {
+    var items = 0;
+    var itemsService = {};
+    
+    itemsService.add = function(item) {
+      console.log(item);
+        items = item;
+    };
+    itemsService.list = function() {
+      console.log(items);
+        return items;
+    };
+    
+    return itemsService;
+});
 
-  app.controller("mainController", function ($scope, $http, jsonFilter)
+  app.controller("mainController", function ($scope, items, $http, jsonFilter)
   {
   		 $scope.total2 = 123;
-$scope.main_url = 
+       // $scope.list = items.list;
+       // $scope.add = items.add;
   	  $scope.getProfile = function (param) {
       console.log("getprofile");
+      
+      console.log(items.list());
       var url = "/v1/profile/info/";
       url = url + param;
       $http.get(url)
@@ -45,19 +63,17 @@ $scope.main_url =
   };
   $scope.viewProfile = function (param) {
       console.log("previousProfile");
+     
       console.log(param);
       $scope.position = param;
+      items.add($scope.position);
       console.log($scope.position);
       $scope.profile = $scope.profilelist[$scope.position];
-      var url = "http://localhost:3000/p/vendor_order";
+      var url = "http://localhost:3000/profile";
       window.open(url, "_self");
   };
 
-
-
-
-   
-  });
+});
 
   
   app.controller("DetailsController", function ($scope, $http, jsonFilter)
