@@ -4,7 +4,10 @@ var VendorInfoModel = require('../app/models/vendorInfo');
 var CountersModel = require('../app/models/counters');
 var OtpModel = require('../app/models/otp');
 var Firebase = require("firebase");
+var AWS = require('aws-sdk');
 var multer = require('multer');
+var multerS3 = require('multer-s3');
+var s3Stream = require('s3-upload-stream')(new AWS.S3());
 var path = require('path');
 var PDF = require('pdfkit'); 
 var fs = require('fs'); 
@@ -20,7 +23,24 @@ var options = multer.diskStorage({ destination : 'public/images/logo/' ,
     cb(null, req.params.id +  Date.now() + path.extname(file.originalname));
   }
 });
-var upload = multer({ storage: options });
+// Load the SDK and UUID
+
+// Create an S3 client
+var s3 = new AWS.S3();
+
+//var upload = multer({ storage: options });
+var upload = multer({
+    storage: multerS3({
+        s3: s3,
+        bucket: 'node-sdk-sample222',
+        acl: 'public-read',
+        key: function (req, file, cb) {
+            console.log(file);
+            cb(null, req.params.id +  Date.now() + path.extname(file.originalname)); //use Date.now() for unique file keys
+        }
+    })
+});
+
 var securecustomerkey = 'EjR7tUPWx7WhsVs9FuVO6veFxFISIgIxhFZh6dM66rs';
 var securevendorkey = 'ORql2BHQq9ku8eUX2bGHjFmurqG84x2rkDQUNq9Peelw';
 var secureadminkey = 'tk0M6HKn0uzL%2FcWMnq3jkeF7Ao%2BtdWyYEJqPDl0P6Ac';
@@ -133,27 +153,24 @@ app.get('/vendor_logout', function(req, res) {
     req.logout();
     res.redirect(redirect_url);
 });
-app.get('/vendor', function (req, res) {
-    res.render('vendor_login', { user : req.user });
+app.get('/login', function (req, res) {
+    res.render('login', { user : req.user });
 });
-app.get('/p/vendor_login', function (req, res) {
-    res.render('vendor_login', { user : req.user });
+app.get('/', function (req, res) {
+    res.render('login', { user : req.user });
 });
-app.get('/p/vendor_signup', function(req, res) {
-    res.render('vendor_signup', { });
-});
-app.get('/p/admin_order', function (req, res) {
-    console.log(req.user);
-    res.render('admin_order', { user : req.user });
-});
-app.get('/p/vendor_details', function (req, res) {
-    res.render('vendor_details', { user : req.user });
-});
-app.get('/p/vendor_order', function (req, res) {
-    res.render('vendor_order', { user : req.user });
+app.get('/admin_signup', function(req, res) {
+    res.render('admin_signup', { });
 });
 
-app.get('/p/profile_list', function (req, res) {
+app.get('/add_profile', function (req, res) {
+    res.render('add_profile', { user : req.user });
+});
+app.get('/profile', function (req, res) {
+    res.render('profile', { user : req.user });
+});
+
+app.get('/profile_list', function (req, res) {
     res.render('profile_list', { user : req.user });
 });
 app.post('/login', function(req, res, next) {
@@ -168,7 +185,7 @@ app.post('/login', function(req, res, next) {
          var redirect_url = '/';
            if(req.body.role == 'vendor') 
             {
-                redirect_url = '/p/vendor_signup';
+                redirect_url = '/profile_list';
                 return res.redirect(redirect_url); 
             } 
             
@@ -179,7 +196,7 @@ app.post('/login', function(req, res, next) {
       var redirect_url = '/';
       if(req.body.role == 'vendor') 
       {
-          redirect_url = '/p/vendor_details';
+          redirect_url = '/profile_list';
          return res.redirect(redirect_url);
       }
      
@@ -208,7 +225,7 @@ console.log(req.body);
           var redirect_url = '/';
               if(req.body.role == 'vendor') 
               {
-                  redirect_url = '/p/vendor_signup';
+                  redirect_url = '/admin_signup';
               } 
               return res.redirect(redirect_url); 
        }
@@ -218,7 +235,7 @@ console.log(req.body);
         var redirect_url;
         if(req.body.role == 'vendor') 
         {
-          redirect_url = '/p/vendor_details';
+          redirect_url = '/profile_list';
           VendorInfoModel(req, res, next);
           return res.redirect(redirect_url);
         }
@@ -404,13 +421,15 @@ app.post( '/v1/profile/:id', function( request, response ) {
         console.log('post order');
     });
  });
+
+
 app.post( '/v1/profile2/:id', upload.single('file'),function( request, response ) {
 
   console.log(request.body);
   console.log(request.body.data);
-var receivedData =  JSON.parse(request.body.data);
-console.log(receivedData);
-console.log(receivedData.name);
+  var receivedData =  JSON.parse(request.body.data);
+  console.log(receivedData);
+  console.log(receivedData.name);
   console.log(request.params.id);
    console.log(request.body.data.name);
   console.log(request.files);
@@ -418,7 +437,8 @@ console.log(receivedData.name);
   console.log(request.file.path);
   console.log("VendorLogo post");
  
-var url2 = request.protocol + '://' + request.get('host') +'\\' + request.file.path;
+//var url2 = request.protocol + '://' + request.get('host') +'\\' + request.file.path;
+var url2 = request.file.location;
 console.log(url2);
 
  // console.log(request.user.local.email);
@@ -431,6 +451,20 @@ console.log(url2);
     order_id = order_id + "P";
     order_id = order_id + data.sequence;
     console.log(order_id);
+
+    //  var bucketName = 'node-sdk-sample222';
+    // var keyName = request.file.originalname;
+    // var fileType =request.file.mimetype;
+    // var params = {Bucket: bucketName, Key: keyName , ContentType: fileType};
+    //   s3.putObject(params, function(err, data) {
+    //     if (err)
+    //       console.log(err)
+    //     else
+    //       console.log("Successfully uploaded data to " + bucketName + "/" + keyName);
+    //   });
+
+
+    createProfile(order_id,url2,receivedData,function(profile_url){
     var indiantime = new Date();
     indiantime.setHours(indiantime.getHours() + 5);
     indiantime.setMinutes(indiantime.getMinutes() + 30);
@@ -462,23 +496,20 @@ console.log(url2);
        if( !err ) {
            console.log("no error");
            console.log(order);
+
             console.log("no error2 ");
            return response.send('Success');
        } else {
            console.log( err );
            return response.send('ERROR');
        }
-   });
+      });
         console.log('post order');
+      });
     });
  });
 app.get( '/v1/profile/all', function( request, response ) {
     console.log('/v1/profile/all');
-  //   if(checkVendorApiAunthaticated(req,0) == false)
-  // {
-  //   return res.send("Not aunthiticated").status(403);
-  // }
-       
   return VendorInfoModel.find(function( err, order ) {
         if( !err ) {
             return response.send( order );
@@ -492,11 +523,7 @@ app.get( '/v1/profile/all', function( request, response ) {
 app.get( '/v1/profile/info/:id', function( request, response ) {
     console.log('/v1/profile/info');
     console.log(request.params.id);
-  //   if(checkVendorApiAunthaticated(req,0) == false)
-  // {
-  //   return res.send("Not aunthiticated").status(403);
-  // }
-       
+     
   return VendorInfoModel.find({ 'username':request.params.id},
       function( err, vendorinfo ) {
         if( !err ) {
@@ -581,88 +608,294 @@ app.post( '/v1/profile/pdf/:id', function( request, response ) {
                  console.log("post /v1/profile/pdf 3");
                 throw err;
               }
- 
-// Inject the image with the required attributes
+
               console.log("post /v1/profile/pdf 4");
               doc.image(body,10, 10,{height:250,width:250});
               doc.text('HOLIDAYS - 125 Fortime',80,165,{align:'center'})
               doc.text('Hello this is a demo file',100,200)
               console.log("post /v1/profile/pdf 5");
-// Close document and, by extension, response
+
               doc.end();  
               console.log("post /v1/profile/pdf 6");
              
     });
-            // var pdf = scissors('public/images/pdf/pdftesting_file.pdf');
-            // pdf.pngStream(300).pipe(fs.createWriteStream('public/images/pdf/M1P9.png'));
-            //  return response.send("Success");
+
 });
 
 
-app.post( '/v1/profile/image/:id', function( request, response ) {
-    console.log("post /v1/profile/image");
+  app.post( '/v1/profile/image/:id', function( request, response ) {
+      console.log("post /v1/profile/image");
 
-// pdfrequest({
-//                 url: 'http://localhost:3000/public/images/logo/M1P2.jpg',
-//                 encoding: null // Prevents Request from converting response to string
-//               }, function(err, response, body) {
-//               if (err){ 
-//                  console.log("post /v1/profile/pdf 3");
-//                 throw err;
-//               }
-//     gm('public/images/logo/M1P2.jpg')
-//       .stream('jpg', function (err, stdout, stderr) {
- 
-//       stdout.pipe(writeStream);
-// });
-//       });
-       var input =  'public/images/pdf/ramya.jpg';
- var output =  'public/images/pdf/r2.jpg';
- var writeStream = fs.createWriteStream(output);
-      // var readStream = fs.createReadStream(input);
-      // gm(readStream)
-      // .stream(function (err, stdout, stderr) {
-      //   console.log("post /v1/profile/image 2");
-      //   
-
-      //   stdout.pipe(writeStream);
-      //   console.log("post /v1/profile/image 3");
-      // });
-      // console.log("post /v1/profile/image 4");
-      var Readable = require('stream').Readable
+     var input =  'public/images/pdf/ramya.jpg';
+     var output =  'public/images/pdf/r2.jpg';
+     var writeStream = fs.createWriteStream(output);
+     var Readable = require('stream').Readable
 
 
-var src1  = '<!DOCTYPE html><html><head><style>body {    background-color: #93B874;}</style></head><body><img src="http://localhost:3000/public/images/pdf/ramya.jpg"width="300" height="500"><h1>Dayasudhan kuruva</h1></body></html>';
-var s = new Readable
-s.push(src1)    // the string you want
-s.push(null) ;
-s.pipe(convert({format:'jpeg'}))
-  .pipe(writeStream);
+    var src1  = '<!DOCTYPE html><html><head><style>body {    background-color: #93B874;}</style></head><body><img src="http://localhost:3000/public/images/pdf/ramya.jpg"width="300" height="500"><h1>Dayasudhan kuruva</h1></body></html>';
+    var s = new Readable
+    s.push(src1)    // the string you want
+    s.push(null) ;
+    s.pipe(convert({format:'jpeg'}))
+      .pipe(writeStream);
+//https://www.npmjs.com/package/s3-write-stream
+       return response.send("Success");
+  });
+  function createProfile( order_id,path,receivedData, result ) {
+    console.log(order_id);
+    console.log(path);
+      console.log("post /v1/profile/image");
 
-
-    // gm(input).resize(350).stream(function(err, stdout, stderr) {
-
-    //   var writeStream = fs.createWriteStream(output, {
-    //     encoding: 'base64'
-    //   });
-
-    //   stdout.pipe(writeStream);
-
-    // });
-    //        return response.send("Success");
-    //   });
-
-
-  // var buf = require('fs').readFileSync(input);
+// var input = 'public/images/logo/';
+// input  = input + path;
    
-  // gm(buf, 'image.jpg')
-  // .noise('laplacian')
-  // .write(output, function (err) {
-  //   if (err) return handle(err);
-  //   console.log('Created an image from a Buffer!');
-  // });
-   return response.send("Success");
-   });
+    var output = 'profile' + order_id + '.jpg';
+     console.log(output);
+
+var name = "daya";
+
+    var src1  = '<!doctype html>\
+<html>\
+<head>\
+    <title>Sample Matrimony Page</title>\
+    <style>\
+        .jumbotron {\
+            padding-top: 5px;\
+            padding-bottom: 5px;\
+            margin-bottom: 5px;\
+            color: inherit;\
+            background-color: #1BBC9B;\
+        }\
+        h1 {\
+            font-size: 24px;\
+            text-align: center;\
+            color: #ffffff;\
+        }\
+         .container {\
+            width: 100%;\
+            height: auto;\
+            margin: 0px auto;\
+        }\
+        .clearfix:before,\
+        .clearfix:after {\
+            display: table;\
+            content: " ";\
+        }\
+        .clearfix:after {\
+            clear: both;\
+        }\
+        .panel {\
+            background-color: #fff;\
+            border: 1px solid black;\
+            border-radius: 4px;\
+            width: 1000px;\
+            margin: 0px auto;\
+            float: none;\
+        }\
+        .panel-image {\
+            padding: 5px;\
+            width: 400px;\
+            box-sizing: border-box;\
+        }\
+        .panel-image img {\
+            max-width: 100%;\
+        }\
+        .panel-information {\
+            padding: 5px;\
+            width: 600px;\
+            box-sizing: border-box;\
+        }\
+        .panel-heading {\
+            color: #3c763d;\
+            background-color: #dff0d8;\
+            float: left;\
+            width: 100%;\
+            text-align: center;\
+        }\
+        .panel-heading h2 {\
+            font-size: 22px;\
+        }\
+        .panel-body {\
+        }\
+        .pull-left {\
+            float: left;\
+        }\
+        .pull-right {\
+            float: right;\
+        }\
+        .table {\
+            border-collapse: collapse;\
+            width: 100%;\
+        }\
+        td {\
+            border: 1px solid #dddddd;\
+            text-align: left;\
+            padding: 8px;\
+            font-size: 28px;\
+        }\
+        tr:nth-child(even) {\
+            background-color: #eeeeee;\
+        }\
+        body{\
+          background-color: #eeeeee;\
+          }\
+    </style>\
+</head>\
+<body>\
+    <div class="container clearfix">\
+        <div class="panel clearfix">\
+            <div class="panel-image pull-left">\
+                <img src="' + path + '" height= 500 />\
+            </div>\
+            <div class="panel-information pull-left">\
+                <div class="panel-body">\
+                    <table class="table">\
+                        <tbody>\
+                            <tr>\
+                                <td><b>Name</b></td>'
+                                +'<td>' + receivedData.name + '</td>\
+                            </tr>\
+                            <tr>\
+                                <td><b>DOB</b></td>'
+                               +'<td>' + receivedData.name + '</td>\
+                            </tr>\
+              <tr>\
+                                <td><b>Education</b></td>'
+                                +'<td>' + receivedData.name + '</td>\
+                            </tr>\
+                            <tr>\
+                                <td><b>Mother Tongue</b></td>'
+                                +'<td>' + receivedData.name + '</td>\
+                            </tr>\
+                            <tr>\
+                                <td><b>JOB</b></td>'
+                                +'<td>' + receivedData.name + '</td>\
+                            </tr>\
+                            <tr>\
+                                <td><b>Salary</b></td>'
+                               +'<td>' + receivedData.name + '</td>\
+                            </tr>\
+                            <tr>\
+                                <td><b>Cast</b></td>'
+                                +'<td>' + receivedData.cast + '</td>\
+                            </tr>\
+                            <tr>\
+                                <td><b>Gothra</b></td>'
+                                +'<td>' + receivedData.name + '</td>\
+                            </tr>\
+                            <tr>\
+                                <td><b>Star</b></td>'
+                                +'<td>' + receivedData.name + '</td>\
+                            </tr>\
+                            <tr>\
+                                <td><b>Rashi</b></td>'
+                               +'<td>' + receivedData.name + '</td>\
+                            </tr>\
+                            <tr>\
+                                <td><b>Height</b></td>'
+                               +'<td>' + receivedData.name + '</td>\
+                            </tr>\
+                            <tr>\
+                                <td><b>Weight</b></td>'
+                               +'<td>' + receivedData.name + '</td>\
+                            </tr>\
+                            <tr>\
+                                <td><b>REsidence</b></td>'
+                               +'<td>' + name + '</td>\
+                            </tr>\
+                        </tbody>\
+                    </table>\
+                </div>\
+            </div>\
+        </div>\
+    </div>\
+</body>\
+</html>';
+// //
+//         bucket: 'node-sdk-sample222',
+//         acl: 'public-read',
+//         key: function (req, file, cb) {
+//             console.log(file);
+//             cb(null, req.params.id +  Date.now() + path.extname(file.originalname)); //use Date.now() for unique file keys
+//         }
+var upload = s3Stream.upload({
+  Bucket: "node-sdk-sample222",
+  Key: output,
+  ACL: "public-read"
+});
+//
+  //  var writeStream = fs.createWriteStream(output);
+    var Readable = require('stream').Readable
+    var s = new Readable
+    s.push(src1)    // the string you want
+    s.push(null) ;
+    s.pipe(convert({format:'jpeg',width: 1000, height: 600}))
+      .pipe(upload);
+result(output);
+     //  return response.send("Success");
+  };
+
+//Delete a menu item
+app.delete( '/v1/profile/:id/:profileid', function( request, response ) {
+     console.log('delete /v1/profile/:id/:profileid');
+    
+     console.log(request.params.id);
+     console.log(request.params.profileid);
+        return VendorInfoModel.update( { 'username':request.params.id},
+          { $pull: {profiles: {"id": request.params.profileid }}},
+          function( err ) {
+            if( !err ) {
+                console.log( 'profile removed' );
+                return response.send( 'Successfully removed' );
+            } else {
+                console.log( err );
+                return response.send('ERROR');
+            }
+        });
+    //});
+});
+
+
+
+app.post( '/v1/aws/s3/test', function( request, response ) {
+    console.log("/v1/aws/s3/test");
+
+    // Create a bucket and upload something into it
+    var bucketName = 'node-sdk-sample2';
+    var keyName = 'hello_world.txt';
+    // Create params for S3.createBucket
+    var bucketParams = {
+      Bucket : 'node-sdk-sample222',
+      ACL : 'public-read'
+    };
+
+    // call S3 to create the bucket
+    s3.createBucket(bucketParams, function(err, data) {
+      if (err) {
+        console.log("Error", err);
+      } else {
+        console.log("Success", data.Location);
+      }
+    });
+});
+
+
+app.get('/sign-s3', function(req, res) {
+ var bucketName = 'node-sdk-sample222';
+var keyName = 'hello_world123.txt';
+var params = {Bucket: bucketName, Key: keyName, Body: 'Hello World devraj!'};
+  s3.putObject(params, function(err, data) {
+    if (err)
+      console.log(err)
+    else
+      console.log("Successfully uploaded data to " + bucketName + "/" + keyName);
+  });
+
+    // var params = {Bucket: 'devraj', Key: 'key', Body: 'body'};
+    // var url = s3.getSignedUrl('putObject', params);
+    // console.log('The URL is', url);
+     });
+
 };
 
 

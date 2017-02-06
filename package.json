@@ -20,11 +20,14 @@
     "passport-twitter": "~1.0.2",
     "node-rest-client":"*",
     "multer": "1.1.0",
+    "multer-s3":"*",
     "pdfkit":"*",
     "request":"*",
     "gm":"*",
     "html-convert":"*",
-    "picture-tube":"*"
+    "picture-tube":"*",
+    "aws-sdk": "*",
+    "s3-upload-stream":"*"
 
   }
 }
