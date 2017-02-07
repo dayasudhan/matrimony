@@ -20,7 +20,7 @@ var Client = require('node-rest-client').Client;
 var client = new Client();
 var options = multer.diskStorage({ destination : 'public/images/logo/' ,
   filename: function (req, file, cb) {
-    cb(null, req.params.id +  Date.now() + path.extname(file.originalname));
+    cb(null,"photo" +  Date.now() + path.extname(file.originalname));
   }
 });
 // Load the SDK and UUID
@@ -32,11 +32,11 @@ var s3 = new AWS.S3();
 var upload = multer({
     storage: multerS3({
         s3: s3,
-        bucket: 'node-sdk-sample222',
+        bucket: 'madhuve',
         acl: 'public-read',
         key: function (req, file, cb) {
             console.log(file);
-            cb(null, req.params.id +  Date.now() + path.extname(file.originalname)); //use Date.now() for unique file keys
+            cb(null, req.params.id + '/' + 'main' + Date.now() + path.extname(file.originalname)); //use Date.now() for unique file keys
         }
     })
 });
@@ -464,7 +464,7 @@ console.log(url2);
     //   });
 
 
-    createProfile(order_id,url2,receivedData,function(profile_url){
+    createProfile(request,order_id,url2,receivedData,function(profile_url){
     var indiantime = new Date();
     indiantime.setHours(indiantime.getHours() + 5);
     indiantime.setMinutes(indiantime.getMinutes() + 30);
@@ -483,6 +483,7 @@ console.log(url2);
              date:indiantime,
              community:receivedData.cast,
              logo:url2,
+             profileLogo:profile_url,
              address:{
                addressLine1:receivedData.Address1,
                addressLine2:receivedData.Address2,
@@ -641,7 +642,7 @@ app.post( '/v1/profile/pdf/:id', function( request, response ) {
 //https://www.npmjs.com/package/s3-write-stream
        return response.send("Success");
   });
-  function createProfile( order_id,path,receivedData, result ) {
+  function createProfile( request,order_id,path,receivedData, result ) {
     console.log(order_id);
     console.log(path);
       console.log("post /v1/profile/image");
@@ -649,9 +650,9 @@ app.post( '/v1/profile/pdf/:id', function( request, response ) {
 // var input = 'public/images/logo/';
 // input  = input + path;
    
-    var output = 'profile' + order_id + '.jpg';
+    var output = request.params.id + '/' + 'profile' + Date.now() + '.jpg';
      console.log(output);
-
+ 
 var name = "daya";
 
     var src1  = '<!doctype html>\
@@ -757,51 +758,51 @@ var name = "daya";
                             </tr>\
                             <tr>\
                                 <td><b>DOB</b></td>'
-                               +'<td>' + receivedData.name + '</td>\
+                               +'<td>' + receivedData.dob + '</td>\
                             </tr>\
               <tr>\
                                 <td><b>Education</b></td>'
-                                +'<td>' + receivedData.name + '</td>\
+                                +'<td>' + receivedData.education + '</td>\
                             </tr>\
                             <tr>\
                                 <td><b>Mother Tongue</b></td>'
-                                +'<td>' + receivedData.name + '</td>\
+                                +'<td>' + receivedData.mothertongue + '</td>\
                             </tr>\
                             <tr>\
-                                <td><b>JOB</b></td>'
-                                +'<td>' + receivedData.name + '</td>\
+                                <td><b>Occupation</b></td>'
+                                +'<td>' + receivedData.occupation + '</td>\
                             </tr>\
                             <tr>\
                                 <td><b>Salary</b></td>'
-                               +'<td>' + receivedData.name + '</td>\
+                               +'<td>' + receivedData.income + 'p/a'+ '</td>\
                             </tr>\
                             <tr>\
                                 <td><b>Cast</b></td>'
-                                +'<td>' + receivedData.cast + '</td>\
+                                +'<td>' + receivedData.community + '</td>\
                             </tr>\
                             <tr>\
                                 <td><b>Gothra</b></td>'
-                                +'<td>' + receivedData.name + '</td>\
+                                +'<td>' + receivedData.gothra + '</td>\
                             </tr>\
                             <tr>\
                                 <td><b>Star</b></td>'
-                                +'<td>' + receivedData.name + '</td>\
+                                +'<td>' + receivedData.star + '</td>\
                             </tr>\
                             <tr>\
                                 <td><b>Rashi</b></td>'
-                               +'<td>' + receivedData.name + '</td>\
+                               +'<td>' + receivedData.rashi + '</td>\
                             </tr>\
                             <tr>\
                                 <td><b>Height</b></td>'
-                               +'<td>' + receivedData.name + '</td>\
+                               +'<td>' + receivedData.height + '</td>\
                             </tr>\
                             <tr>\
                                 <td><b>Weight</b></td>'
-                               +'<td>' + receivedData.name + '</td>\
+                               +'<td>' + receivedData.weight + '</td>\
                             </tr>\
                             <tr>\
-                                <td><b>REsidence</b></td>'
-                               +'<td>' + name + '</td>\
+                                <td><b>Residence</b></td>'
+                               +'<td>' + receivedData.address.city + '</td>\
                             </tr>\
                         </tbody>\
                     </table>\
@@ -811,15 +812,9 @@ var name = "daya";
     </div>\
 </body>\
 </html>';
-// //
-//         bucket: 'node-sdk-sample222',
-//         acl: 'public-read',
-//         key: function (req, file, cb) {
-//             console.log(file);
-//             cb(null, req.params.id +  Date.now() + path.extname(file.originalname)); //use Date.now() for unique file keys
-//         }
+
 var upload = s3Stream.upload({
-  Bucket: "node-sdk-sample222",
+  Bucket: "madhuve",
   Key: output,
   ACL: "public-read"
 });
@@ -829,6 +824,7 @@ var upload = s3Stream.upload({
     var s = new Readable
     s.push(src1)    // the string you want
     s.push(null) ;
+
     s.pipe(convert({format:'jpeg',width: 1000, height: 600}))
       .pipe(upload);
 result(output);
@@ -857,15 +853,15 @@ app.delete( '/v1/profile/:id/:profileid', function( request, response ) {
 
 
 
-app.post( '/v1/aws/s3/test', function( request, response ) {
+app.post( '/v1/aws/s3/createbucket', function( request, response ) {
     console.log("/v1/aws/s3/test");
 
     // Create a bucket and upload something into it
     var bucketName = 'node-sdk-sample2';
-    var keyName = 'hello_world.txt';
+   
     // Create params for S3.createBucket
     var bucketParams = {
-      Bucket : 'node-sdk-sample222',
+      Bucket : 'madhuve',
       ACL : 'public-read'
     };
 
@@ -881,7 +877,7 @@ app.post( '/v1/aws/s3/test', function( request, response ) {
 
 
 app.get('/sign-s3', function(req, res) {
- var bucketName = 'node-sdk-sample222';
+ var bucketName = 'matrimony';
 var keyName = 'hello_world123.txt';
 var params = {Bucket: bucketName, Key: keyName, Body: 'Hello World devraj!'};
   s3.putObject(params, function(err, data) {
