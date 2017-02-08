@@ -173,10 +173,9 @@
                 <div class="box-body box-profile">
                   <img class="img-responsive" src= "{{profile.logo}}"" alt="User profile picture">
                   <h3 class="profile-username text-center">{{profile.name}}</h3>
-                  <p class="text-muted text-center">{{profile.gothra}}</p>
-                  <p class="text-muted text-center">{{profile.star}}</p>
-                  <p class="text-muted text-center">{{profile.rashi}}</p>
-                  
+                  <p class="text-muted text-center">{{profile.community}}</p>
+                  <p class="text-muted text-center">{{profile.age}}</p>
+                      
                   <button type="submit" class="btn btn-info pull-right" ng-click= "nextProfile()">Next</button>
 <button type="submit" class="btn btn-info pull-left" ng-click= "previousProfile()">Previous</button>
 
@@ -190,17 +189,12 @@
 <div class="col-md-6">
               <div class="nav-tabs-custom">
                 <ul class="nav nav-tabs">
-                  <li class="active"><a href="#activity" data-toggle="tab">Details</a></li>
-                  <li><a href="#timeline" data-toggle="tab">Interests</a></li>
-                  <li><a href="#settings" data-toggle="tab">Contact Details</a></li>
-                </ul>
-                <div class="tab-content">
+                  <li class="active">
+                  <div class="tab-content">
                   <div class="active tab-pane" id="activity">
                      <!-- About Me Box -->
               <div class="box box-primary">
-                <div class="box-header with-border">
-                  <h3 class="box-title">About Me</h3>
-                </div><!-- /.box-header -->
+                
                 <div class="box-body">
                   <strong><i class="fa fa-book margin-r-5"></i>  Education</strong>
                   <p class="text-muted">
@@ -208,7 +202,12 @@
                   </p>
 
                   <hr>
+                  <strong><i class="fa fa-book margin-r-5"></i>  Occupation</strong>
+                  <p class="text-muted">
+                    {{profile.occupation}}
+                  </p>
 
+                  <hr>
                <strong><i class="fa fa-book margin-r-5"></i>  Cast</strong>
                   <p class="text-muted">
                     {{profile.community}}
@@ -246,12 +245,15 @@
                   <p class="text-muted">
                     {{profile.father.name}}
                   </p>
-
+                  <p class="text-muted">
+                    {{profile.father.occupation}}
+                  </p>
                   <hr>
                   
                 <strong><i class="fa fa-book margin-r-5"></i>  Mother</strong>
                   <p class="text-muted">
                     {{profile.mother.name}}
+                    {{profile.mother.occupation}}
                   </p>
 
                   <hr>   
@@ -263,6 +265,86 @@
               </div><!-- /.box -->
 
                 </div><!-- /.tab-content -->
+                  </li>
+                  <li>
+                  <div class="active tab-pane" id="activity">
+                     <!-- About Me Box -->
+              <div class="box box-primary">
+      
+                <div class="box-body">
+                  <strong><i class="fa fa-book margin-r-5"></i>  Gothra</strong>
+                  <p class="text-muted">
+                    {{profile.gothra}}
+                  </p>
+
+                  <hr>
+
+               <strong><i class="fa fa-book margin-r-5"></i>  Rashi</strong>
+                  <p class="text-muted">
+                    {{profile.rashi}}
+                  </p>
+
+                  <hr>
+
+                <strong><i class="fa fa-book margin-r-5"></i>  Star</strong>
+                  <p class="text-muted">
+                    {{profile.star}}
+                  </p>
+
+                  <hr>
+
+                <strong><i class="fa fa-book margin-r-5"></i>  Mother Tongue</strong>
+                  <p class="text-muted">
+                    {{profile.mothertongue}}
+                  </p>
+
+                  <hr>
+
+               <strong><i class="fa fa-book margin-r-5"></i>  Height</strong>
+                  <p class="text-muted">
+                    {{profile.height}}
+                  </p>
+
+                  <hr>
+               <strong><i class="fa fa-book margin-r-5"></i>  Weight </strong>
+                  <p class="text-muted">
+                    {{profile.weight}}
+                  </p>
+
+                  <hr>
+              <strong><i class="fa fa-book margin-r-5"></i>  Origin </strong>
+                  <p class="text-muted">
+                    {{profile.origin}}
+                  </p>
+
+                  <hr>
+                  
+                <strong><i class="fa fa-book margin-r-5"></i>  Age</strong>
+                  <p class="text-muted">
+                    {{profile.age}}
+                  </p>
+
+                  <hr>   
+                  <strong><i class="fa fa-file-text-o margin-r-5"></i> Date Of Birth</strong>
+                  <p>{{profile.dob}}</p>
+                  <hr>   
+                 <strong><i class="fa fa-book margin-r-5"></i>  Address </strong>
+                  <p class="text-muted">
+                    {{profile.address.addressLine1}}
+
+                  </p>
+        <p class="text-muted">
+                    {{profile.address.city}}
+                   
+                  </p>
+                  <hr>
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
+
+                </div><!-- /.tab-content -->
+
+                </ul>
+                
               </div><!-- /.nav-tabs-custom -->
             </div><!-- /.col -->
     
