@@ -149,7 +149,7 @@ function getNextSequence(name,result)
 }
 
 app.get('/vendor_logout', function(req, res) {
-    var redirect_url = '/vendor';
+    var redirect_url = '/';
     req.logout();
     res.redirect(redirect_url);
 });
@@ -162,7 +162,9 @@ app.get('/', function (req, res) {
 app.get('/admin_signup', function(req, res) {
     res.render('admin_signup', { });
 });
-
+app.get('/aboutme', function(req, res) {
+    res.render('aboutme', { });
+});
 app.get('/add_profile', function (req, res) {
     res.render('add_profile', { user : req.user });
 });
@@ -206,10 +208,17 @@ app.post('/login', function(req, res, next) {
 
 app.post('/signup', function(req, res, next) {
 console.log(req.body);
+  // if(req.body.adminpassword != "devknvl")
+  // {
+     
+  //     console.log("password mimatchmatch");
+  //    return res.send('ERROR');
+  // }
+  // else 
   if(req.body.password != req.body.password2)
   {
      
-  console.log("password mimatchmatch");
+      console.log("password mimatchmatch");
      return res.send('ERROR');
   }
   else
@@ -235,8 +244,8 @@ console.log(req.body);
         var redirect_url;
         if(req.body.role == 'vendor') 
         {
-          redirect_url = '/profile_list';
-          VendorInfoModel(req, res, next);
+          redirect_url = '/aboutme';
+          registerVendor(req, res, next);
           return res.redirect(redirect_url);
         }
         else
@@ -437,37 +446,22 @@ app.post( '/v1/profile2/:id', upload.single('file'),function( request, response 
   console.log(request.file.path);
   console.log("VendorLogo post");
  
-//var url2 = request.protocol + '://' + request.get('host') +'\\' + request.file.path;
 var url2 = request.file.location;
 console.log(url2);
 
- // console.log(request.user.local.email);
-  // if(checkVendorApiAunthaticated(request,2) == false && request.isAuthenticated() == false)
-  // {
-  //   return response.send("Not aunthiticated").status(403);
-  // }
+
   var res = getNextSequence('profile',function(data) {
     var order_id = "M1" ;
     order_id = order_id + "P";
     order_id = order_id + data.sequence;
     console.log(order_id);
 
-    //  var bucketName = 'node-sdk-sample222';
-    // var keyName = request.file.originalname;
-    // var fileType =request.file.mimetype;
-    // var params = {Bucket: bucketName, Key: keyName , ContentType: fileType};
-    //   s3.putObject(params, function(err, data) {
-    //     if (err)
-    //       console.log(err)
-    //     else
-    //       console.log("Successfully uploaded data to " + bucketName + "/" + keyName);
-    //   });
+
 
 
     createProfile(request,order_id,url2,receivedData,function(profile_url){
-    var indiantime = new Date();
-    indiantime.setHours(indiantime.getHours() + 5);
-    indiantime.setMinutes(indiantime.getMinutes() + 30);
+
+
     var dc;
     return VendorInfoModel.update({ 'username':request.params.id},
        { $addToSet: {profiles: {$each:[{
@@ -475,23 +469,33 @@ console.log(url2);
             name: receivedData.name,
             email: receivedData.email,
             phone: receivedData.phone ,
-            dob: indiantime, 
-             gender: receivedData.gender, 
-             occupation: receivedData.occupation, 
-             education: receivedData.education, 
-             summary: receivedData.summary,
-             date:indiantime,
-             community:receivedData.cast,
-             logo:url2,
-             profileLogo:profile_url,
-             address:{
-               addressLine1:receivedData.Address1,
-               addressLine2:receivedData.Address2,
-               street:receivedData.street, 
-               LandMark:receivedData.Landmark, 
-               areaName:receivedData.Areaname,
-               city:receivedData.City 
-             }
+            gender: receivedData.gender, 
+            occupation: receivedData.occupation, 
+            education: receivedData.education, 
+            summary: receivedData.summary,
+            community:receivedData.cast,
+            fatheroccupation:receivedData.fatheroccupation,
+            motheroccupation:receivedData.motheroccupation,
+            mothertongue:receivedData.mothertongue,
+            income:receivedData.income,
+            gothra:receivedData.gothra,
+            star:receivedData.star,
+            rashi:receivedData.rashi,
+            height:receivedData.height,
+            weight:receivedData.weight,
+            origin:receivedData.origin,
+            dob:receivedData.dob,
+            age:receivedData.age,
+            logo:url2,
+            profileLogo:profile_url,
+            address:{
+             addressLine1:receivedData.Address1,
+             addressLine2:receivedData.Address2,
+             street:receivedData.street, 
+             LandMark:receivedData.Landmark, 
+             areaName:receivedData.Areaname,
+             city:receivedData.city 
+            }
           }], }}},
        function( err, order ) {
        if( !err ) {
@@ -757,10 +761,14 @@ var name = "daya";
                                 +'<td>' + receivedData.name + '</td>\
                             </tr>\
                             <tr>\
+                                <td><b>Cast</b></td>'
+                                +'<td>' + receivedData.cast + '</td>\
+                            </tr>\
+                            <tr>\
                                 <td><b>DOB</b></td>'
                                +'<td>' + receivedData.dob + '</td>\
                             </tr>\
-              <tr>\
+                            <tr>\
                                 <td><b>Education</b></td>'
                                 +'<td>' + receivedData.education + '</td>\
                             </tr>\
@@ -774,11 +782,7 @@ var name = "daya";
                             </tr>\
                             <tr>\
                                 <td><b>Salary</b></td>'
-                               +'<td>' + receivedData.income + 'p/a'+ '</td>\
-                            </tr>\
-                            <tr>\
-                                <td><b>Cast</b></td>'
-                                +'<td>' + receivedData.community + '</td>\
+                               +'<td>' + receivedData.income + '  per annum'+ '</td>\
                             </tr>\
                             <tr>\
                                 <td><b>Gothra</b></td>'
@@ -802,7 +806,7 @@ var name = "daya";
                             </tr>\
                             <tr>\
                                 <td><b>Residence</b></td>'
-                               +'<td>' + receivedData.address.city + '</td>\
+                               +'<td>' + receivedData.city + '</td>\
                             </tr>\
                         </tbody>\
                     </table>\
@@ -827,7 +831,8 @@ var upload = s3Stream.upload({
 
     s.pipe(convert({format:'jpeg',width: 1000, height: 600}))
       .pipe(upload);
-result(output);
+    var ret_url = "https://madhuve.s3.amazonaws.com/" + output;
+    result(ret_url);
      //  return response.send("Success");
   };
 

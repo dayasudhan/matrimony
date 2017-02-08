@@ -23,6 +23,7 @@ var VendorInfoSchema = new mongoose.Schema({
                 name:String,
                 email: String,
                 dob:Date,
+                age:Number,
                 gender:String,
                 community:String,
                 occupation:String,
