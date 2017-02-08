@@ -173,30 +173,30 @@ app.service('items', function() {
   app.controller("DetailsController", function ($scope, $http, jsonFilter)
   {
 
-      $scope.name ="";
-      $scope.phone = 9797998789;
-      $scope.email = "dd@d.com";
-      $scope.gender= "Male";
-      $scope.occupation="Software Engineer";
-      $scope.education="Engineering";
-      $scope.cast="Brahmin";
-      $scope.summary="I am software engineer";
-      $scope.fathername="Rajesh";
-      $scope.mothername="Kalpana";
-      $scope.hotelAddress1 = "addres1",
-      $scope.hotelLandmark = "landmark", 
-      $scope.city= "vvpura", 
+      // $scope.name ="";
+      // $scope.phone = 9797998789;
+      // $scope.email = "dd@d.com";
+      // $scope.gender= "Male";
+      // $scope.occupation="Software Engineer";
+      // $scope.education="Engineering";
+      // $scope.cast="Brahmin";
+      // $scope.summary="I am software engineer";
+      // $scope.fathername="Rajesh";
+      // $scope.mothername="Kalpana";
+      // $scope.hotelAddress1 = "addres1",
+      // $scope.hotelLandmark = "landmark", 
+      // $scope.city= "vvpura", 
 
 
-        $scope.fatheroccupation = "farmer",
-        $scope.motheroccupation = "farmer",
-        $scope.mothertongue  = "kannada";
-        $scope.income = 100000;
-        $scope.gothra= "kannada" ;
-        $scope.rashi= "kannada";
-        $scope.height= "kannada";
-        $scope.weight= "kannada";
-        $scope.origin= "kannada";
+      //   $scope.fatheroccupation = "farmer",
+      //   $scope.motheroccupation = "farmer",
+      //   $scope.mothertongue  = "kannada";
+      //   $scope.income = 100000;
+      //   $scope.gothra= "kannada" ;
+      //   $scope.rashi= "kannada";
+      //   $scope.height= "kannada";
+      //   $scope.weight= "kannada";
+      //   $scope.origin= "kannada";
 
 
       // $scope.name ="";
