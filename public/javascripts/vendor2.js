@@ -213,6 +213,77 @@ app.service('items', function() {
       // $scope.hotelLandmark = "", 
       // $scope.hotelAreaname= "", 
 
+
+      $scope.addvendorLogo = function (param,files) {
+      console.log("addLogo");
+      $scope.files = files;
+      $scope.filePresent =  true;
+
+     var fd = new FormData();
+     console.log(files[0]);
+      
+    //Take the first selected file
+      fd.append("file", files[0]);
+      
+      var url4 = "/v1/profile/logo/";
+      url4 = url4 + param;
+       console.log(param);
+         
+    };
+
+
+
+   $scope.addvendorDetails = function (param) {
+      console.log("addDetails 1");
+     if(!$scope.files)
+     {
+       $window.alert("Image Empty");
+     }
+     else
+     {
+       var fd = new FormData();
+       console.log( $scope.files[0]);
+      
+    // //Take the first selected file
+    
+       fd.append("file",  $scope.files[0]);
+
+
+      var url = "/v1/vendor/update/";
+      url = url + param;
+      console.log($scope.vendorname);
+      console.log($scope.vendorphone);
+      console.log($scope.vendoremail);
+     
+    
+      var postData={
+        name:$scope.vendorname, 
+        phone:$scope.vendorphone,
+        email:$scope.vendoremail,        
+       };
+       fd.append("data", JSON.stringify(postData));
+console.log(url);
+      $http.post(url,fd, {
+        withCredentials: true,
+        headers: {'Content-Type': undefined , 'enctype': 'multipart/form-data' },
+        transformRequest: angular.identity
+    }).success(function (data, status, headers, config)
+        {
+            console.log("addDetails success");
+            alert("addDetails success");
+            $scope.filePresent = false;
+
+        })
+        .error(function (data, status, headers, config)
+        {
+          console.log("addDetails error");
+           alert("addDetails error");
+           $scope.filePresent = false;
+        });
+      }
+    };
+/////////////////////////////////////////
+
       $scope.addLogo = function (param,files) {
       console.log("addLogo");
       $scope.files = files;

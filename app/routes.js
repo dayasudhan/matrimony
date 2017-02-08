@@ -40,7 +40,17 @@ var upload = multer({
         }
     })
 });
-
+var upload2 = multer({
+    storage: multerS3({
+        s3: s3,
+        bucket: 'madhuve',
+        acl: 'public-read',
+        key: function (req, file, cb) {
+            console.log(file);
+            cb(null, req.params.id + '/' + 'logo' + Date.now() + path.extname(file.originalname)); //use Date.now() for unique file keys
+        }
+    })
+  });
 var securecustomerkey = 'EjR7tUPWx7WhsVs9FuVO6veFxFISIgIxhFZh6dM66rs';
 var securevendorkey = 'ORql2BHQq9ku8eUX2bGHjFmurqG84x2rkDQUNq9Peelw';
 var secureadminkey = 'tk0M6HKn0uzL%2FcWMnq3jkeF7Ao%2BtdWyYEJqPDl0P6Ac';
@@ -163,7 +173,7 @@ app.get('/admin_signup', function(req, res) {
     res.render('admin_signup', { });
 });
 app.get('/aboutme', function(req, res) {
-    res.render('aboutme', { });
+    res.render('aboutme', { user : req.user });
 });
 app.get('/add_profile', function (req, res) {
     res.render('add_profile', { user : req.user });
@@ -654,7 +664,7 @@ app.post( '/v1/profile/pdf/:id', function( request, response ) {
     console.log(order_id);
     console.log(path);
       console.log("post /v1/profile/image");
-
+var logopath = "https://madhuve.s3.amazonaws.com/test3/logo1486565810761.png";
 // var input = 'public/images/logo/';
 // input  = input + path;
    
@@ -755,6 +765,7 @@ var name = "daya";
         <div class="panel clearfix">\
             <div class="panel-image pull-left">\
                 <img src="' + path + '" height= 500 />\
+                <img src="' + logopath + '" height= 100 />\
             </div>\
             <div class="panel-information pull-left">\
                 <div class="panel-body">\
@@ -900,6 +911,32 @@ var params = {Bucket: bucketName, Key: keyName, Body: 'Hello World devraj!'};
     // var url = s3.getSignedUrl('putObject', params);
     // console.log('The URL is', url);
      });
+
+app.post( '/v1/vendor/update/:id', upload2.single('file'), function( req, res ) {
+  console.log('/v1/vendor/update/:id');
+var url2 = req.file.location;
+var receivedData =  JSON.parse(req.body.data);
+console.log(url2);
+  VendorInfoModel.update({ 'username':req.params.id},
+      {
+        $set: {
+                name: receivedData.name, 
+                email: receivedData.email,
+                phone: receivedData.phone,
+                logo:url2} 
+      },
+       function( err ) {
+        if( !err ) {
+            console.log( 'updated isopen created' );
+           
+            return res.send('created');;
+        } else {
+    console.log( 'updated isopen error' );     
+               console.log( err );     
+               return res.send('ERROR');     
+           }    
+           });    
+ });
 
 };
 
