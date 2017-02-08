@@ -224,10 +224,11 @@
                                             <div class="wrapper">
                                                 <div class="banner">
                                                     <img src={{prof.logo}}>
-                                                </div>                                    
+                                                </div>                
+
                                                 <div class="bandescription">
                                                     <h4><b>{{prof.name}}</b></h4>
-                                                    <h6>{{prof.gender}}</h6>
+                                                    
                                                     <div class="kmenu">
                                                         <ul class="khlist">
                                                             <li>
@@ -237,18 +238,21 @@
                                                                 <h5>{{prof.community}}</h5>
                                                             </li>
                                                             <li>
-                                                                <h5>{{prof.summary}}</h5>
+                                                                <h5>{{prof.age}}</h5>
                                                             </li>
                                                             <li>
                                                                 <h5>{{prof.phone}}</h5>
                                                             </li>
                                                             <li>
-                                                                <h5>{{prof.email}}</h5>
+                                                                <h5>{{prof.education}}</h5>
                                                             </li>
-                                                             <li>
-                                                            <button type="submit" class="btn btn-info pull-right" ng-click= "viewProfile($index)">View Details</button>
+                                                            <li>    
+                                                             <img src={{prof.profileLogo}} style="width:100px;height:100px;">
+                                                            </li>
+                                                            <!-- <button type="submit" class="btn btn-info pull-right" ng-click= "viewProfile($index)">View Details</button> -->
                                                         </ul>
                                                     </div>
+
                                                 </div>
                                             </div>
                                         </li>

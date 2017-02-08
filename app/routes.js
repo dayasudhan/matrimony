@@ -474,8 +474,12 @@ console.log(url2);
             education: receivedData.education, 
             summary: receivedData.summary,
             community:receivedData.cast,
-            fatheroccupation:receivedData.fatheroccupation,
-            motheroccupation:receivedData.motheroccupation,
+            father:{
+                    name:receivedData.fathername,
+                    occupation:receivedData.fatheroccupation},
+            mother:{
+                    name:receivedData.fathername,
+                    occupation:receivedData.fatheroccupation},
             mothertongue:receivedData.mothertongue,
             income:receivedData.income,
             gothra:receivedData.gothra,

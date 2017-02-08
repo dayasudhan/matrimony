@@ -173,9 +173,9 @@
                 <div class="box-body box-profile">
                   <img class="img-responsive" src= "{{profile.logo}}"" alt="User profile picture">
                   <h3 class="profile-username text-center">{{profile.name}}</h3>
-                  <p class="text-muted text-center">{{profile.occupation}}</p>
-                  <p class="text-muted text-center">{{profile.education}}</p>
-                  <p class="text-muted text-center">{{profile.phone}}</p>
+                  <p class="text-muted text-center">{{profile.gothra}}</p>
+                  <p class="text-muted text-center">{{profile.star}}</p>
+                  <p class="text-muted text-center">{{profile.rashi}}</p>
                   
                   <button type="submit" class="btn btn-info pull-right" ng-click= "nextProfile()">Next</button>
 <button type="submit" class="btn btn-info pull-left" ng-click= "previousProfile()">Previous</button>
@@ -211,7 +211,7 @@
 
                <strong><i class="fa fa-book margin-r-5"></i>  Cast</strong>
                   <p class="text-muted">
-                    {{profile.cast}}
+                    {{profile.community}}
                   </p>
 
                   <hr>
@@ -236,17 +236,22 @@
                   </p>
 
                   <hr>
+               <strong><i class="fa fa-book margin-r-5"></i>  Income</strong>
+                  <p class="text-muted">
+                    {{profile.income}}
+                  </p>
 
+                  <hr>
               <strong><i class="fa fa-book margin-r-5"></i>  Father </strong>
                   <p class="text-muted">
-                    {{profile.fathername}}
+                    {{profile.father.name}}
                   </p>
 
                   <hr>
                   
                 <strong><i class="fa fa-book margin-r-5"></i>  Mother</strong>
                   <p class="text-muted">
-                    {{profile.mothername}}
+                    {{profile.mother.name}}
                   </p>
 
                   <hr>   

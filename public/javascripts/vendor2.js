@@ -273,7 +273,7 @@ app.service('items', function() {
         phone:$scope.phone,
         email:$scope.email,
         occupation:$scope.occupation,
-        education:$scope.eduction,
+        education:$scope.education,
         summary:$scope.summary,
         gender:$scope.gender,
         cast:$scope.cast,
