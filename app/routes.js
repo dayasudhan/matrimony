@@ -178,11 +178,12 @@ app.get('/aboutme', function(req, res) {
 app.get('/add_profile', function (req, res) {
     res.render('add_profile', { user : req.user });
 });
-app.get('/profile', function (req, res) {
-    res.render('profile', { user : req.user });
+app.get('/profile/:id', function (req, res) {
+    res.render('profile', { user : req.user,position:req.params.id });
 });
 
 app.get('/profile_list', function (req, res) {
+
     res.render('profile_list', { user : req.user });
 });
 app.post('/login', function(req, res, next) {

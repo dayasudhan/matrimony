@@ -31,7 +31,7 @@
   <body class="hold-transition skin-blue sidebar-mini" ng-app="vendorModule">
     <div class="wrapper"  ng-controller="mainController">
 
-      <header class="main-header" data-ng-init="getProfile('<%= user.local.email %>')"  >
+      <header class="main-header" data-ng-init="getProfile('<%= user.local.email %>','<%= position %>')"  >
         <!-- Logo -->
         <a href="../../index2.html" class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
@@ -140,7 +140,7 @@
             <li class="header">LABELS</li>
             <li><a href="/profile_list"><i class="fa fa-circle-o text-red"></i> <span>Profiles</span></a></li>
             <li><a href="/add_profile"><i class="fa fa-circle-o text-yellow"></i> <span>Add New Profile</span></a></li>
-            <li><a href="/profile"><i class="fa fa-circle-o text-aqua"></i> <span>Profile Detail</span></a></li>
+            <li><a href="/profile/0"><i class="fa fa-circle-o text-aqua"></i> <span>Profile Detail</span></a></li>
             <li><a href="/aboutme"><i class="fa fa-circle-o text-aqua"></i> <span>aboutme</span></a></li>
         
           </ul>

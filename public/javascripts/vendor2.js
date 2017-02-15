@@ -15,16 +15,17 @@ app.service('items', function() {
     return itemsService;
 });
 
-  app.controller("mainController", function ($scope, items, $http, jsonFilter)
+  app.controller("mainController", function ($scope,$rootScope, items, $http, jsonFilter)
   {
   		 $scope.total2 = 123;
        $scope.minage = 18;
        $scope.maxage = 100;
        // $scope.list = items.list;
        // $scope.add = items.add;
-  	  $scope.getProfile = function (param) {
+  	  $scope.getProfile = function (param,param_position) {
       console.log("getprofile");
-      
+      console.log(param_position);
+      $scope.position = param_position;
       console.log(items.list());
       var url = "/v1/profile/info/";
       url = url + param;
@@ -34,8 +35,8 @@ app.service('items', function() {
           $scope.completeprofilelist = data;
           $scope.profilelist = $scope.completeprofilelist;
           console.log($scope.profilelist);
-          $scope.position = 0;
-          $scope.profile = $scope.profilelist[0];
+          
+          $scope.profile = $scope.profilelist[$scope.position];
         })
         .error(function (data, status, headers, config)
         {
@@ -46,7 +47,7 @@ app.service('items', function() {
       console.log("nextProfile");
      
       if($scope.profilelist.length > ($scope.position+1))
-      {
+      { 
          $scope.position = $scope.position +1;
       console.log($scope.position);
         console.log('inside');
@@ -66,14 +67,30 @@ app.service('items', function() {
   };
   $scope.viewProfile = function (param) {
       console.log("previousProfile");
-     
+     $rootScope.position = param;
+     console.log($rootScope.position);
       console.log(param);
       $scope.position = param;
       items.add($scope.position);
+      console.log(items.list());
       console.log($scope.position);
-      $scope.profile = $scope.profilelist[$scope.position];
-      var url = "http://localhost:3000/profile";
+      $scope.profile = $scope. profilelist[$scope.position];
+      var url = "/profile/";
+      url = url + $scope.position;
       window.open(url, "_self");
+     //  var url = "/profile";
+      // url = url + $scope.position;
+
+
+      // $http.get(url)
+      //   .success(function (data, status, headers, config)
+      //   {
+         
+      //   })
+      //   .error(function (data, status, headers, config)
+      //   {
+      //     $scope.simpleGetCallResult = logResult("GET ERROR", data, status, headers, config);
+      //   });
   };
       $scope.communitys = [ {name: 'Bramin'}, {name: 'Lingayath'}, {name: 'Other'}];
       $scope.updateSelectCast = function() {
@@ -170,7 +187,7 @@ app.service('items', function() {
 });
 
   
-  app.controller("DetailsController", function ($scope, $http, jsonFilter)
+  app.controller("DetailsController", function ($scope,$rootScope, $http, jsonFilter)
   {
 
       // $scope.name ="";
@@ -384,56 +401,6 @@ console.log(url);
         });
       }
     };
-
-      $scope.getDetails = function (param) {
-      console.log("getDetails");
-      console.log(param);
-      $scope.getCityCoverage();
-      var url = "/v1/vendor/info/";
-
-      url = url + param;
-      // var postData={Name:$scope.hotelName, username: param, Address1:$scope.hotelAddress1, phone:$scope.hotelphone,
-      //   Address2:"", street :"",Landmark:$scope.hotelLandmark, Areaname:$scope.hotelAreaname, 
-      //   City:$scope.hotelcity, zip:$scope.hotelzip,latitude:$scope.latitude, longitude:$scope.longitude, logo:"",
-      //    vegornonveg:$scope.vegornonveg, speciality: $scope.speciality , deliverrange:$scope.deliverrange,deliverareas:$scope.deliverareas};
-      $http.get(url)
-        .success(function (data, status, headers, config)
-        {
-            console.log("getDetails success");
-            console.log(data[0]);
-             $scope.hotelName = data[0].hotel.name;
-             $scope.hotelId = data[0].hotel.id;
-             $scope.hotelAddress1 =data[0].address.addressLine1;
-             $scope.hotelphone =data[0].phone;
-            $scope.hotelLandmark =data[0].address.LandMark;
-            $scope.hotelAreaname =data[0].address.areaName;
-            $scope.hotelcity =data[0].address.city;
-            $scope.hotelzip =data[0].address.zip;
-            $scope.latitude =data[0].address.latitude;
-            $scope.longitude =data[0].address.longitude;
-          //  $scope.vegornonveg =data[0].
-            $scope.speciality =data[0].speciality;
-            $scope.deliverRange =data[0].deliverRange;
-            $scope.deliverareas =data[0].deliverAreas;
-            $scope.minimumOrder =data[0].minimumOrder;
-            $scope.deliverCharge = data[0].deliverCharge;
-            $scope.deliveryTime = data[0].deliveryTime;
-
-            $scope.isBulkVendor = data[0].isBulkVendor;
-            $scope.bulkdeliverCharge = data[0].bulkdeliverCharge;
-            $scope.bulkdeliverRange = data[0].bulkdeliverRange;
-            $scope.bulkminimumOrder = data[0].bulkminimumOrder;
-            $scope.bulkdeliveryTime
-
-        })
-        .error(function (data, status, headers, config)
-        {
-          console.log("getDetails error");
-        });
-
-    };
-
-
   });
 
 
