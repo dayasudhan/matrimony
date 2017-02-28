@@ -31,7 +31,7 @@
   <body class="hold-transition skin-blue sidebar-mini" ng-app="vendorModule">
     <div class="wrapper"  ng-controller="mainController">
 
-      <header class="main-header" data-ng-init="getProfile('<%= user.local.email %>','<%= position %>')"  >
+      <header class="main-header" data-ng-init="getProfile('<%= user.local.email %>','<%= position %>','<%= gender %>','<%= community %>','<%= minage %>','<%= maxage %>')"  >
         <!-- Logo -->
         <a href="../../index2.html" class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
@@ -152,15 +152,64 @@
       <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-          <h1>
-            Profile
-            <small>advanced tables</small>
-          </h1>
-          <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li><a href="#">Tables</a></li>
-            <li class="active">Profile</li>
-          </ol>
+<div class="selection">
+                                    <ul>
+                                        <li>
+                                           <h3> <p>Select Gender</p><h3>
+                                        </li>
+                                        <li>
+                                            <h3> <p>Select Community</p><h3>
+                                        </li>
+                                        <li>
+                                            <h3> <p>Select Age</p><h3>
+                                        </li>
+                                      
+                                    </ul>
+                                    <ul>
+                                        <li>
+                                            <form>
+                                                <div class="form-group">
+                                                                   <select ng-model="gender_select" ng-change="updateSelectGender ()">
+      <option></option>
+      <option ng-repeat="i in genders" value="{{ i.name }}" ng-selelected="{{ gender_select == i.name }}">{{ i.name }}</option>
+    </select>
+                                                </div>
+                                            </form>
+                                        </li>
+                                        <li>
+                                            <form>
+                                                <div class="form-group">
+                                                 <select ng-options="community as community.name for community in communitys " ng-model="cast_select" ng-change="updateSelectCast()">
+                                                     <option ng-selected="true" value="">Select Cast</option>
+
+                                                 </select>
+
+                                                </div>
+                                            </form>
+                                        </li>
+                                        <li>
+                                            <form>
+                                                <div class="form-group">
+                                                    <select class="form-control" ng-model="age_select" ng-change="updateSelectAge()">
+                                                        <option >18-22</option>
+                                                        <option>22-25</option>
+                                                        <option>25-28</option>
+                                                        <option>28-30</option>
+                                                        <option>30-32</option>
+                                                        <option>33-35</option>
+                                                        <option>35 and above</option>
+                                                        <option ng-selected="true" value="">Select Age</option>
+                                                    </select>
+                                                </div>
+                                            </form>
+                                        </li>
+                                        <li>
+                                            <form>
+                                                <input type="text" name="search" placeholder="Search..">
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </div>
         </section>
 
         <!-- Main content -->

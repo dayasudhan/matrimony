@@ -9,6 +9,12 @@ var VendorInfoSchema = new mongoose.Schema({
     uniqueid:String,
     isOpen:Number,
     phone:Number,
+    settings:{
+        gender:String,
+        community:String,
+        minage:Number,
+        maxage:Number
+    },
     address:{addressLine1:String,
         addressLine2:String,
         street:String, 
@@ -18,7 +24,7 @@ var VendorInfoSchema = new mongoose.Schema({
         zip:String, 
         latitude:Number,
         longitude:Number },
-        profiles:[{  id:String,
+    profiles:[{  id:String,
                 phone:Number,
                 name:String,
                 email: String,

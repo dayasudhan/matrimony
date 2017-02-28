@@ -1,38 +1,57 @@
 app = angular.module("vendorModule", []);
-app.service('items', function() {
-    var items = 0;
-    var itemsService = {};
-    
-    itemsService.add = function(item) {
-      console.log(item);
-        items = item;
-    };
-    itemsService.list = function() {
-      console.log(items);
-        return items;
-    };
-    
-    return itemsService;
-});
 
-  app.controller("mainController", function ($scope,$rootScope, items, $http, jsonFilter)
+  app.controller("mainController", function ($scope, $http, jsonFilter,$timeout)
   {
   		 $scope.total2 = 123;
        $scope.minage = 18;
        $scope.maxage = 100;
-       // $scope.list = items.list;
-       // $scope.add = items.add;
-  	  $scope.getProfile = function (param,param_position) {
-      console.log("getprofile");
+       $scope.gender_select = '';
+       $scope.community = 'all';
+        $scope.communitys = [ {name: 'Bramin'}, {name: 'Lingayath'}, {name: 'Other'}];
+        $scope.genders = [ {name: 'Bride'}, {name: 'BrideGroom'}, {name: 'all'}];
+       $scope.inputDevice = [{
+          value: '1',
+          label: 'input1'
+        }, {
+          value: '2',
+          label: 'input2'
+        }];
+        $scope.selectedDevice = '';
+  	  $scope.getProfile = function (param,param_position,param_gender,
+        param_community,param_minage,param_maxage) {
+      console.log("getprofile"); 
       console.log(param_position);
+      console.log(param_gender);
+      console.log(param_community);
+      console.log(param_minage);
+      console.log(param_maxage);
       $scope.position = param_position;
-      console.log(items.list());
+      
+       $timeout(function() {
+      $scope.selectedDevice = '2';
+      $scope.gender_select = param_gender;
+      $scope.cast_select = param_community;
+    }, 0);
+      console.log($scope.selectedDevice);
+   //  console.log(param_gender); 
+      // if(param_community == 'all')
+      // {
+      //   console.log(param_community);
+      // }
+      // else
+      // {
+      //    console.log(param_community);
+      //   $scope.community = param_community;
+      // }
+      // $scope.community = param_community;
+      // $scope.gender_select = param_gender;
       var url = "/v1/profile/info/";
       url = url + param;
       $http.get(url)
         .success(function (data, status, headers, config)
         {
           $scope.completeprofilelist = data;
+    
           $scope.profilelist = $scope.completeprofilelist;
           console.log($scope.profilelist);
           
@@ -67,35 +86,27 @@ app.service('items', function() {
   };
   $scope.viewProfile = function (param) {
       console.log("previousProfile");
-     $rootScope.position = param;
-     console.log($rootScope.position);
+   
       console.log(param);
       $scope.position = param;
-      items.add($scope.position);
-      console.log(items.list());
+         
       console.log($scope.position);
       $scope.profile = $scope. profilelist[$scope.position];
       var url = "/profile/";
-      url = url + $scope.position;
+      url = url + $scope.position +'/' + $scope.gender_select+'/'+$scope.community;
+      url = url + '/' + $scope.minage +'/' +  $scope.maxage;
+      console.log(url);
+      // $scope.cast_select.name
+      // $scope.gender_select
+      // $scope.age_select
       window.open(url, "_self");
-     //  var url = "/profile";
-      // url = url + $scope.position;
-
-
-      // $http.get(url)
-      //   .success(function (data, status, headers, config)
-      //   {
-         
-      //   })
-      //   .error(function (data, status, headers, config)
-      //   {
-      //     $scope.simpleGetCallResult = logResult("GET ERROR", data, status, headers, config);
-      //   });
+    
   };
-      $scope.communitys = [ {name: 'Bramin'}, {name: 'Lingayath'}, {name: 'Other'}];
+     
       $scope.updateSelectCast = function() {
         
         console.log($scope.cast_select.name);
+        $scope.community = $scope.cast_select.name;
 
       }
       $scope.updateSelectGender = function() {
@@ -110,6 +121,7 @@ app.service('items', function() {
         }
 
         for (index = 0, len = $scope.completeprofilelist.length; index < len; index++) {
+
           console.log($scope.completeprofilelist[index].gender);
           console.log(selectedGender);
           if($scope.completeprofilelist[index].gender == selectedGender && 
@@ -187,7 +199,7 @@ app.service('items', function() {
 });
 
   
-  app.controller("DetailsController", function ($scope,$rootScope, $http, jsonFilter)
+  app.controller("DetailsController", function ($scope, $http, jsonFilter)
   {
 
       // $scope.name ="";
