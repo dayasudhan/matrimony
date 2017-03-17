@@ -178,20 +178,18 @@ app.get('/aboutme', function(req, res) {
 app.get('/add_profile', function (req, res) {
     res.render('add_profile', { user : req.user });
 });
-app.get('/profile/:position/:gender/:community/:minage/:maxage', function (req, res) {
+app.get('/profile/:position/:gender/:community/:age', function (req, res) {
     //res.render('profile', { user : req.user,
     //  position:req.params.position });
     console.log(req.params.position);
     console.log(req.params.gender);
     console.log(req.params.community);
-    console.log(req.params.minage);
-    console.log(req.params.maxage);
-     res.render('profile', { user : req.user,
+    console.log(req.params.age);
+    res.render('profile', { user : req.user,
       position:req.params.position,
       gender:req.params.gender,
       community:req.params.community,
-      minage:req.params.minage,
-      maxage:req.params.maxage });
+      age:req.params.age });
 });
 app.get('/profile_list', function (req, res) {
 
@@ -565,6 +563,50 @@ app.get( '/v1/profile/info/:id', function( request, response ) {
             else
               profile_array =  vendorinfo ;
             return response.send(profile_array);
+        } else {
+            console.log( err );
+            return response.send('ERROR');
+        }
+    });
+});
+app.get( '/v1/profile/info/:id/:gender/:community/:minage/:maxage', function( request, response ) {
+    console.log('/v1/profile/info');
+    console.log(request.params.id);
+     console.log(request.params.gender);
+     console.log(request.params.community);
+     console.log(request.params.minage);
+     console.log(request.params.maxage);
+  return VendorInfoModel.find({ 'username':request.params.id},
+      function( err, vendorinfo ) {
+        if( !err ) {
+             console.log("no error");
+             var profile_array ;
+              var ret_profile_array = [];
+            if(vendorinfo.length > 0)
+            {
+              profile_array = vendorinfo[0].profiles;
+             console.log('test 1');
+             
+              for (var j = 0; j < profile_array.length; j++) {
+                
+                if((profile_array[j].gender == request.params.gender 
+                  || request.params.gender == 'all') &&
+                  (profile_array[j].community == request.params.community ||
+                   request.params.community == 'all') &&
+                   (profile_array[j].age >= request.params.minage && 
+                    profile_array[j].age <= request.params.maxage)) 
+                {
+                  
+                  ret_profile_array.push(profile_array[j])
+                }
+              }
+            }
+            else
+            {
+              ret_profile_array =  vendorinfo ;
+            }
+
+            return response.send(ret_profile_array);
         } else {
             console.log( err );
             return response.send('ERROR');

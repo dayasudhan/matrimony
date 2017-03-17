@@ -5,48 +5,95 @@ app = angular.module("vendorModule", []);
   		 $scope.total2 = 123;
        $scope.minage = 18;
        $scope.maxage = 100;
+
        $scope.gender_select = '';
-       $scope.community = 'all';
-        $scope.communitys = [ {name: 'Bramin'}, {name: 'Lingayath'}, {name: 'Other'}];
-        $scope.genders = [ {name: 'Bride'}, {name: 'BrideGroom'}, {name: 'all'}];
-       $scope.inputDevice = [{
-          value: '1',
-          label: 'input1'
-        }, {
-          value: '2',
-          label: 'input2'
-        }];
-        $scope.selectedDevice = '';
+
+       $scope.cast_select = 'all';
+       $scope.communitys = [ {name: 'Brahmin'}, {name: 'Lingayath'}, {name: 'all'}];
+       $scope.genders = [ {name: 'Bride'}, {name: 'Bridegroom'}, {name: 'all'}];
+       $scope.ages = [ {name: '18-22'}, {name: '22-25'},{name: '25-28'},
+        {name: '28-30'},{name: '30-32'},{name: '33-35'},{name: '35 and above'},
+         {name: 'all'}];
+
   	  $scope.getProfile = function (param,param_position,param_gender,
-        param_community,param_minage,param_maxage) {
+        param_community,param_age) {
+      $scope.username = param;
       console.log("getprofile"); 
       console.log(param_position);
       console.log(param_gender);
-      console.log(param_community);
-      console.log(param_minage);
-      console.log(param_maxage);
       $scope.position = param_position;
+      $scope.age_select = param_age;
+      console.log($scope.minage);
+      console.log($scope.maxage);
+    //  updateSelectAge();
+
+      var selectedGender = 'Male';
+      if(param_gender == 'Bride')
+      {
+          selectedGender = "Female";
+      }
+      else if(param_gender == 'Bridegroom')
+      {
+          selectedGender = "Male"; 
+      }
+      else
+      {
+        selectedGender = "all"; 
+      }
+
+        if($scope.age_select == '18-22')
+        {
+          $scope.minage = 18;
+          $scope.maxage = 22;
+        }
+        else if($scope.age_select == '22-25')
+        {
+          $scope.minage = 22;
+          $scope.maxage = 25;
+        }
+        else if($scope.age_select == '25-28')
+        {
+          $scope.minage = 25;
+          $scope.maxage = 28;
+        }
+        else if($scope.age_select == '28-30')
+        {
+          $scope.minage = 28;
+          $scope.maxage = 30;
+        }
+        else if($scope.age_select == '30-32')
+        {
+          $scope.minage = 30;
+          $scope.maxage = 32;
+        }
+        else if($scope.age_select == '33-35')
+        {
+          $scope.minage = 33;
+          $scope.maxage = 35;
+        }
+        else if($scope.age_select == '35 and above')
+        {
+          $scope.minage = 35;
+          $scope.maxage = 100;
+        }
+        else
+        {
+          $scope.minage = 18;
+          $scope.maxage = 100;
+        }
+
+      $timeout(function() {
+        $scope.gender_select = param_gender;
+        $scope.cast_select = param_community;
+        $scope.age_select = param_age;
+      }, 0);
+      console.log($scope.minage);
+      console.log($scope.maxage);
       
-       $timeout(function() {
-      $scope.selectedDevice = '2';
-      $scope.gender_select = param_gender;
-      $scope.cast_select = param_community;
-    }, 0);
-      console.log($scope.selectedDevice);
-   //  console.log(param_gender); 
-      // if(param_community == 'all')
-      // {
-      //   console.log(param_community);
-      // }
-      // else
-      // {
-      //    console.log(param_community);
-      //   $scope.community = param_community;
-      // }
-      // $scope.community = param_community;
-      // $scope.gender_select = param_gender;
+
       var url = "/v1/profile/info/";
-      url = url + param;
+      url = url + param + '/' + selectedGender + '/' + param_community + '/' 
+      +$scope.minage+'/'+$scope.maxage ;
       $http.get(url)
         .success(function (data, status, headers, config)
         {
@@ -93,8 +140,8 @@ app = angular.module("vendorModule", []);
       console.log($scope.position);
       $scope.profile = $scope. profilelist[$scope.position];
       var url = "/profile/";
-      url = url + $scope.position +'/' + $scope.gender_select+'/'+$scope.community;
-      url = url + '/' + $scope.minage +'/' +  $scope.maxage;
+      url = url + $scope.position +'/' + $scope.gender_select+'/'+$scope.cast_select;
+      url = url + '/' + $scope.age_select;
       console.log(url);
       // $scope.cast_select.name
       // $scope.gender_select
@@ -103,97 +150,133 @@ app = angular.module("vendorModule", []);
     
   };
      
-      $scope.updateSelectCast = function() {
-        
-        console.log($scope.cast_select.name);
-        $scope.community = $scope.cast_select.name;
-
-      }
-      $scope.updateSelectGender = function() {
-        console.log($scope.gender_select);
-        var index, len;
-        var selectedGender = 'Male';
-        var arr = [];
-        if($scope.gender_select == 'Bride')
+      $scope.updateSelectAge = function(param) {
+        console.log('updateSelectAge');
+        if(param == 0)
         {
-          console.log('inside the if');
-          selectedGender = "Female";
-        }
-
-        for (index = 0, len = $scope.completeprofilelist.length; index < len; index++) {
-
-          console.log($scope.completeprofilelist[index].gender);
-          console.log(selectedGender);
-          if($scope.completeprofilelist[index].gender == selectedGender && 
-            ($scope.completeprofilelist[index].age>=$scope.minage && $scope.completeprofilelist[index].age < $scope.maxage ))
-          {
-            var obj = $scope.completeprofilelist[index];
-            arr.push(obj);
-          }
-        }
-        console.log(arr)
-        $scope.profilelist = arr;
-      }
-      $scope.updateSelectAge = function() {
-        console.log($scope.age_select)
-        if($scope.age_select == '18-22')
-        {
-          $scope.minage = 18;
-          $scope.maxage = 22;
-          console.log($scope.minage);
-          console.log($scope.maxage);
-        }
-        else if($scope.age_select == '22-25')
-        {
-          $scope.minage = 22;
-          $scope.maxage = 25;
-          console.log($scope.minage);
-          console.log($scope.maxage);
-        }
-        else if($scope.age_select == '25-28')
-        {
-          $scope.minage = 25;
-          $scope.maxage = 28;
-          console.log($scope.minage);
-          console.log($scope.maxage);
-        }
-        else if($scope.age_select == '28-30')
-        {
-          $scope.minage = 28;
-          $scope.maxage = 30;
-          console.log($scope.minage);
-          console.log($scope.maxage);
-        }
-        else if($scope.age_select == '30-32')
-        {
-          $scope.minage = 30;
-          $scope.maxage = 32;
-          console.log($scope.minage);
-          console.log($scope.maxage);
-        }
-        else if($scope.age_select == '33-35')
-        {
-          $scope.minage = 33;
-          $scope.maxage = 35;
-          console.log($scope.minage);
-          console.log($scope.maxage);
-        }
-        else if($scope.age_select == '35 and above')
-        {
-          $scope.minage = 35;
-          $scope.maxage = 100;
-          console.log($scope.minage);
-          console.log($scope.maxage);
+          $scope.position = 0;
         }
         else
         {
-          $scope.minage = 18;
-          $scope.maxage = 100;
-          console.log($scope.minage);
-          console.log($scope.maxage);
+          $scope.position = 0;
         }
-
+        console.log($scope.age_select)
+        $scope.getProfile($scope.username,$scope.position,$scope.gender_select,$scope.cast_select,$scope.age_select);
+      };
+      $scope.updateSelectCast = function(param) {
+        console.log('updateSelectCast');
+        if(param  == 0)
+        {
+          $scope.position = 0;
+        }
+        else
+        {
+          $scope.position = 0;
+        }
+        console.log($scope.cast_select);
+        $scope.getProfile($scope.username,$scope.position,$scope.gender_select,
+          $scope.cast_select,$scope.age_select);
       }
+      $scope.updateSelectGender = function(param) {
+        console.log('updateSelectGender');
+        if(param  == 0)
+        {
+          $scope.position = 0;
+        }
+        else
+        {
+          $scope.position = 0;
+        }
+         console.log($scope.gender_select);
+        $scope.getProfile($scope.username,$scope.position,$scope.gender_select,$scope.cast_select,$scope.age_select);
+      };
+      // $scope.updateSelectGender2 = function() {
+      //   console.log($scope.gender_select);
+      //   var index, len;
+      //   var selectedGender = 'Male';
+      //   var arr = [];
+      //   if($scope.gender_select == 'Bride')
+      //   {
+      //     console.log('inside the if');
+      //     selectedGender = "Female";
+      //   }
+
+      //   for (index = 0, len = $scope.completeprofilelist.length; index < len; index++) {
+
+      //     console.log($scope.completeprofilelist[index].gender);
+      //     console.log(selectedGender);
+      //     if($scope.completeprofilelist[index].gender == selectedGender && 
+      //       ($scope.completeprofilelist[index].age>=$scope.minage && $scope.completeprofilelist[index].age < $scope.maxage ))
+      //     {
+      //       var obj = $scope.completeprofilelist[index];
+      //       arr.push(obj);
+      //     }
+      //   }
+      //   console.log(arr)
+      //   $scope.profilelist = arr;
+      // }
+
+
+      // $scope.calculateAge = function() {
+
+      //   if($scope.age_select == '18-22')
+      //   {
+      //     $scope.minage = 18;
+      //     $scope.maxage = 22;
+      //     console.log($scope.minage);
+      //     console.log($scope.maxage);
+      //   }
+      //   else if($scope.age_select == '22-25')
+      //   {
+      //     $scope.minage = 22;
+      //     $scope.maxage = 25;
+      //     console.log($scope.minage);
+      //     console.log($scope.maxage);
+      //   }
+      //   else if($scope.age_select == '25-28')
+      //   {
+      //     $scope.minage = 25;
+      //     $scope.maxage = 28;
+      //     console.log($scope.minage);
+      //     console.log($scope.maxage);
+      //   }
+      //   else if($scope.age_select == '28-30')
+      //   {
+      //     $scope.minage = 28;
+      //     $scope.maxage = 30;
+      //     console.log($scope.minage);
+      //     console.log($scope.maxage);
+      //   }
+      //   else if($scope.age_select == '30-32')
+      //   {
+      //     $scope.minage = 30;
+      //     $scope.maxage = 32;
+      //     console.log($scope.minage);
+      //     console.log($scope.maxage);
+      //   }
+      //   else if($scope.age_select == '33-35')
+      //   {
+      //     $scope.minage = 33;
+      //     $scope.maxage = 35;
+      //     console.log($scope.minage);
+      //     console.log($scope.maxage);
+      //   }
+      //   else if($scope.age_select == '35 and above')
+      //   {
+      //     $scope.minage = 35;
+      //     $scope.maxage = 100;
+      //     console.log($scope.minage);
+      //     console.log($scope.maxage);
+      //   }
+      //   else
+      //   {
+      //     $scope.minage = 18;
+      //     $scope.maxage = 100;
+      //     console.log($scope.minage);
+      //     console.log($scope.maxage);
+      //   }
+
+      // }
 
 
 });
@@ -202,30 +285,30 @@ app = angular.module("vendorModule", []);
   app.controller("DetailsController", function ($scope, $http, jsonFilter)
   {
 
-      // $scope.name ="";
-      // $scope.phone = 9797998789;
-      // $scope.email = "dd@d.com";
-      // $scope.gender= "Male";
-      // $scope.occupation="Software Engineer";
-      // $scope.education="Engineering";
-      // $scope.cast="Brahmin";
-      // $scope.summary="I am software engineer";
-      // $scope.fathername="Rajesh";
-      // $scope.mothername="Kalpana";
-      // $scope.hotelAddress1 = "addres1",
-      // $scope.hotelLandmark = "landmark", 
-      // $scope.city= "vvpura", 
+      $scope.name ="";
+      $scope.phone = 9797998789;
+      $scope.email = "dd@d.com";
+      $scope.gender= "Male";
+      $scope.occupation="Software Engineer";
+      $scope.education="Engineering";
+      $scope.cast="Brahmin";
+      $scope.summary="I am software engineer";
+      $scope.fathername="Rajesh";
+      $scope.mothername="Kalpana";
+      $scope.hotelAddress1 = "addres1",
+      $scope.hotelLandmark = "landmark", 
+      $scope.city= "vvpura", 
 
 
-      //   $scope.fatheroccupation = "farmer",
-      //   $scope.motheroccupation = "farmer",
-      //   $scope.mothertongue  = "kannada";
-      //   $scope.income = 100000;
-      //   $scope.gothra= "kannada" ;
-      //   $scope.rashi= "kannada";
-      //   $scope.height= "kannada";
-      //   $scope.weight= "kannada";
-      //   $scope.origin= "kannada";
+        $scope.fatheroccupation = "farmer",
+        $scope.motheroccupation = "farmer",
+        $scope.mothertongue  = "kannada";
+        $scope.income = 100000;
+        $scope.gothra= "kannada" ;
+        $scope.rashi= "kannada";
+        $scope.height= "kannada";
+        $scope.weight= "kannada";
+        $scope.origin= "kannada";
 
 
       // $scope.name ="";
