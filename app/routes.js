@@ -971,19 +971,19 @@ console.log(url2);
            });    
  });
 
-var nodemailer = require("nodemailer");
+//var nodemailer = require("nodemailer");
 
 var TO_ADDRESS = 'dayasudhankg@gmail.com';
 var FROM_ADDRESS = 'kuruvatechnologies@gmail.com';
 
 // create reusable transport method (opens pool of SMTP connections)
-var smtpTransport = nodemailer.createTransport("SMTP",{
-    service: 'Gmail',
-    auth: {
-        user: 'kuruvatechnologies@gmail.com',
-        pass: 'jayammafromsidlipura'
-    }
-});
+// var smtpTransport = nodemailer.createTransport("SMTP",{
+//     service: 'Gmail',
+//     auth: {
+//         user: 'kuruvatechnologies@gmail.com',
+//         pass: 'jayammafromsidlipura'
+//     }
+// });
 // var sendMail = function(toAddress, subject, content, next){
 //   var mailOptions = {
 //     from: "SENDERS NAME <" + FROM_ADDRESS + ">",
@@ -997,32 +997,32 @@ var smtpTransport = nodemailer.createTransport("SMTP",{
 // };
 app.get( '/v1/email/:path', function( req, res ) {
   console.log("Email sending");
-var path = req.params.path;
-path = 'https://s3.amazonaws.com/madhuve/test3/profile1486566499745.jpg'
-var image_html = '<!DOCTYPE html>\
-                  <html>\
-                  <body>\
-                 <img src="' + path + '"/>\
-                  </body>\
-                  </html>';
+// var path = req.params.path;
+// path = 'https://s3.amazonaws.com/madhuve/test3/profile1486566499745.jpg'
+// var image_html = '<!DOCTYPE html>\
+//                   <html>\
+//                   <body>\
+//                  <img src="' + path + '"/>\
+//                   </body>\
+//                   </html>';
 
-  var mailOptions = {
-    from: "Matrimony <" + FROM_ADDRESS + ">",
-    to: TO_ADDRESS,
-    replyTo: FROM_ADDRESS,
-    subject: 'subject',
-    html: image_html
-  };
+//   var mailOptions = {
+//     from: "Matrimony <" + FROM_ADDRESS + ">",
+//     to: TO_ADDRESS,
+//     replyTo: FROM_ADDRESS,
+//     subject: 'subject',
+//     html: image_html
+//   };
 
-smtpTransport.sendMail(mailOptions,function(err, response){
-        if(err){
-          console.log('ERROR!');
-          console.log(err);
-          return res.send('ERROR');
-        }
-        console.log('Email sent!');
-        res.send("Email sent!");
-      });
+// smtpTransport.sendMail(mailOptions,function(err, response){
+//         if(err){
+//           console.log('ERROR!');
+//           console.log(err);
+//           return res.send('ERROR');
+//         }
+//         console.log('Email sent!');
+//         res.send("Email sent!");
+//       });
 
 });
 

@@ -27,8 +27,7 @@
     "html-convert":"*",
     "picture-tube":"*",
     "aws-sdk": "*",
-    "s3-upload-stream":"*",
-    "nodemailer":"*"
+    "s3-upload-stream":"*"
 
   }
 }
