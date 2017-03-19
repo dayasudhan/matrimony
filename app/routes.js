@@ -205,6 +205,33 @@ app.post('/login', function(req, res, next) {
     });
   })(req, res, next);
 });
+app.post('/v1/m/login', function(req, res, next) {
+    console.log('post /v1/m/login');
+     console.log(req.body);
+  passport.authenticate('local-login', function(err, user, info) {
+   
+    if (err) {console.log('post /v1/m/login  1');return next(err); }
+    if (!user) {
+        console.log('post /v1/m/login  2');
+        return res.send("0"); 
+    }
+    req.logIn(user, function(err) {
+        console.log('post /v1/m/login  3');
+      if (err) {
+      console.log('post /v1/m/login 4'); 
+      
+
+        return next(err); }
+       console.log("store the uniqui id") 
+      // storeVendoruniqueId(req,res,function(req,res){
+      //      console.log("storeVendoruniqueId success");
+           
+      //   });
+      return res.send("1");
+    });
+    console.log('post /v1/m/login 5');
+  })(req, res, next);
+});
 
 app.post('/signup', function(req, res, next) {
 console.log(req.body);
