@@ -9,6 +9,20 @@ app = angular.module("vendorModule", []);
        $scope.gender_select = '';
 
        $scope.cast_select = 'all';
+       $scope.stars = [{name:'Ashwini'},{name:'Bharani'},
+                       {name:'Kritika'},{name:'Rohini'},
+                       {name:'Mrigashirsa'},{name:'Ardra'},
+                       {name:'Punarvasu'},{name:'Pushya'},
+                       {name:'Ashlesha'},{name:'Magha'},
+                       {name:'Poorvaphalguni'},{name:'Uttaraphalguni'},
+                       {name:'Hasta'}, {name:'Chitra'},      
+                       {name:'Swati'},{name:'Vishakha'},
+                       {name:'Anuradha'},{name:'Jyeshta'},
+                       {name:'Moola'},{name:'Poorvashada'},
+                       {name:'Uttarashadha'},{name:'Sravana'},
+                       {name:'Dhanishtha'},{name:'Satabisha'},
+                       {name:'Poorvabhadrapada'}, {name:'Uttarabhadrapada'},
+                       {name:'Revati'}  ];
        $scope.communitys = [ {name: 'Brahmin'}, {name: 'Lingayath'}, {name: 'all'}];
        $scope.genders = [ {name: 'Bride'}, {name: 'Bridegroom'}, {name: 'all'}];
        $scope.ages = [ {name: '18-22'}, {name: '22-25'},{name: '25-28'},
@@ -190,95 +204,7 @@ app = angular.module("vendorModule", []);
          console.log($scope.gender_select);
         $scope.getProfile($scope.username,$scope.position,$scope.gender_select,$scope.cast_select,$scope.age_select);
       };
-      // $scope.updateSelectGender2 = function() {
-      //   console.log($scope.gender_select);
-      //   var index, len;
-      //   var selectedGender = 'Male';
-      //   var arr = [];
-      //   if($scope.gender_select == 'Bride')
-      //   {
-      //     console.log('inside the if');
-      //     selectedGender = "Female";
-      //   }
-
-      //   for (index = 0, len = $scope.completeprofilelist.length; index < len; index++) {
-
-      //     console.log($scope.completeprofilelist[index].gender);
-      //     console.log(selectedGender);
-      //     if($scope.completeprofilelist[index].gender == selectedGender && 
-      //       ($scope.completeprofilelist[index].age>=$scope.minage && $scope.completeprofilelist[index].age < $scope.maxage ))
-      //     {
-      //       var obj = $scope.completeprofilelist[index];
-      //       arr.push(obj);
-      //     }
-      //   }
-      //   console.log(arr)
-      //   $scope.profilelist = arr;
-      // }
-
-
-      // $scope.calculateAge = function() {
-
-      //   if($scope.age_select == '18-22')
-      //   {
-      //     $scope.minage = 18;
-      //     $scope.maxage = 22;
-      //     console.log($scope.minage);
-      //     console.log($scope.maxage);
-      //   }
-      //   else if($scope.age_select == '22-25')
-      //   {
-      //     $scope.minage = 22;
-      //     $scope.maxage = 25;
-      //     console.log($scope.minage);
-      //     console.log($scope.maxage);
-      //   }
-      //   else if($scope.age_select == '25-28')
-      //   {
-      //     $scope.minage = 25;
-      //     $scope.maxage = 28;
-      //     console.log($scope.minage);
-      //     console.log($scope.maxage);
-      //   }
-      //   else if($scope.age_select == '28-30')
-      //   {
-      //     $scope.minage = 28;
-      //     $scope.maxage = 30;
-      //     console.log($scope.minage);
-      //     console.log($scope.maxage);
-      //   }
-      //   else if($scope.age_select == '30-32')
-      //   {
-      //     $scope.minage = 30;
-      //     $scope.maxage = 32;
-      //     console.log($scope.minage);
-      //     console.log($scope.maxage);
-      //   }
-      //   else if($scope.age_select == '33-35')
-      //   {
-      //     $scope.minage = 33;
-      //     $scope.maxage = 35;
-      //     console.log($scope.minage);
-      //     console.log($scope.maxage);
-      //   }
-      //   else if($scope.age_select == '35 and above')
-      //   {
-      //     $scope.minage = 35;
-      //     $scope.maxage = 100;
-      //     console.log($scope.minage);
-      //     console.log($scope.maxage);
-      //   }
-      //   else
-      //   {
-      //     $scope.minage = 18;
-      //     $scope.maxage = 100;
-      //     console.log($scope.minage);
-      //     console.log($scope.maxage);
-      //   }
-
-      // }
-
-
+    
 });
 
   
@@ -299,6 +225,21 @@ app = angular.module("vendorModule", []);
       $scope.hotelLandmark = "landmark", 
       $scope.city= "vvpura", 
 
+
+$scope.stars = [{name:'Ashwini'},{name:'Bharani'},
+                       {name:'Kritika'},{name:'Rohini'},
+                       {name:'Mrigashirsa'},{name:'Ardra'},
+                       {name:'Punarvasu'},{name:'Pushya'},
+                       {name:'Ashlesha'},{name:'Magha'},
+                       {name:'Poorvaphalguni'},{name:'Uttaraphalguni'},
+                       {name:'Hasta'}, {name:'Chitra'},      
+                       {name:'Swati'},{name:'Vishakha'},
+                       {name:'Anuradha'},{name:'Jyeshta'},
+                       {name:'Moola'},{name:'Poorvashada'},
+                       {name:'Uttarashadha'},{name:'Sravana'},
+                       {name:'Dhanishtha'},{name:'Satabisha'},
+                       {name:'Poorvabhadrapada'}, {name:'Uttarabhadrapada'},
+                       {name:'Revati'}  ];
 
         $scope.fatheroccupation = "farmer",
         $scope.motheroccupation = "farmer",
@@ -396,49 +337,6 @@ console.log(url);
     };
 
 
-    $scope.addCommunity = function (param) {
-      console.log("addCommunity");
-      var url4 = "/v1/vendor/update/community/";
-      url4 = url4 + param;
-      var postData={community:$scope.community};
-
-      $http.post(url4,postData)
-        .success(function (data, status, headers, config)
-        {
-           console.log("success add");
-           console.log(data);
-        })
-        .error(function (data, status, headers, config)
-        {
-           getMenuList(param);
-          console.log("errod on add");
-          console.log(status);
-          console.log(data);
-        });
-         $scope.getMenuList(param);
-    };
-
-    $scope.addMotherTongue = function (param) {
-      console.log("addCommunity");
-      var url4 = "/v1/vendor/update/mothertongue/";
-      url4 = url4 + param;
-      var postData={mothertongue:$scope.mothertongue};
-
-      $http.post(url4,postData)
-        .success(function (data, status, headers, config)
-        {
-           console.log("success add");
-           console.log(data);
-        })
-        .error(function (data, status, headers, config)
-        {
-           getMenuList(param);
-          console.log("errod on add");
-          console.log(status);
-          console.log(data);
-        });
-         $scope.getMenuList(param);
-    };
 /////////////////////////////////////////
 
       $scope.addLogo = function (param,files) {
@@ -541,6 +439,100 @@ console.log(url);
         });
       }
     };
+
+
+    $scope.getVendorDetails = function (param) {
+      console.log("getVendorDetails");
+      var url4 = "/v1/profile/info2/";
+      url4 = url4 + param;
+ 
+      $http.get(url4)
+        .success(function (data, status, headers, config)
+        {
+           console.log("success add"); 
+           console.log(data);
+           $scope.mtList =  data[0].mothertongue;
+           $scope.communityList = data[0].community;
+           console.log($scope.mtList);
+          console.log($scope.communityList);
+        })
+        .error(function (data, status, headers, config)
+        {
+          
+          console.log("errod on add");
+          console.log(status);
+          console.log(data);
+        });
+         
+    };
+
   });
 
+ app.controller("VendorController", function ($scope, $http, jsonFilter)
+  {
+    $scope.addCommunity = function (param) {
+      console.log("addCommunity");
+      var url4 = "/v1/vendor/update/community/";
+      url4 = url4 + param;
+      var postData={community:$scope.community};
 
+      $http.post(url4,postData)
+        .success(function (data, status, headers, config)
+        {
+           console.log("success add");
+           console.log(data);
+        })
+        .error(function (data, status, headers, config)
+        {
+          console.log("errod on add");
+          console.log(status);
+          console.log(data);
+        });
+         $scope.getVendorDetails(param);
+    };
+
+    $scope.addMotherTongue = function (param) {
+      console.log("addCommunity");
+      var url4 = "/v1/vendor/update/mothertongue/";
+      url4 = url4 + param;
+      var postData={mothertongue:$scope.mothertongue};
+
+      $http.post(url4,postData)
+        .success(function (data, status, headers, config)
+        {
+           console.log("success add");
+           console.log(data);
+        })
+        .error(function (data, status, headers, config)
+        {
+          console.log("errod on add");
+          console.log(status);
+          console.log(data);
+        });
+         $scope.getVendorDetails(param);
+    };
+    $scope.getVendorDetails = function (param) {
+      console.log("getVendorDetails");
+      var url4 = "/v1/profile/info2/";
+      url4 = url4 + param;
+ 
+      $http.get(url4)
+        .success(function (data, status, headers, config)
+        {
+           console.log("success add"); 
+           console.log(data);
+           $scope.mtList =  data[0].mothertongue;
+           $scope.communityList = data[0].community;
+           console.log($scope.mtList);
+          console.log($scope.communityList);
+        })
+        .error(function (data, status, headers, config)
+        {
+          
+          console.log("errod on add");
+          console.log(status);
+          console.log(data);
+        });
+         
+    };
+});

@@ -33,7 +33,7 @@
   <body class="hold-transition skin-blue sidebar-mini" ng-app="vendorModule">
     <div class="wrapper"  ng-controller="DetailsController">
 
-      <header class="main-header"   >
+      <header class="main-header" data-ng-init="getVendorDetails('<%= user.local.email %>')"  >
         <!-- Logo -->
         <a href="../../index2.html" class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
@@ -141,7 +141,7 @@
             <li class="header">LABELS</li>
             <li><a href="/profile_list"><i class="fa fa-circle-o text-red"></i> <span>Profiles</span></a></li>
             <li><a href="/add_profile"><i class="fa fa-circle-o text-yellow"></i> <span>Add New Profile</span></a></li>
-            <li><a href="/profile/0"><i class="fa fa-circle-o text-aqua"></i> <span>Profile Detail</span></a></li>
+            <li><a href="/profile/0/all/all/all"><i class="fa fa-circle-o text-aqua"></i> <span>Profile Detail</span></a></li>
             <li><a href="/aboutme"><i class="fa fa-circle-o text-aqua"></i> <span>aboutme</span></a></li>
         
           </ul>
@@ -215,10 +215,8 @@
                       <label for="inputEmail3"  class="col-sm-2 control-label">Cast</label>
                       <div class="col-sm-10">
                           <select class="form-control select2" style="width: 100%;" ng-model = "cast" required>
-                            <option>Vishwa Karma</option>
-                            <option>Brahmin</option>
-                            <option>Lingayath</option>
-                            <option>Other</option>
+                            <option ng-repeat="i in communityList" value="{{ i.name }}" ng-selelected="{{ cast == i.name }}">{{ i.name }}</option>
+
                           </select>
                       </div>
                     </div>
@@ -237,10 +235,14 @@
                     </div>
 
                     <div class="form-group">
-                      <label for="inputEmail3"  class="col-sm-2 control-label">Mother tongue</label>
+                         <label for="inputEmail3"  class="col-sm-2 control-label">Mother tongue</label>
                       <div class="col-sm-10">
-                        <input type="text" class="form-control"  name="Name"   ng-model = "mothertongue" required>
+                          <select class="form-control select2" style="width: 100%;" ng-model = "mothertongue" required>
+                            <option ng-repeat="i in mtList" value="{{ i.name }}" ng-selelected="{{ mothertongue == i.name }}">{{ i.name }}</option>
+
+                          </select>
                       </div>
+
                     </div>
                    
                     <div class="form-group">
@@ -263,8 +265,11 @@
                     </div>
                     <div class="form-group">
                       <label for="inputEmail3"  class="col-sm-2 control-label">Star</label>
-                      <div class="col-sm-10">
-                        <input type="text" class="form-control"  name="Name"   ng-model = "star" required>
+                       <div class="col-sm-10">
+                          <select class="form-control select2" style="width: 100%;" ng-model = "star" required>
+                            <option ng-repeat="i in stars" value="{{ i.name }}" ng-selelected="{{ star == i.name }}">{{ i.name }}</option>
+
+                          </select>
                       </div>
                     </div>
                     <div class="form-group">
