@@ -9,12 +9,8 @@ var VendorInfoSchema = new mongoose.Schema({
     uniqueid:String,
     isOpen:Number,
     phone:Number,
-    settings:{
-        gender:String,
-        community:String,
-        minage:Number,
-        maxage:Number
-    },
+    community:[{name:String}],
+    mothertongue:[{name:String}],
     address:{addressLine1:String,
         addressLine2:String,
         street:String, 

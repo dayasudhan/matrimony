@@ -155,6 +155,9 @@ app.get('/admin_signup', function(req, res) {
 app.get('/aboutme', function(req, res) {
     res.render('aboutme', { user : req.user });
 });
+app.get('/admin_add_details', function(req, res) {
+    res.render('admin_add_details', { user : req.user });
+});
 app.get('/add_profile', function (req, res) {
     res.render('add_profile', { user : req.user });
 });
@@ -271,7 +274,7 @@ console.log(req.body);
         var redirect_url;
         if(req.body.role == 'vendor') 
         {
-          redirect_url = '/aboutme';
+          redirect_url = '/admin_add_details';
           registerVendor(req, res, next);
           return res.redirect(redirect_url);
         }
@@ -576,6 +579,23 @@ app.get( '/v1/profile/info/:id', function( request, response ) {
         }
     });
 });
+
+app.get( '/v1/profile/info2/:id', function( request, response ) {
+    console.log('/v1/profile/info');
+    console.log(request.params.id);
+     
+  return VendorInfoModel.find({ 'username':request.params.id},
+      function( err, profile_array ) {
+        if( !err ) {
+            
+            return response.send(profile_array);
+        } else {
+            console.log( err );
+            return response.send('ERROR');
+        }
+    });
+});
+
 app.get( '/v1/profile/info/:id/:gender/:community/:minage/:maxage', function( request, response ) {
     console.log('/v1/profile/info');
     console.log(request.params.id);
@@ -972,8 +992,8 @@ var params = {Bucket: bucketName, Key: keyName, Body: 'Hello World devraj!'};
     // console.log('The URL is', url);
      });
 
-app.post( '/v1/vendor/update/:id', upload2.single('file'), function( req, res ) {
-  console.log('/v1/vendor/update/:id');
+app.post( '/v1/admin/update/:id', upload2.single('file'), function( req, res ) {
+  console.log('/v1/admin/update/:id');
 var url2 = req.file.location;
 var receivedData =  JSON.parse(req.body.data);
 console.log(url2);
@@ -992,6 +1012,40 @@ console.log(url2);
             return res.send('created');;
         } else {
     console.log( 'updated isopen error' );     
+               console.log( err );     
+               return res.send('ERROR');     
+           }    
+           });    
+ });
+app.post( '/v1/vendor/update/community/:id',  function( req, res ) {
+  console.log('/v1/vendor/update/community/:id');
+  console.log(req.body);
+  VendorInfoModel.update({ 'username':req.params.id},
+     { $addToSet: {'community': {$each:[{name: req.body.community}] }}},
+       function( err ) {
+        if( !err ) {
+            console.log( 'updated community' );
+           
+            return res.send('Successfully');;
+        } else {
+    console.log( 'updated community error' );     
+               console.log( err );     
+               return res.send('ERROR');     
+           }    
+           });    
+ });
+
+app.post( '/v1/vendor/update/mothertongue/:id',  function( req, res ) {
+  console.log('/v1/vendor/update/mothertongue/:id');
+  VendorInfoModel.update({ 'username':req.params.id},
+     { $addToSet: {'mothertongue': {$each:[{name: req.body.mothertongue}] }}},
+       function( err ) {
+        if( !err ) {
+            console.log( 'updated mothertongue' );
+           
+            return res.send('Successfully');;
+        } else {
+    console.log( 'updated mothertongue error' );     
                console.log( err );     
                return res.send('ERROR');     
            }    

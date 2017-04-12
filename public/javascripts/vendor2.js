@@ -361,7 +361,7 @@ app = angular.module("vendorModule", []);
        fd.append("file",  $scope.files[0]);
 
 
-      var url = "/v1/vendor/update/";
+      var url = "/v1/admin/update/";
       url = url + param;
       console.log($scope.vendorname);
       console.log($scope.vendorphone);
@@ -393,6 +393,51 @@ console.log(url);
            $scope.filePresent = false;
         });
       }
+    };
+
+
+    $scope.addCommunity = function (param) {
+      console.log("addCommunity");
+      var url4 = "/v1/vendor/update/community/";
+      url4 = url4 + param;
+      var postData={community:$scope.community};
+
+      $http.post(url4,postData)
+        .success(function (data, status, headers, config)
+        {
+           console.log("success add");
+           console.log(data);
+        })
+        .error(function (data, status, headers, config)
+        {
+           getMenuList(param);
+          console.log("errod on add");
+          console.log(status);
+          console.log(data);
+        });
+         $scope.getMenuList(param);
+    };
+
+    $scope.addMotherTongue = function (param) {
+      console.log("addCommunity");
+      var url4 = "/v1/vendor/update/mothertongue/";
+      url4 = url4 + param;
+      var postData={mothertongue:$scope.mothertongue};
+
+      $http.post(url4,postData)
+        .success(function (data, status, headers, config)
+        {
+           console.log("success add");
+           console.log(data);
+        })
+        .error(function (data, status, headers, config)
+        {
+           getMenuList(param);
+          console.log("errod on add");
+          console.log(status);
+          console.log(data);
+        });
+         $scope.getMenuList(param);
     };
 /////////////////////////////////////////
 
