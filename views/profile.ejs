@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>AdminLTE 2 | Data Tables</title>
+    <title>Matrimony</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.5 -->
@@ -167,7 +167,7 @@
                                             <form>
                                                 <div class="form-group">
                                                  <select ng-model="cast_select" ng-change="updateSelectCast(1)">
-                                                      <option ng-repeat="i in " value="{{ i.name }}" ng-selelected="{{ cast_select == i.name }}">{{ i.name }}</option>
+                                                      <option ng-repeat="i in communitys" value="{{ i.name }}" ng-selelected="{{ cast_select == i.name }}">{{ i.name }}</option>
     </select>                                                 
                                                 </div>
                                             </form>
@@ -205,7 +205,9 @@
                   <p class="text-muted text-center">{{profile.age}}</p>
                       
                   <button type="submit" class="btn btn-info pull-right" ng-click= "nextProfile()">Next</button>
-<button type="submit" class="btn btn-info pull-left" ng-click= "previousProfile()">Previous</button>
+                  
+
+                  <button type="submit" class="btn btn-info pull-left" ng-click= "previousProfile()">Previous</button>
 
                   
                 </div><!-- /.box-body -->
@@ -366,6 +368,7 @@
                    
                   </p>
                   <hr>
+                  <button type="submit" class="btn btn-info pull-middle" ng-click= "deleteProfile(profile.id)">Delete This Profile</button>
                 </div><!-- /.box-body -->
               </div><!-- /.box -->
 
@@ -376,7 +379,7 @@
               </div><!-- /.nav-tabs-custom -->
             </div><!-- /.col -->
     
-          </div><!-- /.tab-pane -->
+          </div><!-- /.tab-pane --> 
         </div>
       </aside><!-- /.control-sidebar -->
       <!-- Add the sidebar's background. This div must be placed

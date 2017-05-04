@@ -25,9 +25,8 @@ app = angular.module("vendorModule", []);
                        {name:'Revati'}  ];
        $scope.communitys = [ {name: 'Brahmin'}, {name: 'Lingayath'}, {name: 'all'}];
        $scope.genders = [ {name: 'Bride'}, {name: 'Bridegroom'}, {name: 'all'}];
-       $scope.ages = [ {name: '18-22'}, {name: '22-25'},{name: '25-28'},
-        {name: '28-30'},{name: '30-32'},{name: '33-35'},{name: '35 and above'},
-         {name: 'all'}];
+       $scope.ages = [{name: 'all'}, {name: '18-22'}, {name: '22-25'},{name: '25-28'},
+        {name: '28-30'},{name: '30-32'},{name: '33-35'},{name: '35 and above'}];
 
   	  $scope.getProfile = function (param,param_position,param_gender,
         param_community,param_age) {
@@ -105,14 +104,17 @@ app = angular.module("vendorModule", []);
       console.log($scope.maxage);
       
 
-      var url = "/v1/profile/info/";
+      var url = "/v1/profile/info2/";
       url = url + param + '/' + selectedGender + '/' + param_community + '/' 
       +$scope.minage+'/'+$scope.maxage ;
+      console.log(url);
       $http.get(url)
         .success(function (data, status, headers, config)
         {
-          $scope.completeprofilelist = data;
-    
+          $scope.completeprofilelist = data[0].profiles;
+          $scope.communitys = data[0].community;
+          var cast_all = {name:'all'};
+          $scope.communitys.unshift(cast_all);
           $scope.profilelist = $scope.completeprofilelist;
           console.log($scope.profilelist);
           
@@ -144,6 +146,23 @@ app = angular.module("vendorModule", []);
      console.log($scope.position);
       $scope.profile = $scope.profilelist[$scope.position];
     }
+  };
+  $scope.deleteProfile = function (param) {
+      console.log("deleteprofile");
+      console.log(param);
+      var url = '/v1/profile/';
+      url = url +$scope.username + '/' + param;
+      $http.delete(url)
+            .success(function (data, status, headers, config) {
+                console.log("success delete");
+                console.log(data);
+              $scope.getProfile($scope.username,$scope.position,'all','all','all');
+            })
+            .error(function (data, status, headers, config) {
+                console.log("errod on delete");
+                console.log(status);
+                console.log(data);
+            });
   };
   $scope.viewProfile = function (param) {
       console.log("previousProfile");
@@ -211,19 +230,19 @@ app = angular.module("vendorModule", []);
   app.controller("DetailsController", function ($scope, $http, jsonFilter)
   {
 
-      $scope.name ="";
-      $scope.phone = 9797998789;
-      $scope.email = "dd@d.com";
-      $scope.gender= "Male";
-      $scope.occupation="Software Engineer";
-      $scope.education="Engineering";
-      $scope.cast="Brahmin";
-      $scope.summary="I am software engineer";
-      $scope.fathername="Rajesh";
-      $scope.mothername="Kalpana";
-      $scope.hotelAddress1 = "addres1",
-      $scope.hotelLandmark = "landmark", 
-      $scope.city= "vvpura", 
+      // $scope.name ="";
+      // $scope.phone = 9797998789;
+      // $scope.email = "dd@d.com";
+      // $scope.gender= "Male";
+      // $scope.occupation="Software Engineer";
+      // $scope.education="Engineering";
+      // $scope.cast="Brahmin";
+      // $scope.summary="I am software engineer";
+      // $scope.fathername="Rajesh";
+      // $scope.mothername="Kalpana";
+      // $scope.hotelAddress1 = "addres1",
+      // $scope.hotelLandmark = "landmark", 
+      // $scope.city= "vvpura", 
 
 
 $scope.stars = [{name:'Ashwini'},{name:'Bharani'},
@@ -241,15 +260,15 @@ $scope.stars = [{name:'Ashwini'},{name:'Bharani'},
                        {name:'Poorvabhadrapada'}, {name:'Uttarabhadrapada'},
                        {name:'Revati'}  ];
 
-        $scope.fatheroccupation = "farmer",
-        $scope.motheroccupation = "farmer",
-        $scope.mothertongue  = "kannada";
-        $scope.income = 100000;
-        $scope.gothra= "kannada" ;
-        $scope.rashi= "kannada";
-        $scope.height= "kannada";
-        $scope.weight= "kannada";
-        $scope.origin= "kannada";
+        // $scope.fatheroccupation = "farmer",
+        // $scope.motheroccupation = "farmer",
+        // $scope.mothertongue  = "kannada";
+        // $scope.income = 100000;
+        // $scope.gothra= "kannada" ;
+        // $scope.rashi= "kannada";
+        // $scope.height= "kannada";
+        // $scope.weight= "kannada";
+        // $scope.origin= "kannada";
 
 
       // $scope.name ="";
@@ -290,7 +309,7 @@ $scope.stars = [{name:'Ashwini'},{name:'Bharani'},
       console.log("addDetails 1");
      if(!$scope.files)
      {
-       $window.alert("Image Empty");
+       alert("Image Empty");
      }
      else
      {
@@ -355,25 +374,160 @@ console.log(url);
        console.log(param);
          
     };
+ $scope.phonenumber = function (inputtxt) {
+        console.log("phonenumber 1 ", inputtxt);
+        //console.log($scope.selected[address.label]);
+        var phoneno = /(?:\s+|)((0|(?:(\+|)91))(?:\s|-)*(?:(?:\d(?:\s|-)*\d{9})|(?:\d{2}(?:\s|-)*\d{8})|(?:\d{3}(?:\s|-)*\d{7}))|\d{10})(?:\s+|)/;
+        if (phoneno.test(inputtxt)) {
+            return true;
+        } else {
 
+            return false;
+        }
+    }
+    function hasWhiteSpace(s) {
+        return s.indexOf(' ') >= 0;
+    }
+    $scope.emailid = function (inputtxt) {
+        console.log("email 1 ", inputtxt);
+        //console.log($scope.selected[address.label]);
+        var mailid = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;;
+        if (mailid.test(inputtxt)) {
+            return true;
+        } else {
+
+            return false;
+        }
+    }
+
+    function dataURItoBlob(dataURI) {
+        // convert base64/URLEncoded data component to raw binary data held in a string
+        var byteString;
+        if (dataURI.split(',')[0].indexOf('base64') >= 0)
+            byteString = atob(dataURI.split(',')[1]);
+        else
+            byteString = unescape(dataURI.split(',')[1]);
+
+        // separate out the mime component
+        var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+        // write the bytes of the string to a typed array
+        var ia = new Uint8Array(byteString.length);
+        for (var i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+        }
+
+        return new Blob([ia], {type: 'image/jpeg'});
+    }
+
+    function resizeAndUpload(file,param,postData) {
+    
+    var reader = new FileReader();
+    reader.onloadend = function() {
+ 
+    var tempImg = new Image();
+    tempImg.src = reader.result;
+    tempImg.onload = function() {
+ 
+        var MAX_WIDTH = 960;
+        var MAX_HEIGHT = 960;
+        var tempW = tempImg.width;
+        var tempH = tempImg.height;
+        if (tempW > tempH) {
+            if (tempW > MAX_WIDTH) {
+               tempH *= MAX_WIDTH / tempW;
+               tempW = MAX_WIDTH;
+            }
+        } else {
+            if (tempH > MAX_HEIGHT) {
+               tempW *= MAX_HEIGHT / tempH;
+               tempH = MAX_HEIGHT;
+            }
+        }
+ 
+        var canvas = document.createElement('canvas');
+        canvas.width = tempW;
+        canvas.height = tempH;
+        var ctx = canvas.getContext("2d");
+        ctx.drawImage(this, 0, 0, tempW, tempH);
+        var dataURL = canvas.toDataURL("image/jpeg");
+
+        var url = "/v1/profile2/";
+        url = url + param;
+        var fd = new FormData();
+
+        var blob = dataURItoBlob(dataURL);
+      //  var base64 = dataURL.split('base64,')[1];
+       // var parseFile = new Parse.File(name, { base64: base64 });
+
+        fd.append("file",  blob , "thumb.jpg");
+
+        fd.append("data", JSON.stringify(postData));
+        $http.post(url,fd, {
+          withCredentials: true,
+          headers: {'Content-Type': undefined , 'enctype': 'multipart/form-data' },
+          transformRequest: angular.identity
+        }).success(function (data, status, headers, config)
+        {
+            console.log("addDetails success");
+            alert("addDetails success");
+            $scope.filePresent = false;
+        })
+        .error(function (data, status, headers, config)
+        {
+          console.log("addDetails error");
+           alert("addDetails error");
+           $scope.filePresent = false;
+        });
+      }
+ 
+   }
+   reader.readAsDataURL(file);
+}
       $scope.addDetails = function (param) {
       console.log("addDetails 1");
-     if(!$scope.files)
+
+      if ($scope.name == "" || $scope.name == null) {
+         alert("Name Empty");
+      } else if ($scope.phone == "" || $scope.phone == null ) {
+          alert("Phone Number Empty");
+      } else if (!$scope.phonenumber($scope.phone)) {
+          alert("Invalid Phone Number");
+      }
+      else if ($scope.occupation == "" || $scope.occupation == null) {
+         alert("Occupation Empty");
+      }
+      else if ($scope.education == "" || $scope.education == null) {
+         alert("Education Empty");
+      }
+      else if ($scope.dob == "" || $scope.dob == null) {
+         alert("Date of Birth Empty");
+      }
+      else if ($scope.cast == "" || $scope.cast == null) {
+         alert("Cast Empty");
+      } 
+      else if ($scope.mothertongue == "" || $scope.mothertongue == null) {
+         alert("Mothertongue Empty");
+      } 
+      else if ($scope.height == "" || $scope.height == null) {
+         alert("Height Empty");
+      }
+      else if(!$scope.files)
      {
-       $window.alert("Image Empty");
-     }
+      console.log("addDetails 1");
+       alert("Profile Photo Empty..Please add photo ");
+     }  
      else
      {
+      console.log("addDetails 1");
        var fd = new FormData();
        console.log( $scope.files[0]);
       
     // //Take the first selected file
     
-       fd.append("file",  $scope.files[0]);
+     
 
-
-      var url = "/v1/profile2/";
-      url = url + param;
+     
       console.log($scope.name);
       console.log($scope.phone);
       console.log($scope.email);
@@ -416,27 +570,33 @@ console.log(url);
         weight:$scope.weight,
         origin:$scope.origin,
         dob:$scope.dob,
-        age:calcage
+        age:calcage,
+        vendorlogo:$scope.vendorlogo
        };
-       fd.append("data", JSON.stringify(postData));
-console.log(url);
-      $http.post(url,fd, {
-        withCredentials: true,
-        headers: {'Content-Type': undefined , 'enctype': 'multipart/form-data' },
-        transformRequest: angular.identity
-    }).success(function (data, status, headers, config)
-        {
-            console.log("addDetails success");
-            alert("addDetails success");
-            $scope.filePresent = false;
 
-        })
-        .error(function (data, status, headers, config)
-        {
-          console.log("addDetails error");
-           alert("addDetails error");
-           $scope.filePresent = false;
-        });
+       fd.append("file",  $scope.files[0]);
+
+       fd.append("data", JSON.stringify(postData));
+       var url = "/v1/profile2/";
+       url = url + param;
+       resizeAndUpload($scope.files[0],param,postData);
+console.log(url);
+    //   $http.post(url,fd, {
+    //     withCredentials: true,
+    //     headers: {'Content-Type': undefined , 'enctype': 'multipart/form-data' },
+    //     transformRequest: angular.identity
+    // }).success(function (data, status, headers, config)
+    //     {
+    //         console.log("addDetails success");
+    //         alert("addDetails success");
+    //         $scope.filePresent = false;
+    //     })
+    //     .error(function (data, status, headers, config)
+    //     {
+    //       console.log("addDetails error");
+    //        alert("addDetails error");
+    //        $scope.filePresent = false;
+    //     });
       }
     };
 
@@ -453,19 +613,17 @@ console.log(url);
            console.log(data);
            $scope.mtList =  data[0].mothertongue;
            $scope.communityList = data[0].community;
+           $scope.vendorlogo = data[0].logo;
            console.log($scope.mtList);
           console.log($scope.communityList);
         })
         .error(function (data, status, headers, config)
-        {
-          
+        {          
           console.log("errod on add");
           console.log(status);
           console.log(data);
         });
-         
     };
-
   });
 
  app.controller("VendorController", function ($scope, $http, jsonFilter)

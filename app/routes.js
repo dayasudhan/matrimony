@@ -640,6 +640,53 @@ app.get( '/v1/profile/info/:id/:gender/:community/:minage/:maxage', function( re
         }
     });
 });
+
+
+app.get( '/v1/profile/info2/:id/:gender/:community/:minage/:maxage', function( request, response ) {
+    console.log('/v1/profile/info2');
+    console.log(request.params.id);
+     console.log(request.params.gender);
+     console.log(request.params.community);
+     console.log(request.params.minage);
+     console.log(request.params.maxage);
+  return VendorInfoModel.find({ 'username':request.params.id},
+      function( err, vendorinfo ) {
+        if( !err ) {
+             console.log("no error");
+             var profile_array ;
+              var ret_profile_array = [];
+            if(vendorinfo.length > 0)
+            {
+              profile_array = vendorinfo[0].profiles;
+             console.log('test 1');
+             
+              for (var j = 0; j < profile_array.length; j++) {
+                
+                if((profile_array[j].gender == request.params.gender 
+                  || request.params.gender == 'all') &&
+                  (profile_array[j].community == request.params.community ||
+                   request.params.community == 'all') &&
+                   (profile_array[j].age >= request.params.minage && 
+                    profile_array[j].age <= request.params.maxage)) 
+                {
+                  
+                  ret_profile_array.push(profile_array[j])
+                }
+              }
+              vendorinfo[0].profiles = ret_profile_array;
+            }
+            // else
+            // {
+            //   ret_profile_array =  vendorinfo ;
+            // }
+
+            return response.send(vendorinfo);
+        } else {
+            console.log( err );
+            return response.send('ERROR');
+        }
+    });
+});
 app.post( '/v1/admin/counters/:id', function( request, response ) {
     console.log("post /v1/admin/counters");
   //   if(checkVendorApiAunthaticated(request,0) == false)
@@ -744,7 +791,8 @@ app.post( '/v1/profile/pdf/:id', function( request, response ) {
     console.log(order_id);
     console.log(path);
       console.log("post /v1/profile/image");
-var logopath = "https://madhuve.s3.amazonaws.com/test3/logo1486565810761.png";
+var logopath = receivedData.vendorlogo;
+console.log(logopath);
 // var input = 'public/images/logo/';
 // input  = input + path;
    
