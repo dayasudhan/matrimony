@@ -148,7 +148,10 @@ app = angular.module("vendorModule", []);
     }
   };
   $scope.deleteProfile = function (param) {
-      console.log("deleteprofile");
+    var retVal = confirm("Do you want to Delete this profile?");
+               if( retVal == true ){
+                  
+                  console.log("deleteprofile");
       console.log(param);
       var url = '/v1/profile/';
       url = url +$scope.username + '/' + param;
@@ -163,6 +166,10 @@ app = angular.module("vendorModule", []);
                 console.log(status);
                 console.log(data);
             });
+                  return true;
+               }
+               
+      
   };
   $scope.viewProfile = function (param) {
       console.log("previousProfile");
