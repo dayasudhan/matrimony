@@ -561,10 +561,12 @@ console.log(url);
       console.log($scope.summary);
       console.log($scope.fathername);
       console.log($scope.mothername);
+      var indiandob = formatDate($scope.dob); 
+      console.log(indiandob);
     var ageDifMs = Date.now() - $scope.dob.getTime();
     var ageDate = new Date(ageDifMs); // miliseconds from epoch
     var calcage  = Math.abs(ageDate.getUTCFullYear() - 1970);
-    var indiandob = formatDate($scope.dob); 
+    
     console.log('age->',calcage);
       var postData={name:$scope.name, 
         Address1:$scope.hotelAddress1,
