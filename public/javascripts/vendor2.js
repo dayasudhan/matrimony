@@ -491,9 +491,25 @@ console.log(url);
    }
    reader.readAsDataURL(file);
 }
+      function formatDate(date) {
+        var monthNames = [
+          "Jan", "Feb", "Mar",
+          "Apr", "May", "June", "July",
+          "Aug", "Sep", "Oct",
+          "Nov", "Dec"
+        ];
+        var day = date.getDate();
+        var monthIndex = date.getMonth();
+        var year = date.getFullYear();
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        return day + '-' + monthNames[monthIndex] + '-' + year + ' '
+        + hours + ':' + minutes ; 
+      }
+
       $scope.addDetails = function (param) {
       console.log("addDetails 1");
-
+//console.log(formatDate($scope.dob));
       if ($scope.name == "" || $scope.name == null) {
          alert("Name Empty");
       } else if ($scope.phone == "" || $scope.phone == null ) {
@@ -548,7 +564,7 @@ console.log(url);
     var ageDifMs = Date.now() - $scope.dob.getTime();
     var ageDate = new Date(ageDifMs); // miliseconds from epoch
     var calcage  = Math.abs(ageDate.getUTCFullYear() - 1970);
-
+    var indiandob = formatDate($scope.dob); 
     console.log('age->',calcage);
       var postData={name:$scope.name, 
         Address1:$scope.hotelAddress1,
@@ -576,7 +592,7 @@ console.log(url);
         height:$scope.height,
         weight:$scope.weight,
         origin:$scope.origin,
-        dob:$scope.dob,
+        dob:indiandob,
         age:calcage,
         vendorlogo:$scope.vendorlogo
        };
