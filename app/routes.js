@@ -229,7 +229,7 @@ app.post('/v1/m/login', function(req, res, next) {
       // storeVendoruniqueId(req,res,function(req,res){
       //      console.log("storeVendoruniqueId success");
            
-      //   });
+      //   }); 
       return res.send("1");
     });
     console.log('post /v1/m/login 5');
@@ -238,13 +238,12 @@ app.post('/v1/m/login', function(req, res, next) {
 
 app.post('/signup', function(req, res, next) {
 console.log(req.body);
-  // if(req.body.adminpassword != "devknvl")
-  // {
+  if(req.body.adminpassword != "devknvl")
+  {
      
-  //     console.log("password mimatchmatch");
-  //    return res.send('ERROR');
-  // }
-  // else 
+      console.log("Admin password mimatchmatch");
+     return res.send('Admin Not Aunthiticated');
+  }
   if(req.body.password != req.body.password2)
   {
      
@@ -268,21 +267,24 @@ console.log(req.body);
               } 
               return res.redirect(redirect_url); 
        }
-      req.logIn(user, function(err) {
-        if (err) { return next(err); }
-        console.log(req.body.role);
-        var redirect_url;
-        if(req.body.role == 'vendor') 
-        {
-          redirect_url = '/admin_add_details';
-          registerVendor(req, res, next);
-          return res.redirect(redirect_url);
-        }
-        else
-        {
-          return res.redirect(redirect_url);
-        }
-      });
+       else
+       {
+        req.logIn(user, function(err) {
+          if (err) { return next(err); }
+          console.log(req.body.role);
+          var redirect_url;
+          if(req.body.role == 'vendor') 
+          {
+            redirect_url = '/admin_add_details';
+            registerVendor(req, res, next);
+            return res.redirect(redirect_url);
+          }
+          else
+          {
+            return res.redirect(redirect_url);
+          }
+        });
+    }
     })(req, res, next);
 });
 
@@ -520,6 +522,7 @@ console.log(url2);
             origin:receivedData.origin,
             dob:receivedData.dob,
             age:receivedData.age,
+            otherDetails:receivedData.otherDetails,
             logo:url2,
             profileLogo:profile_url,
             address:{

@@ -34,6 +34,7 @@ var VendorInfoSchema = new mongoose.Schema({
                 profileLogo:String,
                 origin:String,
                 summary:String,
+                otherDetails:String,
                 interests:String,
                 mothertongue:String,
                 income:Number,

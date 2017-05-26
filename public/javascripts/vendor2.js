@@ -580,6 +580,7 @@ console.log(url);
         occupation:$scope.occupation,
         education:$scope.education,
         summary:$scope.summary,
+        otherDetails:$scope.otherDetails,
         gender:$scope.gender,
         cast:$scope.cast,
         fathername:$scope.fathername,
