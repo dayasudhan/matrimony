@@ -54,7 +54,24 @@ var VendorInfoSchema = new mongoose.Schema({
                     city:String, 
                     zip:String, 
                     latitude:Number,
-                    longitude:Number }
+                    longitude:Number },
+                maritalstatus:String,
+                complexion:String,
+                state:String,
+                native:String,
+                castdetails:String,
+                padha:String,
+                lagna:String,
+                gothradetails:String,
+                homegod:String,
+                religionotherdetails:String,
+                educationdetails:String,
+                occupationdetails:String,
+                joblocation:String,
+                brotherdetails:String,
+                sisterdetails:String,
+                birthplace:String
+     
                 }]
     });
 

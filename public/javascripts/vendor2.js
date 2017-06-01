@@ -238,7 +238,12 @@ app = angular.module("vendorModule", []);
       // $scope.hotelLandmark = "landmark", 
       // $scope.city= "vvpura", 
 
-
+$scope.rashilist = [{name:'Mesha(Aries)'},{name:'Vrushabha(Taurus)'},
+                       {name:'Mithuna(Gemini)'},{name:'Kataka(Cancer)'},
+                       {name:'Simha(Leo)'},{name:'Kanya(Virgo)'},
+                       {name:'Thula(Libra)'},{name:'Vrushchika(Scorpio)'},
+                       {name:'Dhanur(Sagittarius)'},{name:'Makara(Capricorn)'},
+                       {name:'Kumba(Aquarius)'},{name:'Meena(Pisces)'}];
 $scope.stars = [{name:'Ashwini'},{name:'Bharani'},
                        {name:'Kritika'},{name:'Rohini'},
                        {name:'Mrigashirsa'},{name:'Ardra'},
@@ -254,86 +259,30 @@ $scope.stars = [{name:'Ashwini'},{name:'Bharani'},
                        {name:'Poorvabhadrapada'}, {name:'Uttarabhadrapada'},
                        {name:'Revati'}  ];
 
-$scope.education_list = [{name:'Aeronautical engineering'},
-                      {name:'B.Arch'},
-                      {name:'B.C.A'},
-                      {name:'B.E'},
-                      {name:'B.Plan'},
-                      {name:'B.Sc IT /Computer Science'},
-                      {name:'B.Tech'},
-                      {name:'B.A'},
-                      {name:'B.Com'},
-                      {name:'B.Ed'},
-                      {name:'B.F.A'},
-                      {name:'B.F.T'},
-                      {name:'B.L.I.S'},
-                      {name:'B.M.M'},
-                      {name:'B.Sc'},
-                      {name:'B.S.W'},
-                      {name:'B.Phil'},
-                      {name:'B.B.A'},
-                      {name:'B.F.M(Financial Management)'},
-                      {name:'B.H.M(Hotel Management)'},
-                      {name:'Bachelor degree(Others)'},
-                      {name:'B.D.S'},
-                      {name:'B.H.M.S'},
-                      {name:'B.S.M.S'},
-                      {name:'B.Pharm'},
-                      {name:'B.P.T'},
-                      {name:'B.U.M.S'},
-                      {name:'B.V.Sc'},
-                      {name:'B.Sc Nursing'},
-                      {name:'B.G.L'},
-                      {name:'B.L'},
-                      {name:'B.A.M.S'},
-                      {name:'C.A'},
-                      {name:'C.F.A(chartered Financial Analyst)'},
-                      {name:'C.S'},
-                      {name:'Higher secondary School'},
-                      {name:'S.S.L.C/10th'},
-                      {name:'P.U.C/12th'},
-                      {name:'I.T.I'},
-                      {name:'ICWA'},
-                      {name:'IAS'},
-                      {name:'IPS'},
-                      {name:'IES'},
-                      {name:'IFS'},
-                      {name:'IRS'},
-                      {name:'KAS'},
-                      {name:'Other Degree in Services'},
-                      {name:'M.C.A'},
-                      {name:'M.Sc IT /Computer Science'},
-                      {name:'M.S(Engineering)'},
-                      {name:'M.Tech'},
-                      {name:'P.G.D.C.A'},
-                      {name:'M.A'},
-                      {name:'M.Com'},
-                      {name:'M.Ed'},
-                      {name:'M.F.A'},
-                      {name:'M.LIS'},
-                      {name:'M.Sc'},
-                      {name:'M.S.W'},
-                      {name:'M.Phil'},
-                      {name:'M.B.A'},
-                      {name:'M.F.M(Financial Management)'},
-                      {name:'M.H.M(Hotel Management)'},
-                      {name:'M.H.R.M(Human Resource Management)'},
-                      {name:'P.G.D.M'},
-                      {name:'M.B.B.S'},
-                      {name:'M.D.S'},
-                      {name:'M.D/M.S(Medical)'},
-                      {name:'M.Pharm'},
-                      {name:'M.P.T'},
-                      {name:'M.V.Sc'},
-                      {name:'Masters degree(Others)'},
-                      {name:'L.L.B'},
-                      {name:'L.L.M'},
-                      {name:'M.L'},
-                      {name:'P.H.D'},
-                      {name:'Diploma'},
-                      {name:'polyytechnic'},
-                      {name:'Trade Schools'},
-                      {name:'Others'}];        // $scope.fatheroccupation = "farmer",
+$scope.education_list = [{name:'Aeronautical engineering'},{name:'B.Arch'},
+                      {name:'B.C.A'},{name:'B.E'},{name:'B.Plan'},{name:'B.Sc IT /Computer Science'},
+                      {name:'B.Tech'},{name:'B.A'},{name:'B.Com'},{name:'B.Ed'},
+                      {name:'B.F.A'},{name:'B.F.T'},{name:'B.L.I.S'},{name:'B.M.M'},
+                      {name:'B.Sc'},{name:'B.S.W'},{name:'B.Phil'},{name:'B.B.A'},
+                      {name:'B.F.M(Financial Management)'},{name:'B.H.M(Hotel Management)'},
+                      {name:'Bachelor degree(Others)'},{name:'B.D.S'},{name:'B.H.M.S'},{name:'B.S.M.S'},
+                      {name:'B.Pharm'},{name:'B.P.T'},{name:'B.U.M.S'},{name:'B.V.Sc'},
+                      {name:'B.Sc Nursing'},{name:'B.G.L'},{name:'B.L'},{name:'B.A.M.S'},
+                      {name:'C.A'},{name:'C.F.A(chartered Financial Analyst)'},
+                      {name:'C.S'},{name:'Higher secondary School'},
+                      {name:'S.S.L.C/10th'},{name:'P.U.C/12th'},
+                      {name:'I.T.I'},{name:'ICWA'},{name:'IAS'},{name:'IPS'},
+                      {name:'IES'},{name:'IFS'},{name:'IRS'},{name:'KAS'},
+                      {name:'Other Degree in Services'},{name:'M.C.A'},
+                      {name:'M.Sc IT /Computer Science'},{name:'M.S(Engineering)'},
+                      {name:'M.Tech'}, {name:'P.G.D.C.A'},{name:'M.A'}, {name:'M.Com'},
+                      {name:'M.Ed'},{name:'M.F.A'},{name:'M.LIS'},{name:'M.Sc'},
+                      {name:'M.S.W'},{name:'M.Phil'},{name:'M.B.A'},{name:'M.F.M(Financial Management)'},
+                      {name:'M.H.M(Hotel Management)'},{name:'M.H.R.M(Human Resource Management)'},
+                      {name:'P.G.D.M'},{name:'M.B.B.S'},{name:'M.D.S'},{name:'M.D/M.S(Medical)'},
+                      {name:'M.Pharm'},{name:'M.P.T'},{name:'M.V.Sc'},{name:'Masters degree(Others)'},
+                      {name:'L.L.B'},{name:'L.L.M'},{name:'M.L'},{name:'P.H.D'},
+                      {name:'Diploma'},{name:'polyytechnic'},{name:'Trade Schools'},{name:'Others'}];        // $scope.fatheroccupation = "farmer",
         // $scope.motheroccupation = "farmer",
         // $scope.mothertongue  = "kannada";
         // $scope.income = 100000;
@@ -575,7 +524,35 @@ console.log(url);
 
       $scope.addDetails = function (param) {
       console.log("addDetails 1");
-//console.log(formatDate($scope.dob));
+
+      console.log($scope.name);
+      console.log($scope.phone);
+      console.log($scope.email);
+      console.log($scope.gender);
+      console.log($scope.occupation);
+      console.log($scope.education);
+      console.log($scope.cast);
+      console.log($scope.summary);
+      console.log($scope.fathername);
+      console.log($scope.mothername);
+      console.log($scope.maritalstatus);
+      console.log($scope.complexion);
+      console.log($scope.state);
+      console.log($scope.native);
+      console.log($scope.castdetails);
+      console.log($scope.padha);
+      console.log($scope.lagna);
+      console.log($scope.gothradetails);
+      console.log($scope.homegod);
+      console.log($scope.religionotherdetails);
+      console.log($scope.educationdetails);
+      console.log($scope.occupationdetails);
+      console.log($scope.joblocation);
+      console.log($scope.brotherdetails);
+      console.log($scope.sisterdetails);
+      console.log($scope.birthplace);
+ 
+
       if ($scope.name == "" || $scope.name == null) {
          alert("Name Empty");
       } else if ($scope.phone == "" || $scope.phone == null ) {
@@ -601,32 +578,19 @@ console.log(url);
       else if ($scope.height == "" || $scope.height == null) {
          alert("Height Empty");
       }
-      else if(!$scope.files)
-     {
-      console.log("addDetails 1");
-       alert("Profile Photo Empty..Please add photo ");
-     }  
+     //  else if(!$scope.files)
+     // {
+     //  console.log("addDetails 1");
+     //   alert("Profile Photo Empty..Please add photo ");
+     // }  
      else
      {
       console.log("addDetails 1");
        var fd = new FormData();
-       console.log( $scope.files[0]);
+     //  console.log( $scope.files[0]);
       
-    // //Take the first selected file
-    
-     
-
-     
-      console.log($scope.name);
-      console.log($scope.phone);
-      console.log($scope.email);
-      console.log($scope.gender);
-      console.log($scope.occupation);
-      console.log($scope.education);
-      console.log($scope.cast);
-      console.log($scope.summary);
-      console.log($scope.fathername);
-      console.log($scope.mothername);
+  
+      
       var indiandob = formatDate($scope.dob); 
       console.log(indiandob);
     var ageDifMs = Date.now() - $scope.dob.getTime();
@@ -660,10 +624,26 @@ console.log(url);
         rashi:$scope.rashi,
         height:$scope.height,
         weight:$scope.weight,
-        origin:$scope.origin,
+        origin:$scope.native,
         dob:indiandob,
         age:calcage,
-        vendorlogo:$scope.vendorlogo
+        vendorlogo:$scope.vendorlogo,
+        maritalstatus:$scope.maritalstatus,
+        complexion:$scope.complexion,
+        state:$scope.state,
+        native:$scope.native,
+        castdetails:$scope.castdetails,
+        padha:$scope.padha,
+        lagna:$scope.lagna,
+        gothradetails:$scope.gothradetails,
+        homegod:$scope.homegod,
+        religionotherdetails:$scope.religionotherdetails,
+        educationdetails:$scope.educationdetails,
+        occupationdetails:$scope.occupationdetails,
+        joblocation:$scope.joblocation,
+        brotherdetails:$scope.brotherdetails,
+        sisterdetails:$scope.sisterdetails,
+        birthplace:$scope.birthplace
        };
 
        fd.append("file",  $scope.files[0]);
@@ -672,7 +652,7 @@ console.log(url);
        var url = "/v1/profile2/";
        url = url + param;
        resizeAndUpload($scope.files[0],param,postData);
-console.log(url);
+       console.log(url);
     //   $http.post(url,fd, {
     //     withCredentials: true,
     //     headers: {'Content-Type': undefined , 'enctype': 'multipart/form-data' },

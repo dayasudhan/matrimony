@@ -420,7 +420,7 @@ app.post( '/v1/profile/:id', function( request, response ) {
   var res = getNextSequence('profile',function(data) {
     var order_id = "M1" ;
     order_id = order_id + "P";
-    order_id = order_id + data.sequence;
+     order_id = order_id + data.sequence;
     console.log(order_id);
     var indiantime = new Date();
     indiantime.setHours(indiantime.getHours() + 5);
@@ -532,7 +532,24 @@ console.log(url2);
              LandMark:receivedData.Landmark, 
              areaName:receivedData.Areaname,
              city:receivedData.city 
-            }
+            },
+            maritalstatus:receivedData.maritalstatus,
+            complexion:receivedData.complexion,
+            state:receivedData.state,
+            native:receivedData.native,
+            castdetails:receivedData.castdetails,
+            padha:receivedData.padha,
+            lagna:receivedData.lagna,
+            gothradetails:receivedData.gothradetails,
+            homegod:receivedData.homegod,
+            religionotherdetails:receivedData.religionotherdetails,
+            educationdetails:receivedData.educationdetails,
+            occupationdetails:receivedData.occupationdetails,
+            joblocation:receivedData.joblocation,
+            brotherdetails:receivedData.brotherdetails,
+            sisterdetails:receivedData.sisterdetails,
+            birthplace:receivedData.birthplace
+          
           }], }}},
        function( err, order ) {
        if( !err ) {

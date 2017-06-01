@@ -186,11 +186,11 @@
                     <div class="form-group">
                       <label for="inputEmail3"  class="col-sm-2 control-label">Name *</label>
                       <div class="col-sm-4">
-                        <input type="text" class="form-control"  name="Name"  placeholder={{hotelName}} ng-model = "name" required>
+                        <input type="text" class="form-control"  name="Name"   ng-model = "name" required>
                       </div>
                        <label for="inputEmail3"  class="col-sm-2 control-label">Gender *</label>
                       <div class="col-sm-4">
-                          <select class="form-control select2" style="width: 100%;" ng-model = "gender" value="Male" required>
+                          <select class="form-control select2" style="width: 100%;" ng-model = "gender" ng-init="gender = 'Male'">
                             <option ng-selected="true">Male</option>
                             <option>Female</option>
 
@@ -204,7 +204,7 @@
                       </div>
                       <label for="inputEmail3"  class="col-sm-2 control-label">Birth Place</label>
                       <div class="col-sm-4">
-                        <input type="text" class="form-control"  name="Birth Place"  placeholder={{birthplace}} ng-model = "birthplace" required>
+                        <input type="text" class="form-control"  name="Birth Place"   ng-model = "birthplace" required>
                       </div>
                     </div>
                     <div class="form-group">
@@ -225,6 +225,10 @@
                             <option ng-repeat="i in mtList" value="{{ i.name }}" ng-selelected="{{ mothertongue == i.name }}">{{ i.name }}</option>
 
                           </select>
+                      </div>
+                       <label for="exampleInputFile" class="col-sm-2 control-label">Photo *</label>
+                      <div class="col-sm-4">
+                        <input type="file" name="file" id="logoinputfile" onchange="angular.element(this).scope().addLogo('<%= user.local.email %>',this.files)">
                       </div>
                   </div>
                   </form>
@@ -247,7 +251,7 @@
                     <div class="form-group">
                     <label for="inputEmail3"  class="col-sm-2 control-label">Marital Status</label>
                       <div class="col-sm-4">
-                           <select class="form-control select2" style="width: 100%;"  ng-model = "maritalstatus" >
+                           <select class="form-control select2" style="width: 100%;"  ng-model = "maritalstatus" ng-init="maritalstatus = 'Unmarried'">
                             <option ng-selected="true" value="Unmarried">Unmarried </option>
                             <option value='Divorced'> Divorced </option>
                             <option value='Widowed'>Widowed </option>
@@ -278,7 +282,7 @@
                       </div>
                       <div class="form-group">
                       
-                      <label for="inputEmail3"  class="col-sm-2 control-label">Address</label>
+                      <label for="inputEmail3"  class="col-sm-2 control-label">Address *</label>
                       <div class="col-sm-4">
                         <textarea class="form-control" rows="3" placeholder="Enter ..." ng-model = "hotelAddress1"></textarea>
                       </div>
@@ -292,7 +296,7 @@
                     <div class="form-group">
                       <label for="inputEmail3"  class="col-sm-2 control-label">State</label>
                       <div class="col-sm-4">
-                      <select class="form-control select2" style="width: 100%;" ng-model = "state" >
+                      <select class="form-control select2" style="width: 100%;" ng-model = "state" ng-init="state = 'Karnataka'" >
                             <option value='Andhra Pradesh'>Andhra Pradesh</option>
                             <option value='Arunachal Pradesh'>Arunachal Pradesh</option>
                             <option value='Assam'>Assam</option>
@@ -326,7 +330,7 @@
                     </div>
                       <label for="inputEmail3"  class="col-sm-2 control-label">Native</label>
                       <div class="col-sm-4">
-                        <input type="text" class="form-control"     ng-model = "email" value="test@test.com" >
+                        <input type="text" class="form-control"     ng-model = "native" value="test@test.com" >
                       </div>
                     </div>
                   </form>
@@ -342,7 +346,7 @@
                   <form class="form-horizontal" >
                   <div class="box-body">
                     <div class="form-group">
-                      <label for="inputEmail3"  class="col-sm-2 control-label">Cast</label>
+                      <label for="inputEmail3"  class="col-sm-2 control-label">Cast *</label>
                       <div class="col-sm-4">
                           <select class="form-control select2" style="width: 100%;" ng-model = "cast" required>
                             <option ng-repeat="i in communityList" value="{{ i.name }}" ng-selelected="{{ cast == i.name }}">{{ i.name }}</option>
@@ -350,7 +354,7 @@
                       </div>
                       <label for="inputEmail3"  class="col-sm-2 control-label">Cast Details/Sub Cast</label>
                       <div class="col-sm-4">
-                        <input type="text" class="form-control"     ng-model = "email" value="test@test.com" >
+                        <input type="text" class="form-control"     ng-model = "castdetails"  >
                       </div>
                     </div>
                     <div class="form-group">
@@ -361,20 +365,24 @@
 
                           </select>
                       </div>
-                      <label for="inputEmail3"  class="col-sm-2 control-label">Pada</label>
+                      <label for="inputEmail3"  class="col-sm-2 control-label">Padha</label>
                       <div class="col-sm-4">
-                        <input type="text" class="form-control"     ng-model = "email" value="test@test.com" >
+                        <input type="text" class="form-control"     ng-model = "padha" value="test@test.com" >
                       </div>
                     </div>
 
                     <div class="form-group">
                      <label for="inputEmail3"  class="col-sm-2 control-label">Rashi</label>
                       <div class="col-sm-4">
-                        <input type="text" class="form-control"  name="Name"   ng-model = "rashi" >
+                        <select class="form-control select2" style="width: 100%;" ng-model = "rashi" required>
+                            <option ng-repeat="i in rashilist" value="{{ i.name }}" ng-selelected="{{ rashi == i.name }}">{{ i.name }}</option>
+                          </select>
                       </div>
                       <label for="inputEmail3"  class="col-sm-2 control-label">Lagna</label>
                       <div class="col-sm-4">
-                        <input type="text" class="form-control"  name="Name"   ng-model = "rashi" >
+                        <select class="form-control select2" style="width: 100%;" ng-model = "lagna" required>
+                            <option ng-repeat="i in rashilist" value="{{ i.name }}" ng-selelected="{{ lagna == i.name }}">{{ i.name }}</option>
+                          </select>
                       </div>
                     </div>
                     <div class="form-group">
@@ -382,19 +390,19 @@
                       <div class="col-sm-4">
                         <input type="text" class="form-control"  name="Name"   ng-model = "gothra" >
                       </div>
-                      <label for="inputEmail3"  class="col-sm-2 control-label">Other Details</label>
+                      <label for="inputEmail3"  class="col-sm-2 control-label">Gothra Details</label>
                       <div class="col-sm-4">
-                        <input type="text" class="form-control"  name="Name"   ng-model = "gothra" >
+                        <input type="text" class="form-control"  name="Name"   ng-model = "gothradetails" >
                       </div>
                     </div>
                     <div class="form-group">
                       <label for="inputEmail3"  class="col-sm-2 control-label">God(ಮನೆ ದೇವರು)</label>
                       <div class="col-sm-4">
-                        <input type="text" class="form-control"  name="Name"   ng-model = "gothra" >
+                        <input type="text" class="form-control"  name="Name"   ng-model = "homegod" >
                       </div>
                       <label for="inputEmail3"  class="col-sm-2 control-label">Other Details</label>
                       <div class="col-sm-4">
-                        <input type="text" class="form-control"  name="Name"   ng-model = "gothra" >
+                        <input type="text" class="form-control"  name="Name"   ng-model = "religionotherdetails" >
                       </div>
                     </div>
 
@@ -424,7 +432,7 @@
 
                        <label for="inputEmail3"  class="col-sm-2 control-label">Education  Details</label>
                       <div class="col-sm-4">
-                        <input type="text" class="form-control"  name="Name"   ng-model = "education" required>
+                        <input type="text" class="form-control"  name="Name"   ng-model = "educationdetails" required>
                       </div>
                     </div>
                     <div class="form-group">
@@ -434,19 +442,15 @@
                       </div>
                       <label for="inputEmail3"  class="col-sm-2 control-label">Occupation  Details</label>
                       <div class="col-sm-4">
-                        <input type="text" class="form-control"  name="Name"  ng-model = "occupation" required>
+                        <input type="text" class="form-control"  name="Name"  ng-model = "occupationdetails" required>
                       </div>
                     </div>
-                  
-
-                    
-
                                        
                     <div class="form-group">
                       
                        <label for="inputEmail3"  class="col-sm-2 control-label">Job Location</label>
                       <div class="col-sm-4">
-                        <input type="text" class="form-control"  name="Name"  ng-model = "occupation" >
+                        <input type="text" class="form-control"  name="Name"  ng-model = "joblocation" >
                       </div>
                       <label for="inputEmail3"  class="col-sm-2 control-label">Annual Income(Rs)</label>
                       <div class="col-sm-4">
@@ -483,7 +487,7 @@
                     <div class="form-group">
                       <label for="inputEmail3"  class="col-sm-2 control-label">Mother Name</label>
                       <div class="col-sm-4">
-                        <input type="text" class="form-control"  name="Name"  placeholder={{hotelName}} ng-model = "mothername" >
+                        <input type="text" class="form-control"  name="Name"   ng-model = "mothername" >
                       </div>
                     
                       <label for="inputEmail3"  class="col-sm-2 control-label">Mother Occupation</label>
@@ -494,12 +498,12 @@
                     <div class="form-group">
                       <label for="inputEmail3"  class="col-sm-2 control-label">Brothers Details</label>
                       <div class="col-sm-4">
-                        <input type="text" class="form-control"  name="Name"  placeholder={{hotelName}} ng-model = "mothername" >
+                        <input type="text" class="form-control"  name="Name"  ng-model = "brotherdetails" >
                       </div>
                     
                       <label for="inputEmail3"  class="col-sm-2 control-label">Sister Details</label>
                       <div class="col-sm-4">
-                        <input type="text" class="form-control"  name="Name"   ng-model = "motheroccupation" >
+                        <input type="text" class="form-control"  name="Name"   ng-model = "sisterdetails" >
                       </div>
                     </div>
                     <div class="form-group">
