@@ -174,7 +174,7 @@
                                         <li>
                                             <form>
                                                 <div class="form-group">
-                                                 <select ng-model="gender_select" ng-change="updateSelectGender (0)">
+                                                 <select class="form-control" ng-model="gender_select" ng-change="updateSelectGender (0)">
       <option ng-repeat="i in genders" value="{{ i.name }}" ng-selelected="{{ gender_select == i.name }}">{{ i.name }}</option>
     </select>
                                                 </div>
@@ -183,7 +183,7 @@
                                         <li>
                                             <form>
                                                 <div class="form-group">
-                                                 <select ng-model="cast_select" ng-change="updateSelectCast(0)">
+                                                 <select class="form-control" ng-model="cast_select" ng-change="updateSelectCast(0)">
                                                       <option ng-repeat="i in communitys" value="{{ i.name }}" ng-selelected="{{ cast_select == i.name }}">{{ i.name }}</option>
                                                 </select>                                                 
                                                 </div>
@@ -212,9 +212,10 @@
                                 <div class="profiles">
                                     <ul>
                                         <li ng-repeat="prof in profilelist">
-                                        <div class="box box-solid box-info">
+                                        <div class="box box-solid ">
                                         <div class="box-header with-border">
-                                      <h3 class="box-title">{{prof.id}}</h3>
+                                      <!-- <h3 class="box-title">{{prof.id}}</h3> -->
+                                      <h1 class="box-title"><b>Id    :    {{profile.id}}</b></h1>
                                       <div class="box-tools pull-right">
                                         <!-- Buttons, labels, and many other things can be placed here! -->
                                         <!-- Here is a label for example -->
