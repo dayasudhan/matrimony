@@ -208,49 +208,92 @@
 
                                 <!--End of Profile Box Body-->
                                 <!--Profiles-->
+                                
                                 <div class="profiles">
                                     <ul>
                                         <li ng-repeat="prof in profilelist">
+                                        <div class="box box-solid box-info">
+                                        <div class="box-header with-border">
+                                      <h3 class="box-title">{{prof.id}}</h3>
+                                      <div class="box-tools pull-right">
+                                        <!-- Buttons, labels, and many other things can be placed here! -->
+                                        <!-- Here is a label for example -->
+                                        <button type="submit" class="btn btn-primary pull-right" ng-click= "viewProfile($index)">View Details</button>
+                                      </div><!-- /.box-tools -->
+                                    </div><!-- /.box-header -->
+                                    <div class="box-body">
                                             <div class="wrapper">
                                                 <div class="banner">
                                                     <img src={{prof.logo}}>
+
+                                                    
                                                 </div>                
 
-                                                <div class="bandescription">
-                                                    <h4><b>{{prof.name}}</b></h4>
-                                                    
-                                                    <div class="kmenu">
-                                                        <ul class="khlist">
-                                                            <li>
-                                                                <h5>{{prof.occupation}}</h5>
-                                                            </li>
-                                                            <li>
-                                                                <h5>{{prof.community}}</h5>
-                                                            </li>
-                                                            <li>
-                                                                <h5>{{prof.age}}</h5>
-                                                            </li>
-                                                            <li>
-                                                                <h5>{{prof.phone}}</h5>
-                                                            </li>
-                                                            <li>
-                                                                <h5>{{prof.education}}</h5>
-                                                            </li>
-                                                            <li>    
-                                                             <img src={{prof.profileLogo}} style="width:100px;height:100px;">
-                                                            </li>
-                                                            <button type="submit" class="btn btn-info pull-right" ng-click= "viewProfile($index)">View Details</button>
-                                                        </ul>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </li>
-                             
-                                    </ul>
+                                            
+                                    <div class="row">
+                                        <div class="col-xs-5">
+                                          <div class="table-responsive">
+                                            <table class="table">
+                                              <tr>
+                                                <th style="width:50%">Name:</th>
+                                                <td>{{prof.name}}</td>
+                                              </tr>
+                                              <tr>
+                                                <th>Gender:</th>
+                                                <td>{{prof.gender}}</td>
+                                              </tr>
+                                              <tr>
+                                                <th>Age:</th>
+                                                <td>{{prof.age}}</td>
+                                              </tr>
+                                              <tr>
+                                                <th>Mother Tongue:</th>
+                                                <td>{{prof.mothertongue}}</td>
+                                              </tr>
+                                            </table>
+                                          </div>
+                                        </div>
+                                         <div class="col-xs-5">
+                                          <div class="table-responsive">
+                                            <table class="table">
+                                              <tr>
+                                                <th style="width:50%">Cast:</th>
+                                                <td>{{prof.community}}
+                                                    <span ng-if="prof.castdetails">
+                                                    ( {{prof.castdetails}} )
+                                                    </span>
+                                                </td>
+                                              </tr>
+                                              <tr>
+                                                <th>Occupation:</th>
+                                                <td>{{prof.occupation}}
+                                                <span ng-if="prof.occupationdetails">
+                                                    ( {{prof.occupationdetails}} )
+                                                    </span>
+                                                </td>
+                                              </tr>
+                                              <tr>
+                                                <th>Education:</th>
+                                                <td>{{prof.education}}
+                                                <span ng-if="prof.educationdetails">
+                                                    ( {{prof.educationdetails}} )
+                                                    </span>
+                                                </td>
+                                              </tr>
+                                              <tr>
+                                                <th>Phone:</th>
+                                                <td>{{prof.phone}}</td>
+                                              </tr>
+                                              
+                                            </table>
+                                          </div>
+                                        </div>
                                 </div>
+                            <!-- /.col -->
                             </div>
                             <!--End of Profiles-->
+                        </div>
+                        </div>
                         </div>
                         <!-- /.box -->
                     </div>

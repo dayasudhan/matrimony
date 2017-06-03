@@ -157,7 +157,7 @@
                                         <li>
                                             <form>
                                                 <div class="form-group">
-                                                                   <select ng-model="gender_select" ng-change="updateSelectGender (1)">
+                                                                   <select class="form-control" ng-model="gender_select" ng-change="updateSelectGender (1)">
       <option ng-repeat="i in genders" value="{{ i.name }}" ng-selelected="{{ gender_select == i.name }}">{{ i.name }}</option>
     </select>
                                                 </div>
@@ -166,9 +166,9 @@
                                         <li>
                                             <form>
                                                 <div class="form-group">
-                                                 <select ng-model="cast_select" ng-change="updateSelectCast(1)">
+                                                 <select class="form-control" ng-model="cast_select" ng-change="updateSelectCast(1)">
                                                       <option ng-repeat="i in communitys" value="{{ i.name }}" ng-selelected="{{ cast_select == i.name }}">{{ i.name }}</option>
-    </select>                                                 
+                                                </select>                                                 
                                                 </div>
                                             </form>
                                         </li>
@@ -177,7 +177,7 @@
                                                 <div class="form-group">
                                                     <select class="form-control" ng-model="age_select" ng-change="updateSelectAge(1)">
                                                         <option ng-repeat="i in ages" value="{{ i.name }}" ng-selelected="{{ age_select == i.name }}">{{ i.name }}</option>
-    </select>                                               
+                                                </select>                                               
                                                 </div>
                                             </form>
                                         </li>
@@ -192,196 +192,253 @@
 
         <!-- Main content -->
         <section class="content">
-
+        <div class="box box-primary">
+              
+                <div class="box-header ">
+                <button type="submit" class="btn btn-info pull-right" ng-click= "nextProfile()">Next</button>
+               <button type="submit" class="btn btn-info pull-left" ng-click= "previousProfile()">Previous</button>
+                  <center><h1 class="box-title"><b>Profile Id    :    {{profile.id}}</b></h1><center>
+              </div>
           <div class="row">
-            <div class="col-md-5">
-
-              <!-- Profile Image -->
-              <div class="box box-primary">
-                <div class="box-body box-profile">
-                  <img class="img-responsive" src= "{{profile.logo}}"" alt="User profile picture">
-                  <h3 class="profile-username text-center">{{profile.name}}</h3>
-                  <p class="text-muted text-center">{{profile.community}}</p>
-                  <p class="text-muted text-center">{{profile.age}}</p>
-                      
-                  <button type="submit" class="btn btn-info pull-right" ng-click= "nextProfile()">Next</button>
-                  
-
-                  <button type="submit" class="btn btn-info pull-left" ng-click= "previousProfile()">Previous</button>
-
-                  
-                </div><!-- /.box-body -->
-              </div><!-- /.box -->
-
-             
-            </div><!-- /.col -->
+       
             
-<div class="col-md-6">
-              <div class="nav-tabs-custom">
-                <ul class="nav nav-tabs">
-                  <li class="active">
-                  <div class="tab-content">
-                  <div class="active tab-pane" id="activity">
-                     <!-- About Me Box -->
-              <div class="box box-primary">
-                
-                <div class="box-body">
-                  <strong><i class="fa fa-book margin-r-5"></i>  Education</strong>
-                  <p class="text-muted">
-                    {{profile.education}}
-                  </p>
+             <div class="col-xs-6">
+             <div class="box box-primary">
+                <div class="box-header ">
+                  <h3 class="box-title">Basic Details</h3>
+              </div>
+             <div class="table-responsive">
+                                            <table class="table">
+                                              <tr>
+                                                <th style="width:50%">Name:</th>
+                                                <td>{{profile.name}}
+                                                   
+                                                </td>
+                                              </tr>
+                                              <tr>
+                                                <th>Date of Birth and time:</th>
+                                                <td>{{profile.dob}}
+                                                </td>
+                                              </tr>
+                                              <tr>
+                                                <th>Gender:</th>
+                                                <td>{{profile.gender}}
+                                                </td>
+                                              </tr>
+                                              <tr>
+                                                <th>Phone:</th>
+                                                <td>{{profile.phone}}</td>
+                                              </tr>
+                                              <tr>
+                                                <th>Mother Tongue:</th>
+                                                <td>{{profile.mothertongue}}</td>
+                                              </tr>
+                                              <tr>
+                                                <th>Email:</th>
+                                                <td>{{profile.email}}</td>
+                                              </tr>
+                                              <tr>
+                                                <th>Birth Place:</th>
+                                                <td>{{profile.birthplace}}</td>
+                                            </table>
+                                            </div> 
+                                          </div>
+                                           </div>
+                                           <div class="col-xs-6">
+                                    <div class="box box-primary">
+                                       <img class="img-responsive" src= "{{profile.logo}}"" alt="User profile picture" width="260" >
+                                    </div><!-- /.box -->
+                                  </div><!-- /.col -->
+                            </div>
+                                 
+        <div class="row">
+            <div class="col-xs-6">
+             <div class="box box-primary">
+                <div class="box-header ">
+                  <h3 class="box-title">Personal Details</h3>
+              </div>
+             <div class="table-responsive">
+                                            <table class="table">
+                                              <tr>
+                                                <th style="width:50%">Marital Status:</th>
+                                                <td>{{profile.maritalstatus}}
+                                                   
+                                                </td>
+                                              </tr>
+                                              <tr>
+                                                <th>Height:</th>
+                                                <td>{{profile.height}}
+                                                </td>
+                                              </tr>
+                                              <tr>
+                                                <th>Weight:</th>
+                                                <td>{{profile.weight}}
+                                                </td>
+                                              </tr>
+                                              <tr>
+                                                <th>Complexion:</th>
+                                                <td>{{profile.complexion}}</td>
+                                              </tr>
+                                              <tr>
+                                                <th>Address:</th>
+                                                <td>{{profile.address.addressLine1}}</td>
+                                              </tr>
+                                              <tr>
+                                                <th>City:</th>
+                                                <td>{{profile.address.city}}</td>
+                                              </tr>
+                                              <tr>
+                                                <th>Native:</th>
+                                                <td>{{profile.native}}</td>
+                                              </tr>
+                                              <tr>
+                                                <th>State:</th>
+                                                <td>{{profile.state}}</td>
+                                            </table>
+                                            </div>
+                                          </div>
+                                           </div>
+            <div class="col-xs-6">
+             <div class="box box-primary">
+                <div class="box-header ">
+                  <h3 class="box-title">Religion Details</h3>
+              </div>
+             <div class="table-responsive">
+                                            <table class="table">
+                                              <tr>
+                                                <th style="width:50%">Cast:</th>
+                                                <td>{{profile.community}}
+                                                   <span ng-if="profile.castdetails">
+                                                    ( {{profile.castdetails}} )
+                                                    </span>
+                                                </td>
+                                              </tr>
+                                              
+                                              <tr>
+                                                <th>Star:</th>
+                                                <td>{{profile.star}}
+                                                </td>
+                                              </tr>
+                                              <tr>
+                                                <th>Padha:</th>
+                                                <td>{{profile.padha}}
+                                                </td>
+                                              </tr>
+                                              <tr>
+                                                <th>Rashi:</th>
+                                                <td>{{profile.rashi}}</td>
+                                              </tr>
+                                              <tr>
+                                                <th>Lagna:</th>
+                                                <td>{{profile.lagna}}</td>
+                                              </tr>
+                                              <tr>
+                                                <th>Gothra:</th>
+                                                <td>{{profile.gothra}}
+                                                <span ng-if="profile.gothradetails">
+                                                    ( {{profile.gothradetails}} )
+                                                    </span>
+                                                    </td>
+                                              </tr>
+                                              <tr>
+                                                <th>God:</th>
+                                                <td>{{profile.homegod}}</td>
+                                              <tr>
+                                                <th>Other Details:</th>
+                                                <td>{{profile.religionotherdetails}}</td>
+                                            </table>
+                                            </div>
+                                          </div>
+                                           </div>
+                            </div>                    
 
-                  <hr>
-                  <strong><i class="fa fa-book margin-r-5"></i>  Occupation</strong>
-                  <p class="text-muted">
-                    {{profile.occupation}}
-                  </p>
+<div class="row">
+            <div class="col-xs-6">
+             <div class="box box-primary">
+                <div class="box-header ">
+                  <h3 class="box-title">Education & Professional Details</h3>
+              </div>
+             <div class="table-responsive">
+                                            <table class="table">
+                                              <tr>
+                                                <th style="width:50%">Education:</th>
+                                                <td>{{profile.education}}
+                                                   <span ng-if="profile.educationdetails">
+                                                    ( {{profile.educationdetails}} )
+                                                    </span>
+                                                </td>
+                                              </tr>
+                                              <tr>
+                                                <th>Occupation:</th>
+                                                <td>{{profile.occupation}}
+                                                <span ng-if="profile.occupationdetails">
+                                                    ( {{profile.occupationdetails}} )
+                                                    </span>
+                                                </td>
+                                              </tr>
+                                              <tr>
+                                                <th>Job Location:</th>
+                                                <td>{{profile.joblocation}}
+                                                </td>
+                                              </tr>
+                                              
+                                              <tr>
+                                                <th>Annual Income:</th>
+                                                <td>{{profile.income}}</td>
+                                            </table>
+                                            </div>
+                                          </div>
+                                           </div>
+                                      <div class="col-xs-6">
+                                       <div class="box box-primary">
+                                          <div class="box-header ">
+                                            <h3 class="box-title">Family Details</h3>
+                                        </div>
+                                       <div class="table-responsive">
+                                            <table class="table">
+                                              <tr>
+                                                <th style="width:50%">Father:</th>
+                                                <td>{{profile.father.name}}
+                                                    <span ng-if="profile.father.occupation">
+                                                    ( {{profile.father.occupation}} )
+                                                    </span>
+                                                </td>
+                                              </tr>
+                                              <tr>
+                                                <th>Mother:</th>
+                                                <td>{{profile.mother.name}}
+                                                <span ng-if="profile.mother.occupation">
+                                                    ( {{profile.mother.occupation}} )
+                                                    </span>
+                                                </td>
+                                              </tr>
+                                              <tr>
+                                                <th>Brothers:</th>
+                                                <td>{{profile.brotherdetails}}
+                                                </td>
+                                              </tr>
+                                              <tr>
+                                                <th>Sisters:</th>
+                                                <td>{{profile.sisterdetails}}</td>
+                                              </tr>
+                                              <tr>
+                                                <th>About Profile:</th>
+                                                <td>{{profile.summary}}</td>
+                                              </tr>
+                                              
+                                              <tr>
+                                                <th>Other Details:</th>
+                                                <td>{{profile.otherDetails}}</td>
+                                            </table>
+                                            </div>
+                                          </div>
+                                           </div>
+                            </div>                    
 
-                  <hr>
-               <strong><i class="fa fa-book margin-r-5"></i>  Cast</strong>
-                  <p class="text-muted">
-                    {{profile.community}}
-                  </p>
+               
+     
 
-                  <hr>
-
-                <strong><i class="fa fa-book margin-r-5"></i>  Email</strong>
-                  <p class="text-muted">
-                    {{profile.email}}
-                  </p>
-
-                  <hr>
-
-                <strong><i class="fa fa-book margin-r-5"></i>  Phone</strong>
-                  <p class="text-muted">
-                    {{profile.phone}}
-                  </p>
-
-                  <hr>
-
-               <strong><i class="fa fa-book margin-r-5"></i>  Gender</strong>
-                  <p class="text-muted">
-                    {{profile.gender}}
-                  </p>
-
-                  <hr>
-               <strong><i class="fa fa-book margin-r-5"></i>  Income</strong>
-                  <p class="text-muted">
-                    {{profile.income}}
-                  </p>
-
-                  <hr>
-              <strong><i class="fa fa-book margin-r-5"></i>  Father </strong>
-                  <p class="text-muted">
-                    {{profile.father.name}}
-                  </p>
-                  <p class="text-muted">
-                    {{profile.father.occupation}}
-                  </p>
-                  <hr>
-                  
-                <strong><i class="fa fa-book margin-r-5"></i>  Mother</strong>
-                  <p class="text-muted">
-                    {{profile.mother.name}}
-                    {{profile.mother.occupation}}
-                  </p>
-
-                  <hr>   
-                  <strong><i class="fa fa-file-text-o margin-r-5"></i> Summary</strong>
-                  <p>{{profile.summary}}</p>
-                  <hr>   
-                
-                </div><!-- /.box-body -->
-              </div><!-- /.box -->
-
-                </div><!-- /.tab-content -->
-                  </li>
-                  <li>
-                  <div class="active tab-pane" id="activity">
-                     <!-- About Me Box -->
-              <div class="box box-primary">
-      
-                <div class="box-body">
-                  <strong><i class="fa fa-book margin-r-5"></i>  Gothra</strong>
-                  <p class="text-muted">
-                    {{profile.gothra}}
-                  </p>
-
-                  <hr>
-
-               <strong><i class="fa fa-book margin-r-5"></i>  Rashi</strong>
-                  <p class="text-muted">
-                    {{profile.rashi}}
-                  </p>
-
-                  <hr>
-
-                <strong><i class="fa fa-book margin-r-5"></i>  Star</strong>
-                  <p class="text-muted">
-                    {{profile.star}}
-                  </p>
-
-                  <hr>
-
-                <strong><i class="fa fa-book margin-r-5"></i>  Mother Tongue</strong>
-                  <p class="text-muted">
-                    {{profile.mothertongue}}
-                  </p>
-
-                  <hr>
-
-               <strong><i class="fa fa-book margin-r-5"></i>  Height</strong>
-                  <p class="text-muted">
-                    {{profile.height}}
-                  </p>
-
-                  <hr>
-               <strong><i class="fa fa-book margin-r-5"></i>  Weight </strong>
-                  <p class="text-muted">
-                    {{profile.weight}}
-                  </p>
-
-                  <hr>
-              <strong><i class="fa fa-book margin-r-5"></i>  Origin </strong>
-                  <p class="text-muted">
-                    {{profile.origin}}
-                  </p>
-
-                  <hr>
-                  
-                <strong><i class="fa fa-book margin-r-5"></i>  Age</strong>
-                  <p class="text-muted">
-                    {{profile.age}}
-                  </p>
-
-                  <hr>   
-                  <strong><i class="fa fa-file-text-o margin-r-5"></i> Date Of Birth</strong>
-                  <p>{{profile.dob}}</p>
-                  <hr>   
-                 <strong><i class="fa fa-book margin-r-5"></i>  Address </strong>
-                  <p class="text-muted">
-                    {{profile.address.addressLine1}}
-
-                  </p>
-        <p class="text-muted">
-                    {{profile.address.city}}
-                   
-                  </p>
-                  <hr>
-
-                  <strong><i class="fa fa-book margin-r-5"></i>Other Details</strong>
-                  <p class="text-muted">
-                    {{profile.otherDetails}}
-                  </p>
-
-                  <hr> 
-                  <button type="submit" class="btn btn-info pull-middle" ng-click= "deleteProfile(profile.id)">Delete This Profile</button>
-                </div><!-- /.box-body -->
-              </div><!-- /.box -->
-
-                </div><!-- /.tab-content -->
-
-                </ul>
+               
                 
               </div><!-- /.nav-tabs-custom -->
             </div><!-- /.col -->
