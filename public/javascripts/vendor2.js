@@ -103,6 +103,7 @@ app = angular.module("vendorModule", []);
           var cast_all = {name:'all'};
           $scope.communitys.unshift(cast_all);
           $scope.profilelist = $scope.completeprofilelist;
+          $scope.vendorname = data[0].name;
           console.log($scope.profilelist);
           
           $scope.profile = $scope.profilelist[$scope.position];
