@@ -29,9 +29,9 @@
     <![endif]-->
   </head>
   <body class="hold-transition skin-blue sidebar-mini" ng-app="vendorModule">
-    <div class="wrapper"  ng-controller="VendorController">
+    <div class="wrapper"  ng-controller="mainController">
 
-      <header class="main-header" data-ng-init="getVendorDetails('<%= user.local.email %>')"  >
+      <header class="main-header" data-ng-init="getVendorDetails('<%= user.local.email %>',true)"  >
         <!-- Logo -->
         <a href="../../index2.html" class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
@@ -137,12 +137,11 @@
 
           <!-- sidebar menu: : style can be found in sidebar.less -->
          <ul class="sidebar-menu">
-            <li class="header">LABELS</li>
-            <li><a href="/profile_list"><i class="fa fa-circle-o text-red"></i> <span>Profiles</span></a></li>
+            <li><a href="/profile_list/0/all/all/all/Unmarried/all/all"><i class="fa fa-circle-o text-red"></i> <span>Profiles</span></a></li>
             <li><a href="/add_profile"><i class="fa fa-circle-o text-yellow"></i> <span>Add New Profile</span></a></li>
-            <li><a href="/profile/0/all/all/all"><i class="fa fa-circle-o text-aqua"></i> <span>Profile Detail</span></a></li>
-            <li><a href="/aboutme"><i class="fa fa-circle-o text-aqua"></i> <span>aboutme</span></a></li>
-        
+            <li><a href="/profile/0/all/all/all/Unmarried/all/all"><i class="fa fa-circle-o text-aqua"></i> <span>Profile Detail</span></a></li>
+            <li><a href="/settings"><i class="fa fa-circle-o text-aqua"></i> <span>settings</span></a></li>
+            <li><a href="/search"><i class="fa fa-circle-o text-aqua"></i> <span>Search Profile</span></a></li>
           </ul>
         </section>
         <!-- /.sidebar -->
@@ -156,90 +155,160 @@
 
         <!-- Main content -->
         <section class="content">
-          <div class="row">
-
-            <div class="col-xs-4">
-              <div class="box">
-                <div class="box-header">
-                  <h3 class="box-title">Supported Community list</h3>
-                </div><!-- /.box-header -->
-                <div class="box-body">
-                  <table id="example1" class="table table-bordered table-striped">
-                    <thead>
-                      <tr>
-                        <th>Serial No</th>
-                        <th>Community</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr ng-repeat="community in communityList">
-                        <td>{{$index +1}}</td>
-                        <td>{{community.name}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div><!-- /.box-body -->
-              </div><!-- /.box -->
-            </div><!-- /.col -->
-
-
-<div class="col-xs-4">
-              <div class="box">
-                <div class="box-header">
-                  <h3 class="box-title">Supported MotherTongue List</h3>
-                </div><!-- /.box-header -->
-                <div class="box-body">
-                  <table id="example1" class="table table-bordered table-striped">
-                    <thead>
-                      <tr>
-                        <th>Serial No</th>
-                        <th>Mother Tongue</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr ng-repeat="mt in mtList">
-                        <td>{{$index +1}}</td>
-                        <td>{{mt.name}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div><!-- /.box-body -->
-              </div><!-- /.box -->
-            </div><!-- /.col -->
-
-              <div class="col-xs-4">
-<!-- Horizontal Form -->
-              <div class="box box-info">
-                <div class="box-header with-border">
-                  <h3 class="box-title">MenuAdd</h3>
-                </div><!-- /.box-header -->
-                <!-- form start -->
-                <form class="form-horizontal">
+          
+          <div class="col-md-12">
+                <div class="nav-tabs-custom">
+                  <ul class="nav nav-tabs">
+                    <li class="active"><a href="#quicksearch" data-toggle="tab">Quick Search</a></li>
+                    <li><a href="#advancedsearch" data-toggle="tab">Advanced Search</a></li>
+                  
+                </ul>
+                <div class="tab-content">
+                  <div class="active tab-pane" id="quicksearch">
+                    <form class="form-horizontal" >
+                      <div class="box-body">
+                        <div class="form-group">
+                          <label   class="col-sm-2 control-label">Profile ID</label>
+                          <div class="col-sm-2">
+                            <input type="text" class="form-control"  ng-model = "searchid" required>
+                          </div>
+                          <div class="col-sm-2">
+                             <button type="submit" class="btn btn-info " ng-click= "searchprofilebyid()">Search Now</button>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  <form class="form-horizontal" >
                   <div class="box-body">
                     <div class="form-group">
-                      <label for="inputEmail3" class="col-sm-3 control-label">Community</label>
-                      <div class="col-sm-10">
-                        <input type="text" class="form-control"  ng-model = "community">
+                      
+                       <label   class="col-sm-2 control-label">Looking For</label>
+                        <div class="col-sm-4">
+                            <select class="form-control select2" style="width: 100%;" ng-model = "gender_select" ng-init="gender = 'Bride'">
+                              <option ng-selected="true">Bride</option>
+                              <option>Bridegroom</option>
+
+                            </select>
+                        </div>
+
+
                       </div>
+                    <div class="form-group">
+                         <label  class="col-sm-2 control-label">Cast</label>
+                      <div class="col-sm-4">
+                          <select class="form-control select2" style="width: 100%;" ng-model = "cast_select" >
+                            <option ng-repeat="i in communityList" value="{{ i.name }}" ng-selelected="{{ cast_select == i.name }}">{{ i.name }}</option>
+                          </select>
+                      </div>
+
+                    </div>
+                    <div class="form-group">
+                      
+                       <label  class="col-sm-2 control-label">Age</label>
+                        <div class="col-sm-4">
+                             <select class="form-control" ng-model="age_select">
+                                  <option ng-repeat="i in ages" value="{{ i.name }}" ng-selelected="{{ age_select == i.name }}">{{ i.name }}</option>
+                              </select>                                               
+                        </div>
+                         </div>
                     </div>
                     <div class="box-footer">
-                    <button type="submit" class="btn btn-info pull-right" ng-click= "addCommunity('<%= user.local.email %>')">Add Community</button>
-                  </div><!-- /.box-footer -->
+                      <div class="col-sm-8">
+                        <center>
+                            <button type="submit" class="btn btn-info " ng-click= "quickSearch()">Quick Search</button></center>
+                    </div>
+                   
+                  </div>
+                    </form>
+                  </div>
+
+                <div class="tab-pane" id="advancedsearch">
+                  <form class="form-horizontal" >
+                  <div class="box-body">
                     <div class="form-group">
-                      <label for="inputPassword3" class="col-sm-3 control-label">Mother Tongue</label>
-                      <div class="col-sm-10">
-                        <input type="text" class="form-control"  ng-model = "mothertongue">
+                      
+                       <label for="inputEmail3"  class="col-sm-2 control-label">Looking For</label>
+                        <div class="col-sm-4">
+                            <select class="form-control select2" style="width: 100%;" ng-model = "gender_select" ng-init="gender_select = 'Bride'">
+                             <option ng-selected="true">Bride</option>
+                              <option>Bridegroom</option>
+
+                            </select>
+                        </div>
+                       
+                      </div>
+                    <div class="form-group">
+                         <label for="inputEmail3"  class="col-sm-2 control-label">Cast</label>
+                      <div class="col-sm-4">
+                        <select class="form-control select2" style="width: 100%;" ng-model = "cast_select" >
+                            <option ng-repeat="i in communityList" value="{{ i.name }}" ng-selelected="{{ cast_select == i.name }}">{{ i.name }}</option>
+                            </select>
+
                       </div>
                     </div>
-                  <div class="box-footer">
-                    <button type="submit" class="btn btn-info pull-right" ng-click= "addMotherTongue('<%= user.local.email %>')">Add Monther Tongue</button>
-                  </div><!-- /.box-footer -->   
-                  </div><!-- /.box-body -->
-                  
-                </form>
-              </div><!-- /.box -->
-              </div>
-          </div><!-- /.row -->
+                    <div class="form-group">
+                      
+                       <label for="inputEmail3"  class="col-sm-2 control-label">Age</label>
+                        <div class="col-sm-4">
+                             <select class="form-control" ng-model="age_select" >
+                          <option ng-repeat="i in ages" value="{{ i.name }}" ng-selelected="{{ age_select == i.name }}">{{ i.name }}</option>
+                              </select>                                               
+                        </div>
+
+
+                         </div>
+                        
+                   
+                    </div>
+                    <div class="form-group">
+                         <label for="inputEmail3"  class="col-sm-2 control-label">Education</label>
+                      <div class="col-sm-4">
+                          <select class="form-control select2" style="width: 100%;" ng-model = "education_select" required>
+                            <option ng-repeat="i in education_searchlist" value="{{ i.name }}" ng-selelected="{{ education_select == i.name }}">{{ i.name }}</option>
+                          </select>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                         <label for="inputEmail3"  class="col-sm-2 control-label">Mother Tongue</label>
+                      <div class="col-sm-4">
+                         <select class="form-control select2" style="width: 100%;" ng-model = "mt_select" >
+                            <option ng-repeat="i in mtList" value="{{ i.name }}" ng-selelected="{{ mt_select == i.name }}">{{ i.name }}</option>
+                            </select>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="inputEmail3"  class="col-sm-2 control-label">Marital Status</label>
+                      <div class="col-sm-4">
+                           <select class="form-control select2" style="width: 100%;"  ng-model = "maritalstatus_select" ng-init="maritalstatus_select = 'Unmarried'">
+                            <option ng-selected="true" value="Unmarried">Unmarried </option>
+                            <option value='Divorced'> Divorced </option>
+                            <option value='Widowed'>Widowed </option>
+                            <option value='Awaiting_Divorce'>Awaiting Divorce </option>
+                          </select>
+                      </div>
+                    </div>
+      
+                   <!--  <div class="form-group">
+                    <label for="inputEmail3"  class="col-sm-2 control-label">Height</label>
+                      <div class="col-sm-4">
+                          <select class="form-control select2" style="width: 100%;" ng-model = "height_select" required>
+                            <option ng-repeat="i in heightsearchlist" value="{{ i.name }}" ng-selelected="{{ height_select == i.name }}">{{ i.name }}</option>
+                          </select>
+                      </div>
+                    </div> -->
+                    <div class="box-footer">
+                      <div class="col-sm-8">
+                        <center>
+                            <button type="submit" class="btn btn-info " ng-click= "advancedSearch()">Search</button></center>
+                    </div>
+                     <!--button type="submit" class="btn btn-default" onclick="menu_add(this.form,'daya')">Submit</button>&nbsp;<a href="/"-->
+                  <!-- /.box-footer -->
+                  </div>
+                    </form>
+                  </div>
+                </div>
+                </div>
+          </div>
         </section><!-- /.content -->
 
 

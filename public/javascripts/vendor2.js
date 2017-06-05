@@ -9,18 +9,29 @@ app = angular.module("vendorModule", []);
        $scope.gender_select = '';
 
        $scope.cast_select = 'all';
+       $scope.mt_select = 'all';
+       $scope.education_select = 'all';
+       $scope.height_select = 'all';
+       $scope.age_select = 'all';
+      $scope.maritalstatus_select =  'Unmarried';
        
-       $scope.communitys = [ {name: 'Brahmin'}, {name: 'Lingayath'}, {name: 'all'}];
        $scope.genders = [ {name: 'Bride'}, {name: 'Bridegroom'}, {name: 'all'}];
        $scope.ages = [{name: 'all'}, {name: '18-22'}, {name: '22-25'},{name: '25-28'},
         {name: '28-30'},{name: '30-32'},{name: '33-35'},{name: '35 and above'}];
 
   	  $scope.getProfile = function (param,param_position,param_gender,
-        param_community,param_age) {
+        param_community,param_age,param_maritalstatus,param_education,param_mothertongue
+        ) {
       $scope.username = param;
       console.log("getprofile"); 
       console.log(param_position);
       console.log(param_gender);
+      console.log(param_maritalstatus);
+      console.log(param_education);
+      console.log(param_mothertongue);
+      $scope.maritalstatus_select = param_maritalstatus;
+      $scope.mt_select = param_mothertongue;
+      $scope.education_select = param_education;
       $scope.position = param_position;
       $scope.age_select = param_age;
       console.log($scope.minage);
@@ -91,14 +102,19 @@ app = angular.module("vendorModule", []);
       console.log($scope.maxage);
       
 
-      var url = "/v1/profile/info2/";
+      var url = "/v2/profile/info2/";
       url = url + param + '/' + selectedGender + '/' + param_community + '/' 
-      +$scope.minage+'/'+$scope.maxage ;
+      +$scope.minage+'/'+$scope.maxage + '/' + param_maritalstatus + '/'  + param_education 
+      + '/' + param_mothertongue ;
       console.log(url);
       $http.get(url)
         .success(function (data, status, headers, config)
         {
           $scope.completeprofilelist = data[0].profiles;
+          // if(data[0].profiles.size() == 0)
+          // {
+          //   alert(No Profiels);
+          // }
           $scope.communitys = data[0].community;
           var cast_all = {name:'all'};
           $scope.communitys.unshift(cast_all);
@@ -166,7 +182,7 @@ app = angular.module("vendorModule", []);
             .success(function (data, status, headers, config) {
                 console.log("success delete");
                 console.log(data);
-              $scope.getProfile($scope.username,$scope.position,'all','all','all');
+              $scope.getProfile($scope.username,$scope.position,'all','all','all','Unmarried','all','all');
             })
             .error(function (data, status, headers, config) {
                 console.log("errod on delete");
@@ -179,21 +195,42 @@ app = angular.module("vendorModule", []);
       
   };
   $scope.viewProfile = function (param) {
-      console.log("previousProfile");
+      console.log("viewProfile");
    
       console.log(param);
       $scope.position = param;
          
       console.log($scope.position);
-      $scope.profile = $scope. profilelist[$scope.position];
+      console.log($scope.gender_select);
+      console.log($scope.cast_select);
+      console.log($scope.age_select);
+    
+     // $scope.profile = $scope. profilelist[$scope.position];
+      var url = "/profile_list/";
+      url = url + $scope.position +'/' + $scope.gender_select+'/'+$scope.cast_select;
+      url = url + '/' + $scope.age_select + '/' + $scope.maritalstatus_select + '/'
+      + $scope.education_select + '/' + $scope.mt_select;
+      console.log(url);
+       window.open(url, "_self");
+    
+  };
+   $scope.viewProfileDetail = function (param) {
+      console.log("viewProfileDetail");
+   
+      console.log(param);
+      $scope.position = param;
+         
+      console.log($scope.position);
+      console.log($scope.gender_select);
+      console.log($scope.cast_select);
+      console.log($scope.age_select);
+     // $scope.profile = $scope. profilelist[$scope.position];
       var url = "/profile/";
       url = url + $scope.position +'/' + $scope.gender_select+'/'+$scope.cast_select;
-      url = url + '/' + $scope.age_select;
+      url = url + '/' + $scope.age_select + '/' + $scope.maritalstatus_select + '/'
+      + $scope.education_select + '/' + $scope.mt_select;
       console.log(url);
-      // $scope.cast_select.name
-      // $scope.gender_select
-      // $scope.age_select
-      window.open(url, "_self");
+       window.open(url, "_self");
     
   };
      
@@ -237,12 +274,25 @@ app = angular.module("vendorModule", []);
          console.log($scope.gender_select);
         $scope.getProfile($scope.username,$scope.position,$scope.gender_select,$scope.cast_select,$scope.age_select);
       };
-    
-});
+     $scope.searchbyid = function(param) {
+        console.log('searchbyid');
+      };
+      $scope.quickSearch = function(param) {
+        console.log('quickSearch');
+        $scope.mt_select = 'all';
+        $scope.education_select = 'all';
+        $scope.maritalstatus_select =  'Unmarried';
+        $scope.viewProfile(0);
+      };
+      $scope.advancedSearch = function(param) {
+        console.log('advancedSearch');
+        $scope.viewProfile(0);
+      };
+// });
 
   
-  app.controller("DetailsController", function ($scope, $http, jsonFilter)
-  {
+//   app.controller("DetailsController", function ($scope, $http, jsonFilter)
+//   {
 
       // $scope.name ="";
       // $scope.phone = 9797998789;
@@ -257,6 +307,28 @@ app = angular.module("vendorModule", []);
       // $scope.hotelAddress1 = "addres1",
       // $scope.hotelLandmark = "landmark", 
       // $scope.city= "vvpura", 
+$scope.height_list = [{name:'4ft',value: 48},{name:'4ft 1in',value: 49},
+                       {name:'4ft 2in',value: 50},{name:'4ft 3in',value: 51},
+                       {name:'4ft 4in',value: 52},
+                       {name:'4ft 5in',value: 53},{name:'4ft 6in',value: 54},
+                       {name:'4ft 7in',value: 55},{name:'4ft 8in',value: 56},
+                       {name:'4ft 9in',value: 57},{name:'4ft 10in',value: 58},
+                       {name:'4ft 11in',value: 59},{name:'5ft',value: 60},
+                       {name:'5ft 1in',value: 61},
+                       {name:'5ft 2in',value: 62},{name:'5ft 3in',value: 63},
+                       {name:'5ft 4in',value: 64},{name:'5ft 5in',value: 65},
+                       {name:'5ft 6in',value: 66},{name:'5ft 7in',value: 67},
+                       {name:'5ft 8in',value: 68},{name:'5ft 9in',value: 69},
+                       {name:'5ft 10in',value: 70},{name:'5ft 11in',value: 71},
+                       {name:'6ft',value: 72},{name:'6ft 1in',value: 73},
+                       {name:'6ft 2in',value: 74},{name:'6ft 3in',value: 75},
+                       {name:'6ft 4in',value: 76},{name:'6ft 5in',value: 77},
+                       {name:'6ft 6in',value: 78},{name:'6ft 7in',value: 79},
+                       {name:'6ft 8in',value: 80},{name:'6ft 9in',value: 81},
+                       {name:'6ft 10in',value: 82},{name:'6ft 11in',value: 83},
+                        {name:'7ft',value: 84}
+                       ];
+
 
 $scope.rashilist = [{name:'Mesha(Aries)'},{name:'Vrushabha(Taurus)'},
                        {name:'Mithuna(Gemini)'},{name:'Kataka(Cancer)'},
@@ -303,31 +375,42 @@ $scope.education_list = [{name:'Aeronautical engineering'},{name:'B.Arch'},
                       {name:'M.Pharm'},{name:'M.P.T'},{name:'M.V.Sc'},{name:'Masters degree(Others)'},
                       {name:'L.L.B'},{name:'L.L.M'},{name:'M.L'},{name:'P.H.D'},
                       {name:'Diploma'},{name:'polyytechnic'},{name:'Trade Schools'},{name:'Others'}];        // $scope.fatheroccupation = "farmer",
-        // $scope.motheroccupation = "farmer",
-        // $scope.mothertongue  = "kannada";
-        // $scope.income = 100000;
-        // $scope.gothra= "kannada" ;
-        // $scope.rashi= "kannada";
-        // $scope.height= "kannada";
-        // $scope.weight= "kannada";
-        // $scope.origin= "kannada";
 
 
-      // $scope.name ="";
-      // $scope.phone = "";
-      // $scope.email = "";
-      // $scope.gender= "";
-      // $scope.occupation="";
-      // $scope.education="";
-      // $scope.cast="";
-      // $scope.summary="";
-      // $scope.fathername="";
-      // $scope.mothername="";
-      // $scope.hotelAddress1 = "",
-      // $scope.hotelLandmark = "", 
-      // $scope.hotelAreaname= "", 
+$scope.mothertongue_list = [{name:'Kannada'}, {name:'Hindi'},
+                            {name:'Tamil'},{name:'Telugu'},
+                            {name:'Hindi'},{name:'Tulu'},
+                            {name:'Konkani'},{name:'kodava'},
+                            {name:'English'}, {name:'Urdu'},
+                           {name:'Assamese'},{name:'Bengali'},
+                           {name:'Bodo'},{name:'Dogri'},
+                           {name:'Gujarati'},
+                           {name:'Kashmiri'},{name:'Konkani'},
+                           {name:'Maithili'},{name:'Malayalam'},
+                           {name:'Marathi'},{name:'Meitei(Manipuri)'},
+                           {name:'Nepali'},{name:'Odia'},
+                           {name:'Maithili'},{name:'Malayalam'},
+                           {name:'Punjabi'},{name:'Sanskrit'},
+                           {name:'Santali'},{name:'Sindhi'},{name:'French'},{name:'Other'}];
+
+$scope.state_list =[       {name:'Andhra Pradesh'}, {name:'Arunachal Pradesh'},
+                          {name:'Assam'},{name:'Bihar'},
+                          {name:'Chhattisgarh'},{name:'Goa'},
+                          {name:'Gujarat'},{name:'Haryana'},
+                          {name:'Himachal Pradesh'}, {name:'Jammu and Kashmir'},
+                           {name:'Jharkhand'},{name:'Karnataka'},
+                           {name:'Maharashtra'},{name:'Manipur'},
+                           {name:'Meghalaya'},{name:'Mizoram'},
+                           {name:'Nagaland'},{name:'Odisha'},
+                           {name:'Nepali'},{name:'Odia'},
+                           {name:'Punjab'},{name:'Rajasthan'},
+                           {name:'Sikkim'},{name:'Tamil Nadu'},
+                           {name:'Telangana'},{name:'Tripura'},
+                            {name:'Uttar Pradesh'},{name:'Uttarakhand'},
+                           {name:'West Bengal'}];
 
 
+     
       $scope.addvendorLogo = function (param,files) {
       console.log("addLogo");
       $scope.files = files;
@@ -376,7 +459,7 @@ $scope.education_list = [{name:'Aeronautical engineering'},{name:'B.Arch'},
         email:$scope.vendoremail,        
        };
        fd.append("data", JSON.stringify(postData));
-console.log(url);
+      console.log(url);
       $http.post(url,fd, {
         withCredentials: true,
         headers: {'Content-Type': undefined , 'enctype': 'multipart/form-data' },
@@ -461,7 +544,10 @@ console.log(url);
 
         return new Blob([ia], {type: 'image/jpeg'});
     }
+function  convertfeetintoinches(param)
+{
 
+}
     function resizeAndUpload(file,param,postData) {
     
     var reader = new FileReader();
@@ -533,13 +619,18 @@ console.log(url);
           "Aug", "Sep", "Oct",
           "Nov", "Dec"
         ];
+        var weekNames = [
+          "Sunday", "Monday", "Tuesday",
+          "Wednesday", "Thursday", "Friday", "Saturday"];
+
         var day = date.getDate();
         var monthIndex = date.getMonth();
         var year = date.getFullYear();
         var hours = date.getHours();
         var minutes = date.getMinutes();
-        return day + '-' + monthNames[monthIndex] + '-' + year + ' '
-        + hours + ':' + minutes ; 
+        var weekIndex = date.getDay();
+        return  weekNames[weekIndex] + ','  +  day + '-' + monthNames[monthIndex] + '-' + year + ' '
+        + hours + ':' + minutes  ; 
       }
 
       $scope.addDetails = function (param) {
@@ -598,11 +689,11 @@ console.log(url);
       else if ($scope.height == "" || $scope.height == null) {
          alert("Height Empty");
       }
-     //  else if(!$scope.files)
-     // {
-     //  console.log("addDetails 1");
-     //   alert("Profile Photo Empty..Please add photo ");
-     // }  
+      else if(!$scope.files)
+     {
+      console.log("addDetails 1");
+       alert("Profile Photo Empty..Please add photo ");
+     }  
      else
      {
       console.log("addDetails 1");
@@ -618,7 +709,9 @@ console.log(url);
     var calcage  = Math.abs(ageDate.getUTCFullYear() - 1970);
     
     console.log('age->',calcage);
-      var postData={name:$scope.name, 
+      var postData={
+        vendorId:$scope.vendorId,
+        name:$scope.name, 
         Address1:$scope.hotelAddress1,
         Address2:"", street :"",Landmark:"", 
         city:$scope.city, 
@@ -693,7 +786,7 @@ console.log(url);
     };
 
 
-    $scope.getVendorDetails = function (param) {
+    $scope.getVendorDetails = function (param,param_issearch) {
       console.log("getVendorDetails");
       var url4 = "/v1/profile/info2/";
       url4 = url4 + param;
@@ -703,11 +796,29 @@ console.log(url);
         {
            console.log("success add"); 
            console.log(data);
-           $scope.mtList =  data[0].mothertongue;
+           $scope.mtList =  $scope.mothertongue_list;
            $scope.communityList = data[0].community;
+           
            $scope.vendorlogo = data[0].logo;
-           console.log($scope.mtList);
-          console.log($scope.communityList);
+           $scope.vendorId = data[0].id;
+           $scope.vendorName = data[0].name;
+           $scope.vendorEmail = data[0].email;
+           $scope.vendorPhone = data[0].phone;
+
+           $scope.education_searchlist = $scope.education_list;
+          
+           $scope.heightsearchlist = $scope.heightlist;
+           
+           if(param_issearch)
+           {
+             var all_search= {name:'all'};
+             $scope.communityList.unshift(all_search);
+             $scope.mtList.unshift(all_search);
+             $scope.education_searchlist.unshift(all_search);
+             $scope.heightsearchlist.unshift(all_search);
+           }
+           //console.log($scope.mtList);
+           //console.log($scope.communityList);
         })
         .error(function (data, status, headers, config)
         {          
@@ -771,9 +882,7 @@ console.log(url);
         {
            console.log("success add"); 
            console.log(data);
-           $scope.mtList =  data[0].mothertongue;
            $scope.communityList = data[0].community;
-           console.log($scope.mtList);
           console.log($scope.communityList);
         })
         .error(function (data, status, headers, config)

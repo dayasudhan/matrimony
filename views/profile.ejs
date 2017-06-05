@@ -31,7 +31,8 @@
   <body class="hold-transition skin-blue sidebar-mini" ng-app="vendorModule">
     <div class="wrapper"  ng-controller="mainController">
 
-      <header class="main-header" data-ng-init="getProfile('<%= user.local.email %>','<%= position %>','<%= gender %>','<%= community %>','<%= age %>')"  >
+      <header class="main-header" data-ng-init="getProfile('<%= user.local.email %>','<%= position %>','<%= gender %>','<%= community %>','<%= age %>',
+      '<%= maritalstatus %>','<%= education %>','<%= mothertongue %>')"  >
         <!-- Logo -->
         <a href="../../index2.html" class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
@@ -138,11 +139,11 @@
           <!-- sidebar menu: : style can be found in sidebar.less -->
           <ul class="sidebar-menu">
             <li class="header">LABELS</li>
-            <li><a href="/profile_list"><i class="fa fa-circle-o text-red"></i> <span>Profiles</span></a></li>
+            <li><a href="/profile_list/0/all/all/all/Unmarried/all/all"><i class="fa fa-circle-o text-red"></i> <span>Profiles</span></a></li>
             <li><a href="/add_profile"><i class="fa fa-circle-o text-yellow"></i> <span>Add New Profile</span></a></li>
-            <li><a href="/profile/0/all/all/all"><i class="fa fa-circle-o text-aqua"></i> <span>Profile Detail</span></a></li>
-            <li><a href="/aboutme"><i class="fa fa-circle-o text-aqua"></i> <span>aboutme</span></a></li>
-        
+            <li><a href="/profile/0/all/all/all/Unmarried/all/all"><i class="fa fa-circle-o text-aqua"></i> <span>Profile Detail</span></a></li>
+            <li><a href="/settings"><i class="fa fa-circle-o text-aqua"></i> <span>settings</span></a></li>
+        <li><a href="/search"><i class="fa fa-circle-o text-aqua"></i> <span>Search Profile</span></a></li>
           </ul>
         </section>
         <!-- /.sidebar -->
@@ -154,18 +155,19 @@
         <section class="content-header">
 <div class="selection">
                                     <ul>
-                                        <li>
+                                        <!-- <li>
                                             <form>
                                                 <div class="form-group">
-                                                                   <select class="form-control" ng-model="gender_select" ng-change="updateSelectGender (1)">
-                          <option ng-repeat="i in genders" value="{{ i.name }}" ng-selelected="{{ gender_select == i.name }}">{{ i.name }}</option>
-    </select>
+                                                     <select class="form-control" ng-model="gender_select" ng-change="updateSelectGender (1)">
+                                                      <option ng-repeat="i in genders" value="{{ i.name }}" ng-selelected="{{ gender_select == i.name }}">{{ i.name }}</option>
+                                                  </select>
                                                 </div>
                                             </form>
                                         </li>
                                         <li>
                                             <form>
                                                 <div class="form-group">
+                                                
                                                  <select class="form-control" ng-model="cast_select" ng-change="updateSelectCast(1)">
                                                       <option ng-repeat="i in communitys" value="{{ i.name }}" ng-selelected="{{ cast_select == i.name }}">{{ i.name }}</option>
                                                 </select>                                                 
@@ -175,12 +177,13 @@
                                         <li>
                                             <form>
                                                 <div class="form-group">
+                                                
                                                     <select class="form-control" ng-model="age_select" ng-change="updateSelectAge(1)">
                                                         <option ng-repeat="i in ages" value="{{ i.name }}" ng-selelected="{{ age_select == i.name }}">{{ i.name }}</option>
                                                 </select>                                               
                                                 </div>
                                             </form>
-                                        </li>
+                                        </li> -->
                                      <!--    <li>
                                             <form>
                                                 <input type="text" name="search" placeholder="Search..">
@@ -279,8 +282,8 @@
                                                 </td>
                                               </tr>
                                               <tr>
-                                                <th>Height:</th>
-                                                <td>{{profile.height}}
+                                                <th>Height(inches):</th>
+                                                <td>{{profile.height}} 
                                                 </td>
                                               </tr>
                                               <tr>

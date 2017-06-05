@@ -152,8 +152,11 @@ app.get('/', function (req, res) {
 app.get('/admin_signup', function(req, res) {
     res.render('admin_signup', { });
 });
-app.get('/aboutme', function(req, res) {
-    res.render('aboutme', { user : req.user });
+app.get('/settings', function(req, res) {
+    res.render('settings', { user : req.user });
+});
+app.get('/search', function(req, res) {
+    res.render('search', { user : req.user });
 });
 app.get('/admin_add_details', function(req, res) {
     res.render('admin_add_details', { user : req.user });
@@ -161,23 +164,51 @@ app.get('/admin_add_details', function(req, res) {
 app.get('/add_profile', function (req, res) {
     res.render('add_profile', { user : req.user });
 });
-app.get('/profile/:position/:gender/:community/:age', function (req, res) {
+app.get('/profile/:position/:gender/:community/:age/:maritalstatus/:education/:mothertongue', function (req, res) {
     //res.render('profile', { user : req.user,
     //  position:req.params.position });
     console.log(req.params.position);
     console.log(req.params.gender);
     console.log(req.params.community);
     console.log(req.params.age);
+    console.log(req.params.maritalstatus);
+    console.log(req.params.education);
+    console.log(req.params.mothertongue);
     res.render('profile', { user : req.user,
       position:req.params.position,
       gender:req.params.gender,
       community:req.params.community,
-      age:req.params.age });
+      age:req.params.age,
+      maritalstatus:req.params.maritalstatus,
+      education:req.params.education,
+      mothertongue:req.params.mothertongue
+      });
 });
-app.get('/profile_list', function (req, res) {
+app.get('/profile_list/:position/:gender/:community/:age/:maritalstatus/:education/:mothertongue', function (req, res) {
+    //res.render('profile', { user : req.user,
+    //  position:req.params.position });
+    console.log(req.params.position);
+    console.log(req.params.gender);
+    console.log(req.params.community);
+    console.log(req.params.age);
+    console.log(req.params.maritalstatus);
+    console.log(req.params.education);
+    console.log(req.params.mothertongue);
+    
+    res.render('profile_list', { user : req.user,
+      position:req.params.position,
+      gender:req.params.gender,
+      community:req.params.community,
+      age:req.params.age,
+      maritalstatus:req.params.maritalstatus,
+      education:req.params.education,
+      mothertongue:req.params.mothertongue
+       });
+});
+// app.get('/profile_list', function (req, res) {
 
-    res.render('profile_list', { user : req.user });
-});
+//     res.render('profile_list', { user : req.user });
+// });
 app.post('/login', function(req, res, next) {
     console.log('post /login');
       console.log(req.body);
@@ -190,7 +221,7 @@ app.post('/login', function(req, res, next) {
          var redirect_url = '/';
            if(req.body.role == 'vendor') 
             {
-                redirect_url = '/profile_list';
+                redirect_url = '/search';
                 return res.redirect(redirect_url); 
             } 
             
@@ -201,7 +232,7 @@ app.post('/login', function(req, res, next) {
       var redirect_url = '/';
       if(req.body.role == 'vendor') 
       {
-          redirect_url = '/profile_list';
+          redirect_url = '/search';
          return res.redirect(redirect_url);
       }
      
@@ -483,7 +514,7 @@ console.log(url2);
 
 
   var res = getNextSequence('profile',function(data) {
-    var order_id = "M1" ;
+    var order_id = receivedData.vendorId ;
     order_id = order_id + "P";
     order_id = order_id + data.sequence;
     console.log(order_id);
@@ -510,8 +541,8 @@ console.log(url2);
                     name:receivedData.fathername,
                     occupation:receivedData.fatheroccupation},
             mother:{
-                    name:receivedData.fathername,
-                    occupation:receivedData.fatheroccupation},
+                    name:receivedData.mothername,
+                    occupation:receivedData.motheroccupation},
             mothertongue:receivedData.mothertongue,
             income:receivedData.income,
             gothra:receivedData.gothra,
@@ -661,7 +692,6 @@ app.get( '/v1/profile/info/:id/:gender/:community/:minage/:maxage', function( re
     });
 });
 
-
 app.get( '/v1/profile/info2/:id/:gender/:community/:minage/:maxage', function( request, response ) {
     console.log('/v1/profile/info2');
     console.log(request.params.id);
@@ -700,6 +730,58 @@ app.get( '/v1/profile/info2/:id/:gender/:community/:minage/:maxage', function( r
             //   ret_profile_array =  vendorinfo ;
             // }
 
+            return response.send(vendorinfo);
+        } else {
+            console.log( err );
+            return response.send('ERROR');
+        }
+    });
+});
+
+
+app.get( '/v2/profile/info2/:id/:gender/:community/:minage/:maxage/:maritalstatus/:education/:mothertongue', function( request, response ) {
+    console.log('/v1/profile/info2');
+    console.log(request.params.id);
+     console.log(request.params.gender);
+     console.log(request.params.community);
+     console.log(request.params.minage);
+     console.log(request.params.maxage);
+     console.log(request.params.maritalstatus);
+     console.log(request.params.education);
+     console.log(request.params.mothertongue);
+  return VendorInfoModel.find({ 'username':request.params.id},
+      function( err, vendorinfo ) {
+        if( !err ) {
+             console.log("no error");
+             var profile_array ;
+              var ret_profile_array = [];
+            if(vendorinfo.length > 0)
+            {
+              profile_array = vendorinfo[0].profiles;
+             console.log('test 1');
+             
+              for (var j = 0; j < profile_array.length; j++) {
+                
+                if((profile_array[j].gender == request.params.gender 
+                  || request.params.gender == 'all') &&
+                  (profile_array[j].community == request.params.community ||
+                   request.params.community == 'all') &&
+                   (profile_array[j].age >= request.params.minage && 
+                    profile_array[j].age <= request.params.maxage)
+                    &&(profile_array[j].maritalstatus == request.params.maritalstatus ||
+                   request.params.maritalstatus == 'all')
+                    &&(profile_array[j].education == request.params.education ||
+                   request.params.education == 'all')
+                    &&(profile_array[j].mothertongue == request.params.mothertongue ||
+                   request.params.mothertongue == 'all')
+                   ) 
+                {
+                  
+                  ret_profile_array.push(profile_array[j])
+                }
+              }
+              vendorinfo[0].profiles = ret_profile_array;
+            }
             return response.send(vendorinfo);
         } else {
             console.log( err );
