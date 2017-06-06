@@ -120,6 +120,14 @@ app = angular.module("vendorModule", []);
           $scope.communitys.unshift(cast_all);
           $scope.profilelist = $scope.completeprofilelist;
           $scope.vendorname = data[0].name;
+          
+           $scope.vendorlogo = data[0].logo;
+            console.log("vendorlogo"); 
+           console.log($scope.vendorlogo);
+           $scope.vendorId = data[0].id;
+          
+           $scope.vendorEmail = data[0].email;
+           $scope.vendorPhone = data[0].phone;
           console.log($scope.profilelist);
           
           $scope.profile = $scope.profilelist[$scope.position];
@@ -409,79 +417,7 @@ $scope.state_list =[       {name:'Andhra Pradesh'}, {name:'Arunachal Pradesh'},
                             {name:'Uttar Pradesh'},{name:'Uttarakhand'},
                            {name:'West Bengal'}];
 
-
-     
-      $scope.addvendorLogo = function (param,files) {
-      console.log("addLogo");
-      $scope.files = files;
-      $scope.filePresent =  true;
-
-     var fd = new FormData();
-     console.log(files[0]);
-      
-    //Take the first selected file
-      fd.append("file", files[0]);
-      
-      var url4 = "/v1/profile/logo/";
-      url4 = url4 + param;
-       console.log(param);
-         
-    };
-
-
-
-   $scope.addvendorDetails = function (param) {
-      console.log("addDetails 1");
-     if(!$scope.files)
-     {
-       alert("Image Empty");
-     }
-     else
-     {
-       var fd = new FormData();
-       console.log( $scope.files[0]);
-      
-    // //Take the first selected file
-    
-       fd.append("file",  $scope.files[0]);
-
-
-      var url = "/v1/admin/update/";
-      url = url + param;
-      console.log($scope.vendorname);
-      console.log($scope.vendorphone);
-      console.log($scope.vendoremail);
-     
-    
-      var postData={
-        name:$scope.vendorname, 
-        phone:$scope.vendorphone,
-        email:$scope.vendoremail,        
-       };
-       fd.append("data", JSON.stringify(postData));
-      console.log(url);
-      $http.post(url,fd, {
-        withCredentials: true,
-        headers: {'Content-Type': undefined , 'enctype': 'multipart/form-data' },
-        transformRequest: angular.identity
-    }).success(function (data, status, headers, config)
-        {
-            console.log("addDetails success");
-            alert("addDetails success");
-            $scope.filePresent = false;
-
-        })
-        .error(function (data, status, headers, config)
-        {
-          console.log("addDetails error");
-           alert("addDetails error");
-           $scope.filePresent = false;
-        });
-      }
-    };
-
-
-/////////////////////////////////////////
+  
 
       $scope.addLogo = function (param,files) {
       console.log("addLogo");
@@ -544,10 +480,7 @@ $scope.state_list =[       {name:'Andhra Pradesh'}, {name:'Arunachal Pradesh'},
 
         return new Blob([ia], {type: 'image/jpeg'});
     }
-function  convertfeetintoinches(param)
-{
 
-}
     function resizeAndUpload(file,param,postData) {
     
     var reader = new FileReader();
@@ -800,8 +733,10 @@ function  convertfeetintoinches(param)
            $scope.communityList = data[0].community;
            
            $scope.vendorlogo = data[0].logo;
+            console.log("vendorlogo"); 
+           console.log($scope.vendorlogo);
            $scope.vendorId = data[0].id;
-           $scope.vendorName = data[0].name;
+           $scope.vendorname = data[0].name;
            $scope.vendorEmail = data[0].email;
            $scope.vendorPhone = data[0].phone;
 
@@ -829,6 +764,81 @@ function  convertfeetintoinches(param)
     };
   });
 
+
+app.controller("adminController", function ($scope, $http, jsonFilter)
+  {
+     
+      $scope.addvendorLogo = function (param,files) {
+      console.log("addLogo");
+      $scope.files = files;
+      $scope.filePresent =  true;
+
+     var fd = new FormData();
+     console.log(files[0]);
+      
+    //Take the first selected file
+      fd.append("file", files[0]);
+      
+      var url4 = "/v1/profile/logo/";
+      url4 = url4 + param;
+       console.log(param);
+         
+    };
+
+
+
+   $scope.addvendorDetails = function (param) {
+      console.log("addDetails 1");
+     if(!$scope.files)
+     {
+       alert("Image Empty");
+     }
+     else
+     {
+       var fd = new FormData();
+       console.log( $scope.files[0]);
+      
+    // //Take the first selected file
+    
+       fd.append("file",  $scope.files[0]);
+
+
+      var url = "/v1/admin/update/";
+      url = url + param;
+      console.log($scope.vendorname);
+      console.log($scope.vendorphone);
+      console.log($scope.vendoremail);
+     
+    
+      var postData={
+        name:$scope.vendorname, 
+        phone:$scope.vendorphone,
+        email:$scope.vendoremail,        
+       };
+       fd.append("data", JSON.stringify(postData));
+      console.log(url);
+      $http.post(url,fd, {
+        withCredentials: true,
+        headers: {'Content-Type': undefined , 'enctype': 'multipart/form-data' },
+        transformRequest: angular.identity
+    }).success(function (data, status, headers, config)
+        {
+            console.log("addDetails success");
+            alert("add Admin Details success");
+            $scope.filePresent = false;
+
+        })
+        .error(function (data, status, headers, config)
+        {
+          console.log("addDetails error");
+           alert("addDetails error");
+           $scope.filePresent = false;
+        });
+      }
+    };
+});
+
+/////////////////////////////////////////
  app.controller("VendorController", function ($scope, $http, jsonFilter)
   {
     $scope.addCommunity = function (param) {
