@@ -68,8 +68,8 @@ var VendorInfoSchema = new mongoose.Schema({
                 joblocation:String,
                 brotherdetails:String,
                 sisterdetails:String,
-                birthplace:String
-     
+                birthplace:String,
+                horoscope:[String]
                 }]
     });
 

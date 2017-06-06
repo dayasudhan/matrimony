@@ -579,7 +579,8 @@ console.log(url2);
             joblocation:receivedData.joblocation,
             brotherdetails:receivedData.brotherdetails,
             sisterdetails:receivedData.sisterdetails,
-            birthplace:receivedData.birthplace
+            birthplace:receivedData.birthplace,
+            horoscope:receivedData.horoscope
           
           }], }}},
        function( err, order ) {

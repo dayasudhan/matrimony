@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="/plugins/select2/select2.min.css">
     <!-- DataTables -->
     <link rel="stylesheet" href="/plugins/datatables/dataTables.bootstrap.css">
     <!-- Theme style -->
@@ -526,6 +527,139 @@
                   </div><!-- /.box-body -->
                   </form>
                    </div>
+
+ <div class="box box-info">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Horoscope</h3>
+                  <div class="box-tools pull-right">
+                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+               
+              </div>
+                </div>
+                  <form class="form-horizontal" >
+                  <div class="box-body">
+ 
+                  <!-- horoscope -->
+  <div style='margin-left:50px;'>
+  <table>
+  <tr> <td colspan='4'><strong> Choose from the following </strong>Ravi, Chandra, Kuja, Budha, Guru, Shukra, Shani, Raahu, Ketu,any one Lagna, Shree(for empty) </td></tr>
+  <td  rowspan='19' colspan='3' >
+
+  <table border=1 style='margin:15px;padding:10px;background:#fff ;table-layout:fixed' width=960> 
+        <col width=65>
+        <col width=65>
+        <col width=65>
+        <col width=65>
+        <tr>
+ <td style='height:60px;width:70px;word-wrap: break-word; text-align:center; background:#f5f5f5;'>
+         <label>{{horo1}}</label>
+                        <select style="width: 60%; height: 60%;" ng-model = "horo1"  multiple="multiple" >
+                            <option ng-repeat="i in graha_list
+                            " value="{{ i.name }}" >{{ i.name }}</option>
+                            </select>
+                      </td>
+       <td style='height:60px;width:70px;word-wrap: break-word; text-align:center; background:#f5f5f5;'>
+         <label>{{horo2}}</label>
+                        <select style="width: 60%; height: 60%;" ng-model = "horo2"  multiple="multiple" >
+                            <option ng-repeat="i in graha_list
+                            " value="{{ i.name }}" >{{ i.name }}</option>
+                            </select>
+                      </td>
+        <td style='height:60px;width:70px;word-wrap: break-word; text-align:center; background:#f5f5f5;'>
+         <label>{{horo3}}</label>
+                        <select style="width: 60%; height: 60%;" ng-model = "horo3"  multiple="multiple" >
+                            <option ng-repeat="i in graha_list
+                            " value="{{ i.name }}" >{{ i.name }}</option>
+                            </select>
+                      </td>
+       <td style='height:60px;width:70px;word-wrap: break-word; text-align:center; background:#f5f5f5;'>
+         <label>{{horo4}}</label>
+                        <select style="width: 60%; height: 60%;" ng-model = "horo4"  multiple="multiple" >
+                            <option ng-repeat="i in graha_list
+                            " value="{{ i.name }}" >{{ i.name }}</option>
+                            </select>
+                      </td>
+        </tr> 
+        <tr>
+        <td style='height:60px;width:70px;word-wrap: break-word; text-align:center; background:#f5f5f5;'>
+         <label>{{horo5}}</label>
+                        <select style="width: 60%; height: 60%;" ng-model = "horo5"  multiple="multiple" >
+                            <option ng-repeat="i in graha_list
+                            " value="{{ i.name }}" >{{ i.name }}</option>
+                            </select>
+                      </td>
+        <td style='height:60px;width:70px;visibility:hidden; background:#fff;'></td>
+        <td style='height:60px;width:70px;visibility:hidden; background:#fff;'> </td> 
+        <td style='height:60px;width:70px;word-wrap: break-word; text-align:center; background:#f5f5f5;'>
+         <label>{{horo6}}</label>
+                        <select style="width: 60%; height: 60%;" ng-model = "horo6"  multiple="multiple" >
+                            <option ng-repeat="i in graha_list
+                            " value="{{ i.name }}" >{{ i.name }}</option>
+                            </select>
+                      </td>
+        </tr> 
+        <tr> 
+        <td style='height:60px;width:70px;word-wrap: break-word; text-align:center; background:#f5f5f5;'>
+         <label>{{horo7}}</label>
+                        <select style="width: 60%; height: 60%;" ng-model = "horo7"  multiple="multiple" >
+                            <option ng-repeat="i in graha_list
+                            " value="{{ i.name }}" >{{ i.name }}</option>
+                            </select>
+                      </td>
+        <td style='height:60px;width:70px;visibility:hidden; background:#fff;'></td>
+        <td style='height:60px;width:70px;visibility:hidden; background:#fff;'> </td>
+        <td style='height:60px;width:70px;word-wrap: break-word; text-align:center; background:#f5f5f5;'>
+         <label>{{horo8}}</label>
+                        <select style="width: 60%; height: 60%;" ng-model = "horo8"  multiple="multiple" >
+                            <option ng-repeat="i in graha_list
+                            " value="{{ i.name }}" >{{ i.name }}</option>
+                            </select>
+                      </td>
+        </tr> 
+        <tr> <td style='height:60px;width:70px;word-wrap: break-word; text-align:center; background:#f5f5f5;'>
+         <label>{{horo9}}</label>
+                        <select style="width: 60%; height: 60%;" ng-model = "horo9"  multiple="multiple" >
+                            <option ng-repeat="i in graha_list
+                            " value="{{ i.name }}" >{{ i.name }}</option>
+                            </select>
+                      </td>
+       <td style='height:60px;width:70px;word-wrap: break-word; text-align:center; background:#f5f5f5;'>
+         <label>{{horo10}}</label>
+                        <select style="width: 60%; height: 60%;" ng-model = "horo10"  multiple="multiple" >
+                            <option ng-repeat="i in graha_list
+                            " value="{{ i.name }}" >{{ i.name }}</option>
+                            </select>
+                      </td>
+       <td style='height:60px;width:70px;word-wrap: break-word; text-align:center; background:#f5f5f5;'>
+         <label>{{horo11}}</label>
+                        <select  style="width: 60%; height: 60%;" ng-model = "horo11"  multiple="multiple" >
+                            <option ng-repeat="i in graha_list
+                            " value="{{ i.name }}">{{ i.name }}</option>
+                            </select>
+                      </td>
+        <td style='height:60px;width:70px;word-wrap: break-word; text-align:center; background:#f5f5f5;'>
+         <label>{{horo12}}</label>
+                        <select style="width: 60%; height: 60%;" ng-model = "horo12"  multiple="multiple" >
+                            <option ng-repeat="i in graha_list
+                            " value="{{ i.name }}" >{{ i.name }}</option>
+                            </select>
+                      </td>
+        </tr>
+        </table>
+        </td>
+        </table>
+        </div>
+  <!-- horoscope ends -->
+                    </table>
+                  </div>
+  <!-- horoscope ends -->
+        
+        
+
+</form>
+                  </div>
+                  
+                  
                   <div class="box-footer">
                     <button type="submit" class="btn btn-info pull-right" ng-click= "addDetails('<%= user.local.email %>')">Submit</button>
                 </div><!-- /.box-footer -->
@@ -915,7 +1049,7 @@
            immediately after the control sidebar -->
       <div class="control-sidebar-bg"></div>
     </div><!-- ./wrapper -->
-
+    <script src="/plugins/select2/select2.full.min.js"></script>
     <!-- jQuery 2.1.4 -->
     <script src="/plugins/jQuery/jQuery-2.1.4.min.js"></script>
     <!-- Bootstrap 3.3.5 -->
@@ -935,6 +1069,7 @@
     <!-- page script -->
     <script>
       $(function () {
+        $(".select2").select2();
         $("#example1").DataTable();
         $('#example2').DataTable({
           "paging": true,

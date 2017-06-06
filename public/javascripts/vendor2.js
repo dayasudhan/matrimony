@@ -315,6 +315,18 @@ app = angular.module("vendorModule", []);
       // $scope.hotelAddress1 = "addres1",
       // $scope.hotelLandmark = "landmark", 
       // $scope.city= "vvpura", 
+      $scope.horo1 = [];
+      $scope.horo2 = [];
+      $scope.horo3 = [];
+      $scope.horo4 = [];
+      $scope.horo5 = [];
+      $scope.horo6 = [];
+      $scope.horo7 = [];
+      $scope.horo8 = [];
+      $scope.horo9 = [];
+      $scope.horo10 = [];
+      $scope.horo11 = [];
+      $scope.horo12 = [];
 $scope.height_list = [{name:'4ft',value: 48},{name:'4ft 1in',value: 49},
                        {name:'4ft 2in',value: 50},{name:'4ft 3in',value: 51},
                        {name:'4ft 4in',value: 52},
@@ -337,6 +349,9 @@ $scope.height_list = [{name:'4ft',value: 48},{name:'4ft 1in',value: 49},
                         {name:'7ft',value: 84}
                        ];
 
+$scope.graha_list = [{name:'Lagna'},{name:'Ravi'},{name:'Chandra'},{name:'Kuja'},
+      {name:'Budha'},{name:'Guru'},{name:'Shukra'},{name:'Shani'},
+      {name:'Raahu'}, {name:'Ketu'}];
 
 $scope.rashilist = [{name:'Mesha(Aries)'},{name:'Vrushabha(Taurus)'},
                        {name:'Mithuna(Gemini)'},{name:'Kataka(Cancer)'},
@@ -595,7 +610,21 @@ $scope.state_list =[       {name:'Andhra Pradesh'}, {name:'Arunachal Pradesh'},
       console.log($scope.brotherdetails);
       console.log($scope.sisterdetails);
       console.log($scope.birthplace);
- 
+  console.log('horoscope');
+  var horoscope1 = [];
+  horoscope1.push($scope.horo1);
+  horoscope1.push($scope.horo2);
+  horoscope1.push($scope.horo3);
+  horoscope1.push($scope.horo4);
+  horoscope1.push($scope.horo5);
+  horoscope1.push($scope.horo6);
+  horoscope1.push($scope.horo7);
+  horoscope1.push($scope.horo8);
+  horoscope1.push($scope.horo9);
+  horoscope1.push($scope.horo10);
+  horoscope1.push($scope.horo11);
+  horoscope1.push($scope.horo12);
+  console.log(horoscope1); 
 
       if ($scope.name == "" || $scope.name == null) {
          alert("Name Empty");
@@ -633,7 +662,9 @@ $scope.state_list =[       {name:'Andhra Pradesh'}, {name:'Arunachal Pradesh'},
        var fd = new FormData();
      //  console.log( $scope.files[0]);
       
-  
+//horoscope
+
+//
       
       var indiandob = formatDate($scope.dob); 
       console.log(indiandob);
@@ -689,7 +720,8 @@ $scope.state_list =[       {name:'Andhra Pradesh'}, {name:'Arunachal Pradesh'},
         joblocation:$scope.joblocation,
         brotherdetails:$scope.brotherdetails,
         sisterdetails:$scope.sisterdetails,
-        birthplace:$scope.birthplace
+        birthplace:$scope.birthplace,
+        horoscope:horoscope1
        };
 
        fd.append("file",  $scope.files[0]);
