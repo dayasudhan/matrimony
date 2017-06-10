@@ -273,8 +273,8 @@
                                                 </td>
                                               </tr>
                                               <tr>
-                                                <th>Height(inches):</th>
-                                                <td>{{profile.height}} 
+                                                <th>Height:</th>
+                                                <td>{{profile.height}}
                                                 </td>
                                               </tr>
                                               <tr>
@@ -516,18 +516,12 @@
                       </td>
         </tr>
         </table>
-        </td>
+        </td> 
         </table>
         </div>
                                           </div>
                                        </div>
                             </div>                    
-
-               
-     
-
-               
-                
               </div><!-- /.nav-tabs-custom -->
             </div><!-- /.col -->
     
@@ -571,7 +565,14 @@
       function myFunction() {
     window.print();
 }
-
+ function convertInches(inches) {
+    var feetFromInches = Math.floor(inches / 12);//There are 12 inches in a foot
+    var inchesRemainder = inches % 12;
+ 
+    var result = feetFromInches + "'-" + inchesRemainder + "\"";
+    console.log(result);
+    return result;
+  }
     </script>
   </body>
 </html>
