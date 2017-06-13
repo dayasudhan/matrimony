@@ -135,6 +135,7 @@ app = angular.module("vendorModule", []);
           
            $scope.vendorEmail = data[0].email;
            $scope.vendorPhone = data[0].phone;
+
           console.log($scope.profilelist);
           
         
@@ -696,6 +697,9 @@ $scope.state_list =[       {name:'Andhra Pradesh'}, {name:'Arunachal Pradesh'},
     
     console.log('age->',calcage);
       var postData={
+        vendorName:$scope.vendorname,
+        vendorEmail:$scope.vendorEmail,
+        vendorPhone:$scope.vendorPhone,
         vendorId:$scope.vendorId,
         name:$scope.name, 
         Address1:$scope.hotelAddress1,
