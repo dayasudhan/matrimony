@@ -913,10 +913,23 @@ app.post( '/v1/profile/pdf/:id', function( request, response ) {
 var name = "daya";
 var htmloccupation,htmlmothertongue,htmlincome,htmlgothra,htmlstar,htmlrashi,htmlheight,htmlweight;
 var htmlvendorname,htmlvendorphone,htmlvendoremail;
+var htmlcast,htmleducation;
 if(receivedData.mothertongue){htmlmothertongue = receivedData.mothertongue;}
 else{  htmlmothertongue = "";}
-if(receivedData.occupation){htmloccupation = receivedData.occupation;}
+if(receivedData.occupation){ htmloccupation= receivedData.occupation;}
 else{  htmloccupation = "";}
+if(receivedData.occupationdetails)
+{
+  htmloccupation = htmloccupation + '(' + receivedData.occupationdetails + ')';
+}
+if(receivedData.educationdetails)
+{
+  htmleducation = receivedData.education + '(' + receivedData.educationdetails + ')';
+}
+if(receivedData.castdetails)
+{
+  htmlcast = receivedData.cast + '(' + receivedData.castdetails + ')';
+}
 if(receivedData.income){htmlincome = receivedData.income;
 htmlincome = htmlincome + " " + 'per annum'}
 else{  htmlincome = "";}
@@ -1055,7 +1068,7 @@ var src1  = '<!doctype html>\
                             </tr>\
                             <tr>\
                                 <td><b>Cast</b></td>'
-                                +'<td>' + receivedData.cast + '</td>\
+                                +'<td>' + htmlcast + '</td>\
                             </tr>\
                             <tr>\
                                 <td><b>DOB</b></td>'
@@ -1063,7 +1076,7 @@ var src1  = '<!doctype html>\
                             </tr>\
                             <tr>\
                                 <td><b>Education</b></td>'
-                                +'<td>' + receivedData.education + '</td>\
+                                +'<td>' + htmleducation + '</td>\
                             </tr>\
                             <tr>\
                                 <td><b>Mother Tongue</b></td>'

@@ -193,7 +193,7 @@ app = angular.module("vendorModule", []);
     }
   };
   $scope.deleteProfile = function (param) {
-    var retVal = confirm("Do you want to Delete this profile?");
+    var retVal = confirm("Are you want to Delete this profile?");
                if( retVal == true ){
                   
                   console.log("deleteprofile");
