@@ -119,6 +119,13 @@ app = angular.module("vendorModule", []);
           var cast_all = {name:'all'};
           $scope.communitys.unshift(cast_all);
           $scope.profilelist = $scope.completeprofilelist;
+          for(var i = 0 ; i < $scope.profilelist.length ; i++)
+          {
+            //$scope.profilelist[i].height;
+            if($scope.profilelist[i].height !== undefined) {
+              $scope.profilelist[i].height = convertInches($scope.profilelist[i].height);
+            }
+          }
           $scope.vendorname = data[0].name;
           
            $scope.vendorlogo = data[0].logo;
@@ -128,9 +135,13 @@ app = angular.module("vendorModule", []);
           
            $scope.vendorEmail = data[0].email;
            $scope.vendorPhone = data[0].phone;
+
           console.log($scope.profilelist);
           
-          $scope.profile = $scope.profilelist[$scope.position];
+        
+         
+            $scope.profile = $scope.profilelist[$scope.position];
+        //  $scope.profile.height = convertInches($scope.profile.height);
         })
         .error(function (data, status, headers, config)
         {
@@ -146,6 +157,8 @@ app = angular.module("vendorModule", []);
       console.log($scope.position);
         console.log('inside');
           $scope.profile = $scope.profilelist[$scope.position];
+      
+         
       }
 
     };
@@ -176,10 +189,11 @@ app = angular.module("vendorModule", []);
              $scope.position = $scope.position - 1;
      console.log($scope.position);
       $scope.profile = $scope.profilelist[$scope.position];
+        
     }
   };
   $scope.deleteProfile = function (param) {
-    var retVal = confirm("Do you want to Delete this profile?");
+    var retVal = confirm("Are you want to Delete this profile?");
                if( retVal == true ){
                   
                   console.log("deleteprofile");
@@ -475,6 +489,15 @@ $scope.state_list =[       {name:'Andhra Pradesh'}, {name:'Arunachal Pradesh'},
             return false;
         }
     }
+    function convertInches(inches) {
+      let feetFromInches = Math.floor(inches / 12);//There are 12 inches in a foot
+      let inchesRemainder = inches % 12;
+   
+      let result = feetFromInches + " ft " + inchesRemainder + " in";
+      console.log(result);
+      return result;
+    }
+ 
 
     function dataURItoBlob(dataURI) {
         // convert base64/URLEncoded data component to raw binary data held in a string
@@ -674,6 +697,9 @@ $scope.state_list =[       {name:'Andhra Pradesh'}, {name:'Arunachal Pradesh'},
     
     console.log('age->',calcage);
       var postData={
+        vendorName:$scope.vendorname,
+        vendorEmail:$scope.vendorEmail,
+        vendorPhone:$scope.vendorPhone,
         vendorId:$scope.vendorId,
         name:$scope.name, 
         Address1:$scope.hotelAddress1,
@@ -784,6 +810,7 @@ $scope.state_list =[       {name:'Andhra Pradesh'}, {name:'Arunachal Pradesh'},
              $scope.education_searchlist.unshift(all_search);
              $scope.heightsearchlist.unshift(all_search);
            }
+          // if(horoscope)
            //console.log($scope.mtList);
            //console.log($scope.communityList);
         })

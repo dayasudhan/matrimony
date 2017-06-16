@@ -890,12 +890,20 @@ app.post( '/v1/profile/pdf/:id', function( request, response ) {
 //https://www.npmjs.com/package/s3-write-stream
        return response.send("Success");
   });
+    function convertInches(inches) {
+      var feetFromInches = Math.floor(inches / 12);//There are 12 inches in a foot
+      var inchesRemainder = inches % 12;
+   
+      var result = feetFromInches + " ft " + inchesRemainder + " in";
+      console.log(result);
+      return result;
+    }
   function createProfile( request,order_id,path,receivedData, result ) {
     console.log(order_id);
     console.log(path);
       console.log("post /v1/profile/image");
-var logopath = receivedData.vendorlogo;
-console.log(logopath);
+      var logopath = receivedData.vendorlogo;
+      console.log(logopath);
 // var input = 'public/images/logo/';
 // input  = input + path;
    
@@ -903,23 +911,57 @@ console.log(logopath);
      console.log(output);
  
 var name = "daya";
+var htmloccupation,htmlmothertongue,htmlincome,htmlgothra,htmlstar,htmlrashi,htmlheight,htmlweight;
+var htmlvendorname,htmlvendorphone,htmlvendoremail;
+var htmlcast,htmleducation;
+if(receivedData.mothertongue){htmlmothertongue = receivedData.mothertongue;}
+else{  htmlmothertongue = "";}
+if(receivedData.occupation){ htmloccupation= receivedData.occupation;}
+else{  htmloccupation = "";}
+if(receivedData.occupationdetails)
+{
+  htmloccupation = htmloccupation + '(' + receivedData.occupationdetails + ')';
+}
+if(receivedData.educationdetails)
+{
+  htmleducation = receivedData.education + '(' + receivedData.educationdetails + ')';
+}
+if(receivedData.castdetails)
+{
+  htmlcast = receivedData.cast + '(' + receivedData.castdetails + ')';
+}
+if(receivedData.income){htmlincome = receivedData.income;
+htmlincome = htmlincome + " " + 'per annum'}
+else{  htmlincome = "";}
+if(receivedData.gothra){htmlgothra = receivedData.gothra;}
+else{  htmlgothra = "";}
+if(receivedData.star){htmlstar = receivedData.star;}
+else{  htmlstar = "";}
+if(receivedData.rashi){htmlrashi = receivedData.rashi;}
+else{  htmlrashi = "";}
+if(receivedData.weight){htmlweight = receivedData.weight;}
+else{  htmlweight = "";}
+if(receivedData.height){htmlheight = convertInches(receivedData.height);}
+else{  htmlheight = "";}
+if(receivedData.vendorName){htmlvendorname = receivedData.vendorName;}
+else{  htmlvendorname = "";}
+if(receivedData.vendorPhone){htmlvendorphone = receivedData.vendorPhone;}
+else{  htmlvendorphone = "";}
+if(receivedData.vendorEmail){htmlvendoremail = receivedData.vendorEmail;}
+else{  htmlvendoremail = "";}
 
-    var src1  = '<!doctype html>\
+
+
+
+
+var src1  = '<!doctype html>\
 <html>\
 <head>\
-    <title>Sample Matrimony Page</title>\
+    <title>Mini Matrimony Profile</title>\
     <style>\
-        .jumbotron {\
-            padding-top: 5px;\
-            padding-bottom: 5px;\
-            margin-bottom: 5px;\
-            color: inherit;\
-            background-color: #1BBC9B;\
-        }\
         h1 {\
-            font-size: 24px;\
+            font-size: 32px;\
             text-align: center;\
-            color: #ffffff;\
         }\
          .container {\
             width: 100%;\
@@ -956,8 +998,8 @@ var name = "daya";
             box-sizing: border-box;\
         }\
         .panel-heading {\
-            color: #3c763d;\
-            background-color: #dff0d8;\
+            color: black;\
+            background-color: #eeeeee;\
             float: left;\
             width: 100%;\
             text-align: center;\
@@ -989,26 +1031,44 @@ var name = "daya";
         body{\
           background-color: #eeeeee;\
           }\
+        bloc1, bloc2\
+        {\
+          display:inline;\
+        }\
     </style>\
 </head>\
 <body>\
+<div class="flex-container">\
     <div class="container clearfix">\
+      <div class="panel-heading">\
+        <div class="pull-left">\
+          <div id="bloc1"><img src="' + logopath + '" height= 100 />\</div>\
+          <div id="bloc2"><h2><b>' + htmlvendorname + '</b></h2></div>\
+        </div>\
+        <div class="pull-right">\
+          <h3 class="box-right">Phone: ' + htmlvendorphone + '</h3>\
+          <h3 class="box-right">Email: ' + htmlvendoremail + '</h3>\
+        </div>\
+    </div>\
         <div class="panel clearfix">\
             <div class="panel-image pull-left">\
-                <img src="' + path + '" height= 500 />\
-                <img src="' + logopath + '" height= 100 />\
+                  <img src="' + path + '" height= 600 />\
             </div>\
             <div class="panel-information pull-left">\
                 <div class="panel-body">\
                     <table class="table">\
                         <tbody>\
                             <tr>\
+                                <td><b>Profile ID:</b></td>'
+                               +'<td>' + order_id  + '</td>\
+                            </tr>\
+                            <tr>\
                                 <td><b>Name</b></td>'
                                 +'<td>' + receivedData.name + '</td>\
                             </tr>\
                             <tr>\
                                 <td><b>Cast</b></td>'
-                                +'<td>' + receivedData.cast + '</td>\
+                                +'<td>' + htmlcast + '</td>\
                             </tr>\
                             <tr>\
                                 <td><b>DOB</b></td>'
@@ -1016,49 +1076,42 @@ var name = "daya";
                             </tr>\
                             <tr>\
                                 <td><b>Education</b></td>'
-                                +'<td>' + receivedData.education + '</td>\
+                                +'<td>' + htmleducation + '</td>\
                             </tr>\
                             <tr>\
                                 <td><b>Mother Tongue</b></td>'
-                                +'<td>' + receivedData.mothertongue + '</td>\
+                                +'<td>' + htmlmothertongue + '</td>\
                             </tr>\
                             <tr>\
                                 <td><b>Occupation</b></td>'
-                                +'<td>' + receivedData.occupation + '</td>\
+                                +'<td>' + htmloccupation + '</td>\
                             </tr>\
                             <tr>\
                                 <td><b>Salary</b></td>'
-                               +'<td>' + receivedData.income + '  per annum'+ '</td>\
+                               +'<td>' + htmlincome + '</td>\
                             </tr>\
                             <tr>\
                                 <td><b>Gothra</b></td>'
-                                +'<td>' + receivedData.gothra + '</td>\
+                                +'<td>' + htmlgothra + '</td>\
                             </tr>\
                             <tr>\
                                 <td><b>Star</b></td>'
-                                +'<td>' + receivedData.star + '</td>\
+                                +'<td>' + htmlstar + '</td>\
                             </tr>\
                             <tr>\
                                 <td><b>Rashi</b></td>'
-                               +'<td>' + receivedData.rashi + '</td>\
+                               +'<td>' + htmlrashi + '</td>\
                             </tr>\
                             <tr>\
                                 <td><b>Height</b></td>'
-                               +'<td>' + receivedData.height + '</td>\
-                            </tr>\
-                            <tr>\
-                                <td><b>Weight</b></td>'
-                               +'<td>' + receivedData.weight + '</td>\
-                            </tr>\
-                            <tr>\
-                                <td><b>Residence</b></td>'
-                               +'<td>' + receivedData.city + '</td>\
+                               +'<td>' + htmlheight + '</td>\
                             </tr>\
                         </tbody>\
                     </table>\
                 </div>\
             </div>\
         </div>\
+      </div>\
     </div>\
 </body>\
 </html>';
