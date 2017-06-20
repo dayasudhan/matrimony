@@ -9,6 +9,7 @@ var VendorInfoSchema = new mongoose.Schema({
     uniqueid:String,
     isOpen:Number,
     phone:Number,
+    scope:Number,
     community:[{name:String}],
     address:{addressLine1:String,
         addressLine2:String,
@@ -71,7 +72,7 @@ var VendorInfoSchema = new mongoose.Schema({
                 birthplace:String,
                 horoscope:[String]
                 }]
-    });
+    }); 
 
 //Model
 var VendorInfoModel = mongoose.model( 'VendorInfoSchema', VendorInfoSchema );

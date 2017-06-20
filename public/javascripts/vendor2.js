@@ -1,23 +1,51 @@
-app = angular.module("vendorModule", []);
+app = angular.module("vendorModule", ['ui.router']);
 
-  app.controller("mainController", function ($scope, $http, jsonFilter,$timeout)
+app.config(function ($stateProvider, $urlRouterProvider) {
+    $urlRouterProvider.otherwise('/');
+    $stateProvider
+
+    // HOME STATES AND NESTED VIEWS ========================================
+        .state('home', {
+            url: '/',
+            templateUrl: '../../views/guest_login.ejs',
+            controller: 'mainController'
+        })
+        .state('find', {
+            url: '/find',
+            templateUrl: '../../views/guest_search.ejs',
+            controller: 'mainController'
+        })
+        // nested list with custom controller
+        // .state('menu', {
+        //     url: '/menu',
+        //     templateUrl: '../../views/customer_menu.ejs',
+        //     controller: 'mainController'
+        // })
+        // .state('profile', {
+        //     url: '/profile',
+        //     templateUrl: '../../views/customer_profile.ejs',
+        //     controller: 'mainController'
+        // })
+});
+
+  app.controller("mainController", function ($rootScope,$scope, $http, jsonFilter,$timeout)
   {
-  		 $scope.total2 = 123;
-       $scope.minage = 18;
-       $scope.maxage = 100;
+      $scope.total2 = 123;
+      $scope.minage = 18;
+      $scope.maxage = 100;
 
-       $scope.gender_select = '';
+      $scope.gender_select = '';
 
-       $scope.cast_select = 'all';
-       $scope.mt_select = 'all';
-       $scope.education_select = 'all';
-       $scope.height_select = 'all';
-       $scope.age_select = 'all';
+      $scope.cast_select = 'all';
+      $scope.mt_select = 'all';
+      $scope.education_select = 'all';
+      $scope.height_select = 'all';
+      $scope.age_select = 'all';
       $scope.maritalstatus_select =  'Unmarried';
-       
-       $scope.genders = [ {name: 'Bride'}, {name: 'Bridegroom'}, {name: 'all'}];
-       $scope.ages = [{name: 'all'}, {name: '18-22'}, {name: '22-25'},{name: '25-28'},
-        {name: '28-30'},{name: '30-32'},{name: '33-35'},{name: '35 and above'}];
+
+      $scope.genders = [ {name: 'Bride'}, {name: 'Bridegroom'}, {name: 'all'}];
+      $scope.ages = [{name: 'all'}, {name: '18-22'}, {name: '22-25'},{name: '25-28'},
+      {name: '28-30'},{name: '30-32'},{name: '33-35'},{name: '35 and above'}];
 
   	  $scope.getProfile = function (param,param_position,param_gender,
         param_community,param_age,param_maritalstatus,param_education,param_mothertongue
@@ -52,47 +80,7 @@ app = angular.module("vendorModule", []);
         selectedGender = "all"; 
       }
 
-        if($scope.age_select == '18-22')
-        {
-          $scope.minage = 18;
-          $scope.maxage = 22;
-        }
-        else if($scope.age_select == '22-25')
-        {
-          $scope.minage = 22;
-          $scope.maxage = 25;
-        }
-        else if($scope.age_select == '25-28')
-        {
-          $scope.minage = 25;
-          $scope.maxage = 28;
-        }
-        else if($scope.age_select == '28-30')
-        {
-          $scope.minage = 28;
-          $scope.maxage = 30;
-        }
-        else if($scope.age_select == '30-32')
-        {
-          $scope.minage = 30;
-          $scope.maxage = 32;
-        }
-        else if($scope.age_select == '33-35')
-        {
-          $scope.minage = 33;
-          $scope.maxage = 35;
-        }
-        else if($scope.age_select == '35 and above')
-        {
-          $scope.minage = 35;
-          $scope.maxage = 100;
-        }
-        else
-        {
-          $scope.minage = 18;
-          $scope.maxage = 100;
-        }
-
+      setAges();
       $timeout(function() {
         $scope.gender_select = param_gender;
         $scope.cast_select = param_community;
@@ -148,6 +136,99 @@ app = angular.module("vendorModule", []);
           $scope.simpleGetCallResult = logResult("GET ERROR", data, status, headers, config);
         });
     };
+
+    
+
+    $scope.getGuestProfile = function (param,param_position,param_gender,
+        param_community,param_age,param_maritalstatus,param_education,param_mothertongue
+        ) {
+      //$scope.username = param;
+      console.log("getGuestProfile"); 
+      console.log(param_position);
+      console.log(param_gender);
+      console.log(param_maritalstatus);
+      console.log(param_education);
+      console.log(param_mothertongue);
+      $scope.maritalstatus_select = param_maritalstatus;
+      $scope.mt_select = param_mothertongue;
+      $scope.education_select = param_education;
+      $scope.position = param_position;
+      $scope.age_select = param_age;
+      console.log($scope.minage);
+      console.log($scope.maxage);
+    //  updateSelectAge();
+
+      var selectedGender = 'Male';
+      if(param_gender == 'Bride')
+      {
+          selectedGender = "Female";
+      }
+      else if(param_gender == 'Bridegroom')
+      {
+          selectedGender = "Male"; 
+      }
+      else
+      {
+        selectedGender = "all"; 
+      }
+
+      setAges();
+      $timeout(function() {
+        $scope.gender_select = param_gender;
+        $scope.cast_select = param_community;
+        $scope.age_select = param_age;
+      }, 0);
+      console.log($scope.minage);
+      console.log($scope.maxage);
+      
+
+      var url = "/v/guest/profile/info/";
+      url = url + param + '/' + selectedGender + '/' + param_community + '/' 
+      +$scope.minage+'/'+$scope.maxage + '/' + param_maritalstatus + '/'  + param_education 
+      + '/' + param_mothertongue ;
+      console.log(url);
+      $http.get(url)
+        .success(function (data, status, headers, config)
+        {
+          $scope.completeprofilelist = data[0].profiles;
+          // if(data[0].profiles.size() == 0)
+          // {
+          //   alert(No Profiels);
+          // }
+          $scope.communitys = data[0].community;
+          var cast_all = {name:'all'};
+          $scope.communitys.unshift(cast_all);
+          $scope.profilelist = $scope.completeprofilelist;
+          for(var i = 0 ; i < $scope.profilelist.length ; i++)
+          {
+            //$scope.profilelist[i].height;
+            if($scope.profilelist[i].height !== undefined) {
+              $scope.profilelist[i].height = convertInches($scope.profilelist[i].height);
+            }
+          }
+          $scope.vendorname = data[0].name;
+          
+           $scope.vendorlogo = data[0].logo;
+            console.log("vendorlogo"); 
+           console.log($scope.vendorlogo);
+           $scope.vendorId = data[0].id;
+          
+           $scope.vendorEmail = data[0].email;
+           $scope.vendorPhone = data[0].phone;
+
+          console.log($scope.profilelist);
+          
+        
+         
+            $scope.profile = $scope.profilelist[$scope.position];
+        //  $scope.profile.height = convertInches($scope.profile.height);
+        })
+        .error(function (data, status, headers, config)
+        {
+          $scope.simpleGetCallResult = logResult("GET ERROR", data, status, headers, config);
+        });
+    };
+
     $scope.nextProfile = function (param) {
       console.log("nextProfile");
      
@@ -169,10 +250,8 @@ app = angular.module("vendorModule", []);
       pwa.document.open();
       pwa.document.write(VoucherSourcetoPrint());
       pwa.document.close();
-    
-      
-
     };
+
     function VoucherSourcetoPrint(source) {
     return "<html><head><script>function step1(){\n" +
         "setTimeout('step2()', 10);}\n" +
@@ -255,7 +334,28 @@ app = angular.module("vendorModule", []);
        window.open(url, "_self");
     
   };
-     
+    
+    $scope.viewGuestProfile = function (param) {
+      console.log("viewProfile");
+   
+      console.log(param);
+      $scope.position = param;
+         
+      console.log($scope.position);
+      console.log($scope.gender_select);
+      console.log($scope.cast_select);
+      console.log($scope.age_select);
+    
+     // $scope.profile = $scope. profilelist[$scope.position];
+      var url = "/guest_profile_list/";
+      url = url + $scope.searchcenterid +'/'+ $scope.position +'/' + $scope.gender_select+'/'+$scope.cast_select;
+      url = url + '/' + $scope.age_select + '/' + $scope.maritalstatus_select + '/'
+      + $scope.education_select + '/' + $scope.mt_select;
+      console.log(url);
+       window.open(url, "_self");
+    
+  };
+
       $scope.updateSelectAge = function(param) {
         console.log('updateSelectAge');
         if(param == 0)
@@ -309,6 +409,11 @@ app = angular.module("vendorModule", []);
       $scope.advancedSearch = function(param) {
         console.log('advancedSearch');
         $scope.viewProfile(0);
+      };
+      $scope.advancedGuestSearch = function(param) {
+        console.log('advancedGuestSearch');
+        console.log($scope.mt_select);
+        $scope.viewGuestProfile(0);
       };
 // });
 
@@ -445,8 +550,14 @@ $scope.state_list =[       {name:'Andhra Pradesh'}, {name:'Arunachal Pradesh'},
                            {name:'Telangana'},{name:'Tripura'},
                             {name:'Uttar Pradesh'},{name:'Uttarakhand'},
                            {name:'West Bengal'}];
-
-  
+var all_search= {name:'all'};
+      $scope.education_searchlist = $scope.education_list;
+      $scope.heightsearchlist = $scope.height_list;
+      $scope.mtList =  $scope.mothertongue_list;
+      $scope.mtList.unshift(all_search);
+      $scope.education_searchlist.unshift(all_search);
+      $scope.heightsearchlist.unshift(all_search);
+      $rootScope.communityList ;
 
       $scope.addLogo = function (param,files) {
       console.log("addLogo");
@@ -497,7 +608,42 @@ $scope.state_list =[       {name:'Andhra Pradesh'}, {name:'Arunachal Pradesh'},
       console.log(result);
       return result;
     }
- 
+
+    function setAges()
+    {
+        if($scope.age_select == '18-22')        {
+          $scope.minage = 18;
+          $scope.maxage = 22;
+        }
+        else if($scope.age_select == '22-25')        {
+          $scope.minage = 22;
+          $scope.maxage = 25;
+        }
+        else if($scope.age_select == '25-28')        {
+          $scope.minage = 25;
+          $scope.maxage = 28;
+        }
+        else if($scope.age_select == '28-30')        {
+          $scope.minage = 28;
+          $scope.maxage = 30;
+        }
+        else if($scope.age_select == '30-32')        {
+          $scope.minage = 30;
+          $scope.maxage = 32;
+        }
+        else if($scope.age_select == '33-35')        {
+          $scope.minage = 33;
+          $scope.maxage = 35;
+        }
+        else if($scope.age_select == '35 and above')        {
+          $scope.minage = 35;
+          $scope.maxage = 100;
+        }
+        else        {
+          $scope.minage = 18;
+          $scope.maxage = 100;
+        }
+    } 
 
     function dataURItoBlob(dataURI) {
         // convert base64/URLEncoded data component to raw binary data held in a string
@@ -800,7 +946,7 @@ $scope.state_list =[       {name:'Andhra Pradesh'}, {name:'Arunachal Pradesh'},
 
            $scope.education_searchlist = $scope.education_list;
           
-           $scope.heightsearchlist = $scope.heightlist;
+           $scope.heightsearchlist = $scope.height_list;
            
            if(param_issearch)
            {
@@ -810,10 +956,36 @@ $scope.state_list =[       {name:'Andhra Pradesh'}, {name:'Arunachal Pradesh'},
              $scope.education_searchlist.unshift(all_search);
              $scope.heightsearchlist.unshift(all_search);
            }
-          // if(horoscope)
-           //console.log($scope.mtList);
-           //console.log($scope.communityList);
         })
+        .error(function (data, status, headers, config)
+        {          
+          console.log("errod on add");
+          console.log(status);
+          console.log(data);
+        });
+    };
+    $scope.getVendorDetailsById  = function () {
+      console.log("getVendorDetailsById");
+      var url4 = "/v1/center/info/id/";
+      url4 = url4 + $scope.searchcenterid;
+      $http.get(url4)
+        .success(function (data, status, headers, config)
+        {
+           console.log("success add"); 
+           console.log(data);
+          
+           $rootScope.communityList = data.community;
+           
+           $rootScope.vendorlogo = data.logo;
+           console.log("vendorlogo"); 
+           console.log($scope.vendorlogo);
+           $rootScope.vendorId = data.id;
+           $rootScope.vendorname = data.name;
+           $rootScope.vendorEmail = data.email;
+           $rootScope.vendorPhone = data.phone;
+           $rootScope.communityList.unshift(all_search);
+           console.log($rootScope.communityList);
+         })
         .error(function (data, status, headers, config)
         {          
           console.log("errod on add");

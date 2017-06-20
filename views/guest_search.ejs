@@ -1,0 +1,77 @@
+<section class="hero" >
+<div class="container">
+        
+        <div class="finderkeepers">
+            <form class="form-horizontal">
+                <div class="box-body">
+                    <div class="form-group">
+
+                        <label for="inputEmail3" class="col-sm-2 control-label"><font color="white">Looking For</font></label>
+                        <div class="col-sm-4">
+                            <select class="form-control select2" style="width: 100%;" ng-model="gender_select" ng-init="gender_select = 'Bride'">
+                                <option ng-selected="true">Bride</option>
+                                <option>Groom</option>
+
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label"><font color="white">Cast</font></label>
+                        <div class="col-sm-4">
+                            <select class="form-control select2" style="width: 100%;" ng-model="cast_select">
+                                <option ng-repeat="i in communityList" value="{{ i.name }}" ng-selelected="{{ cast_select == i.name }}">{{ i.name }}</option>
+                            </select>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+                        <label for="inputEmail3" class="col-sm-2 control-label"><font color="white">Age</font></label>
+                        <div class="col-sm-4">
+                            <select class="form-control" ng-model="age_select">
+                                <option ng-repeat="i in ages" value="{{ i.name }}" ng-selelected="{{ age_select == i.name }}">{{ i.name }}</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label"><font color="white">Education</font></label>
+                    <div class="col-sm-4">
+                        <select class="form-control select2" style="width: 100%;" ng-model="education_select" required>
+                            <option ng-repeat="i in education_list" value="{{ i.name }}" ng-selelected="{{ education_select == i.name }}">{{ i.name }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label"><font color="white">Mother Tongue</font></label>
+                    <div class="col-sm-4">
+                        <select class="form-control select2" style="width: 100%;" ng-model="mt_select">
+                            <option ng-repeat="i in mtList" value="{{ i.name }}" ng-selelected="{{ mt_select == i.name }}">{{ i.name }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label"><font color="white">Height</font></label>
+                    <div class="col-sm-4">
+                        <select class="form-control select2" style="width: 100%;" ng-model="height_select" ng-init="height_select = 'all'">
+                             <option ng-repeat="i in heightsearchlist" value="{{ i.name }}" ng-selelected="{{ height_select == i.name }}">{{ i.name }}</option>
+                        </select>
+                    </div>
+                </div>
+
+                
+                <div class="box-footer">
+                    <div class="col-sm-8">
+                        <center>
+                            <button type="submit" class="btn btn-info " ng-click="advancedGuestSearch()">Search</button>
+                        </center>
+                    </div>
+                   
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

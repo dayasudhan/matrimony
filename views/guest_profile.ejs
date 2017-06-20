@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Matrimony</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.5 -->
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="/plugins/datatables/dataTables.bootstrap.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="/dist/css/skins/_all-skins.min.css">
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+       
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body class="hold-transition skin-blue sidebar-mini" ng-app="vendorModule">
+    <div class="wrapper"  ng-controller="mainController">
+
+      <header class="main-header" data-ng-init="getGuestProfile('<%= profileId %>','<%= position %>','<%= gender %>','<%= community %>','<%= age %>',
+      '<%= maritalstatus %>','<%= education %>','<%= mothertongue %>')"  >
+        <!-- Logo -->
+        
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top" role="navigation">
+          <!-- Sidebar toggle button-->
+          <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+
+              <!-- Notifications: style can be found in dropdown.less -->
+              <li class="dropdown notifications-menu">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  <i class="fa fa-bell-o"></i>
+                  <span class="label label-warning">{{total2}}</span>
+                </a>
+                <ul class="dropdown-menu">
+                  <li class="header">You have {{total2}} notifications</li>
+                  <li>
+                    <!-- inner menu: contains the actual data -->
+                    <ul class="menu">
+                      <li>
+                        <a href="#">
+                          <i class="fa fa-users text-aqua"></i> 5 new members joined today
+                        </a>
+                      </li>
+                      
+                    </ul>
+                  </li>
+                  <li class="footer"><a href="#">View all</a></li>
+                </ul>
+              </li>
+
+              <!-- User Account: style can be found in dropdown.less -->
+              <li class="dropdown user user-menu">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  
+                  <!-- <span class="hidden-xs"><%= user.local.email%></span> -->
+                </a>
+                <ul class="dropdown-menu">
+                  <!-- User image -->
+                  <li class="user-header">
+                    <img src="{{vendorlogo}}" >
+                    <p>
+                      {{vendorname}}
+                     
+                    </p>
+                  </li>
+                  <!-- Menu Body -->
+                  
+                  <!-- Menu Footer-->
+                  <li class="user-footer">
+                    
+                    <div class="pull-right">
+                      <a href="/vendor_logout" class="btn btn-default btn-flat">Sign out</a>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+              <!-- Control Sidebar Toggle Button -->
+              <li>
+                <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </header>
+      <!-- Left side column. contains the logo and sidebar -->
+      <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+          <!-- Sidebar user panel -->
+          <div class="user-panel">
+            <div class="pull-left image">
+              <img src= "{{vendorlogo}}" >
+            </div>
+            <div class="pull-left info">
+              <p></p>
+              <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+            </div>
+          </div>
+
+          <!-- sidebar menu: : style can be found in sidebar.less -->
+          <ul class="sidebar-menu">
+            <li class="header">LABELS</li>
+            <li><a href="/profile_list/0/all/all/all/Unmarried/all/all"><i class="fa fa-circle-o text-red"></i> <span>Profiles</span></a></li>
+            <li><a href="/add_profile"><i class="fa fa-circle-o text-yellow"></i> <span>Add New Profile</span></a></li>
+            <li><a href="/profile/0/all/all/all/Unmarried/all/all"><i class="fa fa-circle-o text-aqua"></i> <span>Profile Detail</span></a></li>
+            <li><a href="/settings"><i class="fa fa-circle-o text-aqua"></i> <span>settings</span></a></li>
+        <li><a href="/search"><i class="fa fa-circle-o text-aqua"></i> <span>Search Profile</span></a></li>
+          </ul>
+        </section>
+        <!-- /.sidebar -->
+      </aside>
+
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+<div class="selection">
+                                    <ul>
+                                        <!-- <li>
+                                            <form>
+                                                <div class="form-group">
+                                                     <select class="form-control" ng-model="gender_select" ng-change="updateSelectGender (1)">
+                                                      <option ng-repeat="i in genders" value="{{ i.name }}" ng-selelected="{{ gender_select == i.name }}">{{ i.name }}</option>
+                                                  </select>
+                                                </div>
+                                            </form>
+                                        </li>
+                                        <li>
+                                            <form>
+                                                <div class="form-group">
+                                                
+                                                 <select class="form-control" ng-model="cast_select" ng-change="updateSelectCast(1)">
+                                                      <option ng-repeat="i in communitys" value="{{ i.name }}" ng-selelected="{{ cast_select == i.name }}">{{ i.name }}</option>
+                                                </select>                                                 
+                                                </div>
+                                            </form>
+                                        </li>
+                                        <li>
+                                            <form>
+                                                <div class="form-group">
+                                                
+                                                    <select class="form-control" ng-model="age_select" ng-change="updateSelectAge(1)">
+                                                        <option ng-repeat="i in ages" value="{{ i.name }}" ng-selelected="{{ age_select == i.name }}">{{ i.name }}</option>
+                                                </select>                                               
+                                                </div>
+                                            </form>
+                                        </li> -->
+                                     <!--    <li>
+                                            <form>
+                                                <input type="text" name="search" placeholder="Search..">
+                                            </form>
+                                        </li> -->
+                                        <li>
+                                        <form>
+                                        <a target="_blank" class="btn btn-default" onclick="myFunction()" ><i class="fa fa-print"></i> Detailed Print</a>
+                                        
+                                        <a target="_blank" class="btn btn-default" ng-click="printprofile()"{{profile.profileLogo}}")" ><i class="fa fa-print"></i> Mini Print</a>
+
+                                         </form>
+                                         <li>
+                                         
+                                         <button type="submit" class="btn btn-danger pull-middle" ng-click= "deleteProfile(profile.id)">Delete This Profile</button>
+                                         </li>
+                                        </li>
+                                    </ul>
+                                </div>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+        <div class="box box-primary">
+              <div class="box-header  ">
+              <div  class="pull-left ">
+              <img src= {{vendorlogo}} >
+              </div>
+              <div  class="pull-right">
+                <h1 class="box-title"><b>{{vendorname}}</b></h1>
+                <br>
+                    <small><h2 class="box-title">Phone: {{vendorPhone}}</h2></small>
+                                </div>
+
+              </div>
+                <div class="box-header  ">
+                <div class="no-print">
+                <button type="submit" class="btn btn-info pull-right" ng-click= "nextProfile()">Next</button>
+                <button type="submit" class="btn btn-info pull-left" ng-click= "previousProfile()">Previous</button>
+                </div>
+                <center><h1 class="box-title"><b>Profile Id    :    {{profile.id}}</b></h1><center>
+              </div>
+          <div class="row">
+       
+            
+             <div class="col-xs-6">
+             <div class="box box-primary">
+                <div class="box-header ">
+                  <h3 class="box-title">Basic Details</h3>
+              </div>
+             <div class="table-responsive">
+                                            <table class="table">
+                                              <tr>
+                                                <th style="width:50%">Name:</th>
+                                                <td>{{profile.name}}
+                                                   
+                                                </td>
+                                              </tr>
+                                              <tr>
+                                                <th>Date of Birth and time:</th>
+                                                <td>{{profile.dob}}
+                                                </td>
+                                              </tr>
+                                              <tr>
+                                                <th>Gender:</th>
+                                                <td>{{profile.gender}}
+                                                </td>
+                                              </tr>
+                                              
+                                              <tr>
+                                                <th>Phone:</th>
+                                                <td>{{profile.phone}}</td>
+                                              </tr>
+
+                                              <tr>
+                                                <th>Mother Tongue:</th>
+                                                <td>{{profile.mothertongue}}</td>
+                                              </tr>
+                                              <tr>
+                                                <th>Email:</th>
+                                                <td>{{profile.email}}</td>
+                                              </tr>
+                                              <tr>
+                                                <th>Birth Place:</th>
+                                                <td>{{profile.birthplace}}</td>
+                                            </table>
+                                            </div> 
+                                          </div>
+                                           </div>
+                                           <div class="col-xs-6">
+                                    <div class="box box-primary">
+                                       <img class="img-responsive" src= "{{profile.logo}}"" alt="User profile picture" width="260" >
+                                    </div><!-- /.box -->
+                                  </div><!-- /.col -->
+                            </div>
+                                 
+                      <div class="row">
+                          <div class="col-xs-6">
+                           <div class="box box-primary">
+                              <div class="box-header ">
+                                <h3 class="box-title">Personal Details</h3>
+                            </div>
+                           <div class="table-responsive">
+                                            <table class="table">
+                                              <tr>
+                                                <th style="width:50%">Marital Status:</th>
+                                                <td>{{profile.maritalstatus}}
+                                                   
+                                                </td>
+                                              </tr>
+                                              <tr>
+                                                <th>Height:</th>
+                                                <td>{{profile.height}}
+                                                </td>
+                                              </tr>
+                                              <tr>
+                                                <th>Weight:</th>
+                                                <td>{{profile.weight}}
+                                                </td>
+                                              </tr>
+                                              <tr>
+                                                <th>Complexion:</th>
+                                                <td>{{profile.complexion}}</td>
+                                              </tr>
+                                              <tr>
+                                                <th>Address:</th>
+                                                <td>{{profile.address.addressLine1}}</td>
+                                              </tr>
+                                              <tr>
+                                                <th>City:</th>
+                                                <td>{{profile.address.city}}</td>
+                                              </tr>
+                                              <tr>
+                                                <th>Native:</th>
+                                                <td>{{profile.native}}</td>
+                                              </tr>
+                                              <tr>
+                                                <th>State:</th>
+                                                <td>{{profile.state}}</td>
+                                            </table>
+                                            </div>
+                                          </div>
+                                           </div>
+            <div class="col-xs-6">
+             <div class="box box-primary">
+                <div class="box-header ">
+                  <h3 class="box-title">Religion Details</h3>
+              </div>
+             <div class="table-responsive">
+                                            <table class="table">
+                                              <tr>
+                                                <th style="width:50%">Cast:</th>
+                                                <td>{{profile.community}}
+                                                   <span ng-if="profile.castdetails">
+                                                    ( {{profile.castdetails}} )
+                                                    </span>
+                                                </td>
+                                              </tr>
+                                              
+                                              <tr>
+                                                <th>Star:</th>
+                                                <td>{{profile.star}}
+                                                </td>
+                                              </tr>
+                                              <tr>
+                                                <th>Padha:</th>
+                                                <td>{{profile.padha}}
+                                                </td>
+                                              </tr>
+                                              <tr>
+                                                <th>Rashi:</th>
+                                                <td>{{profile.rashi}}</td>
+                                              </tr>
+                                              <tr>
+                                                <th>Lagna:</th>
+                                                <td>{{profile.lagna}}</td>
+                                              </tr>
+                                              <tr>
+                                                <th>Gothra:</th>
+                                                <td>{{profile.gothra}}
+                                                <span ng-if="profile.gothradetails">
+                                                    ( {{profile.gothradetails}} )
+                                                    </span>
+                                                    </td>
+                                              </tr>
+                                              <tr>
+                                                <th>God:</th>
+                                                <td>{{profile.homegod}}</td>
+                                              <tr>
+                                                <th>Other Details:</th>
+                                                <td>{{profile.religionotherdetails}}</td>
+                                            </table>
+                                            </div>
+                                          </div>
+                                           </div>
+                            </div>                    
+
+<div class="row">
+            <div class="col-xs-6">
+             <div class="box box-primary">
+                <div class="box-header ">
+                  <h3 class="box-title">Education & Professional Details</h3>
+              </div>
+             <div class="table-responsive">
+                                            <table class="table">
+                                              <tr>
+                                                <th style="width:50%">Education:</th>
+                                                <td>{{profile.education}}
+                                                   <span ng-if="profile.educationdetails">
+                                                    ( {{profile.educationdetails}} )
+                                                    </span>
+                                                </td>
+                                              </tr>
+                                              <tr>
+                                                <th>Occupation:</th>
+                                                <td>{{profile.occupation}}
+                                                <span ng-if="profile.occupationdetails">
+                                                    ( {{profile.occupationdetails}} )
+                                                    </span>
+                                                </td>
+                                              </tr>
+                                              <tr>
+                                                <th>Job Location:</th>
+                                                <td>{{profile.joblocation}}
+                                                </td>
+                                              </tr>
+                                              
+                                              <tr>
+                                                <th>Annual Income:</th>
+                                                <td>{{profile.income}}</td>
+                                            </table>
+                                            </div>
+                                          </div>
+                                           </div>
+                                      <div class="col-xs-6">
+                                       <div class="box box-primary">
+                                          <div class="box-header ">
+                                            <h3 class="box-title">Family Details</h3>
+                                        </div>
+                                       <div class="table-responsive">
+                                            <table class="table">
+                                              <tr>
+                                                <th style="width:50%">Father:</th>
+                                                <td>{{profile.father.name}}
+                                                    <span ng-if="profile.father.occupation">
+                                                    ( {{profile.father.occupation}} )
+                                                    </span>
+                                                </td>
+                                              </tr>
+                                              <tr>
+                                                <th>Mother:</th>
+                                                <td>{{profile.mother.name}}
+                                                <span ng-if="profile.mother.occupation">
+                                                    ( {{profile.mother.occupation}} )
+                                                    </span>
+                                                </td>
+                                              </tr>
+                                              <tr>
+                                                <th>Brothers:</th>
+                                                <td>{{profile.brotherdetails}}
+                                                </td>
+                                              </tr>
+                                              <tr>
+                                                <th>Sisters:</th>
+                                                <td>{{profile.sisterdetails}}</td>
+                                              </tr>
+                                              <tr>
+                                                <th>About Profile:</th>
+                                                <td>{{profile.summary}}</td>
+                                              </tr>
+                                              
+                                              <tr>
+                                                <th>Other Details:</th>
+                                                <td>{{profile.otherDetails}}</td>
+                                            </table>
+                                            </div>
+                                          </div>
+                                           </div>
+
+                                      <div class="col-xs-12">
+                                       <div class="box box-primary">
+                                          <div class="box-header ">
+                                            <h3 class="box-title">HoroScope</h3>
+                                        </div>
+                                                        <!-- horoscope -->
+  <div style='margin-left:50px;'>
+  <table>
+  
+  <td  rowspan='19' colspan='3' >
+
+  <table border=1 style='margin:15px;padding:10px;background:#fff ;table-layout:fixed' width=720> 
+        <col width=65>
+        <col width=65>
+        <col width=65>
+        <col width=65>
+        <tr>
+ <td style='height:60px;width:70px;word-wrap: break-word; text-align:center; background:#f5f5f5;'>
+         <label>{{profile.horoscope[0]}}</label>
+                       
+                      </td>
+       <td style='height:60px;width:70px;word-wrap: break-word; text-align:center; background:#f5f5f5;'>
+         <label>{{profile.horoscope[1]}}</label>
+                      
+                      </td>
+        <td style='height:60px;width:70px;word-wrap: break-word; text-align:center; background:#f5f5f5;'>
+         <label>{{profile.horoscope[2]}}</label>
+                        
+                      </td>
+       <td style='height:60px;width:70px;word-wrap: break-word; text-align:center; background:#f5f5f5;'>
+         <label>{{profile.horoscope[3]}}</label>
+        </td>
+        </tr> 
+        <tr>
+        <td style='height:60px;width:70px;word-wrap: break-word; text-align:center; background:#f5f5f5;'>
+         <label>{{profile.horoscope[4]}}</label>
+                       
+                      </td>
+        <td style='height:60px;width:70px;visibility:hidden; background:#fff;'></td>
+        <td style='height:60px;width:70px;visibility:hidden; background:#fff;'> </td> 
+        <td style='height:60px;width:70px;word-wrap: break-word; text-align:center; background:#f5f5f5;'>
+         <label>{{profile.horoscope[5]}}</label>
+                        
+                      </td>
+        </tr> 
+        <tr> 
+        <td style='height:60px;width:70px;word-wrap: break-word; text-align:center; background:#f5f5f5;'>
+         <label>{{profile.horoscope[6]}}</label>
+                       
+                      </td>
+        <td style='height:60px;width:70px;visibility:hidden; background:#fff;'></td>
+        <td style='height:60px;width:70px;visibility:hidden; background:#fff;'> </td>
+        <td style='height:60px;width:70px;word-wrap: break-word; text-align:center; background:#f5f5f5;'>
+         <label>{{profile.horoscope[7]}}</label>
+                       
+                      </td>
+        </tr> 
+        <tr> <td style='height:60px;width:70px;word-wrap: break-word; text-align:center; background:#f5f5f5;'>
+         <label>{{profile.horoscope[8]}}</label>
+                      
+                      </td>
+       <td style='height:60px;width:70px;word-wrap: break-word; text-align:center; background:#f5f5f5;'>
+         <label>{{profile.horoscope[9]}}</label>
+                       
+                      </td>
+       <td style='height:60px;width:70px;word-wrap: break-word; text-align:center; background:#f5f5f5;'>
+         <label>{{profile.horoscope[10]}}</label>
+                       
+                      </td>
+        <td style='height:60px;width:70px;word-wrap: break-word; text-align:center; background:#f5f5f5;'>
+         <label>{{profile.horoscope[11]}}</label>
+                      
+                      </td>
+        </tr>
+        </table>
+        </td> 
+        </table>
+        </div>
+                                          </div>
+                                       </div>
+                            </div>                    
+              </div><!-- /.nav-tabs-custom -->
+            </div><!-- /.col -->
+    
+          </div><!-- /.tab-pane --> 
+        </div>
+      </aside><!-- /.control-sidebar -->
+      <!-- Add the sidebar's background. This div must be placed
+           immediately after the control sidebar -->
+      <div class="control-sidebar-bg"></div>
+    </div><!-- ./wrapper -->
+
+    <!-- jQuery 2.1.4 -->
+    <script src="/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+    <!-- Bootstrap 3.3.5 -->
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+    <!-- DataTables -->
+    <script src="/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/plugins/datatables/dataTables.bootstrap.min.js"></script>
+    <!-- SlimScroll -->
+    <script src="/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+    <!-- FastClick -->
+    <script src="/plugins/fastclick/fastclick.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="/dist/js/app.min.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="/dist/js/demo.js"></script>
+     <script src="/javascripts/vendor2.js"></script>
+    <!-- page script -->
+    <script>
+      $(function () {
+        $("#example1").DataTable();
+        $('#example2').DataTable({
+          "paging": true,
+          "lengthChange": false,
+          "searching": false,
+          "ordering": true,
+          "info": true,
+          "autoWidth": false
+        });
+      });
+      function myFunction() {
+    window.print();
+}
+ function convertInches(inches) {
+    var feetFromInches = Math.floor(inches / 12);//There are 12 inches in a foot
+    var inchesRemainder = inches % 12;
+ 
+    var result = feetFromInches + "'-" + inchesRemainder + "\"";
+    console.log(result);
+    return result;
+  }
+    </script>
+  </body>
+</html>

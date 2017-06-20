@@ -146,9 +146,16 @@ app.get('/vendor_logout', function(req, res) {
 app.get('/login', function (req, res) {
     res.render('login', { user : req.user });
 });
+// app.get('/', function (req, res) {
+//     res.render('login', { user : req.user });
+// });
 app.get('/', function (req, res) {
-    res.render('login', { user : req.user });
+    if(req.isAuthenticated())
+        res.render('home', { user : req.user });
+    else
+        res.render('home', { user : "dummy" });
 });
+
 app.get('/admin_signup', function(req, res) {
     res.render('admin_signup', { });
 });
@@ -196,6 +203,48 @@ app.get('/profile_list/:position/:gender/:community/:age/:maritalstatus/:educati
     console.log(req.params.mothertongue);
     
     res.render('profile_list', { user : req.user,
+      position:req.params.position,
+      gender:req.params.gender,
+      community:req.params.community,
+      age:req.params.age,
+      maritalstatus:req.params.maritalstatus,
+      education:req.params.education,
+      mothertongue:req.params.mothertongue
+       });
+});
+app.get('/guest_profile/:profileId/:position/:gender/:community/:age/:maritalstatus/:education/:mothertongue', function (req, res) {
+    //res.render('profile', { user : req.user,
+    //  position:req.params.position });
+    console.log(req.params.position);
+    console.log(req.params.gender);
+    console.log(req.params.community);
+    console.log(req.params.age);
+    console.log(req.params.maritalstatus);
+    console.log(req.params.education);
+    console.log(req.params.mothertongue);
+    res.render('guest_profile', { profileId : eq.params.profileId,
+      position:req.params.position,
+      gender:req.params.gender,
+      community:req.params.community,
+      age:req.params.age,
+      maritalstatus:req.params.maritalstatus,
+      education:req.params.education,
+      mothertongue:req.params.mothertongue
+      });
+});
+app.get('/guest_profile_list/:profileId/:position/:gender/:community/:age/:maritalstatus/:education/:mothertongue', function (req, res) {
+    //res.render('profile', { user : req.user,
+    //  position:req.params.position });
+    console.log(req.params.position);
+    console.log(req.params.profileId);
+    console.log(req.params.gender);
+    console.log(req.params.community);
+    console.log(req.params.age);
+    console.log(req.params.maritalstatus);
+    console.log(req.params.education);
+    console.log(req.params.mothertongue);
+    
+    res.render('guest_profile_list', { profileId : req.profileId,
       position:req.params.position,
       gender:req.params.gender,
       community:req.params.community,
@@ -611,6 +660,33 @@ app.get( '/v1/profile/all', function( request, response ) {
     });
 
 });
+app.get( '/v1/center/info/id/:id', function( request, response ) {
+    console.log('/v1/center/info/id');
+    console.log(request.params.id);
+     
+   return VendorInfoModel.find({ 'id':request.params.id},
+      function( err, profile_array ) {
+        if( !err ) {
+          var centerInfo ={} ;
+            if(profile_array.length > 0)
+            {
+              centerInfo.name = profile_array[0].name;
+              centerInfo.id = profile_array[0].id;
+              centerInfo.username = profile_array[0].username;
+              centerInfo.email = profile_array[0].email;
+              centerInfo.phone = profile_array[0].phone;
+              centerInfo.logo = profile_array[0].logo;
+              centerInfo.community = profile_array[0].community;
+            }
+            else
+              centerInfo =  profile_array ;
+           return response.send(centerInfo);
+        } else {
+            console.log( err );
+            return response.send('ERROR');
+        }
+    });
+});
 app.get( '/v1/profile/info/:id', function( request, response ) {
     console.log('/v1/profile/info');
     console.log(request.params.id);
@@ -631,6 +707,7 @@ app.get( '/v1/profile/info/:id', function( request, response ) {
         }
     });
 });
+
 
 app.get( '/v1/profile/info2/:id', function( request, response ) {
     console.log('/v1/profile/info');
@@ -752,7 +829,7 @@ app.get( '/v2/profile/info2/:id/:gender/:community/:minage/:maxage/:maritalstatu
      console.log(request.params.mothertongue);
   return VendorInfoModel.find({ 'username':request.params.id},
       function( err, vendorinfo ) {
-        if( !err ) {
+         if( !err ) {
              console.log("no error");
              var profile_array ;
               var ret_profile_array = [];
@@ -840,8 +917,122 @@ console.log(url2);
         }
     });
 });
+app.get( '/v1/guest/profile/info/:id', function( request, response ) {
+    console.log('/v1/profile/info');
+    console.log(request.params.id);
+  return VendorInfoModel.find({ 'id':request.params.id},
+      function( err, vendorinfo ) {
+         if( !err ) {
+             console.log("no error");
+             var profile_array ;
+              var ret_profile_array = [];
+            if(vendorinfo.length > 0)
+            {
+              profile_array = vendorinfo[0].profiles;
+              console.log('test 1');
+             
+              for (var j = 0; j < profile_array.length; j++) {
+                
+                var json_obj = profile_array[j];
+                var jsonnewobj =new Object();
+                for(var myKey in json_obj) {
+                  if(myKey == "phone" || myKey == "email" ||myKey == "name" )
+                  {
+                    jsonnewobj[myKey] = null;
+                  }
+                  else if(myKey == "address" )
+                  {
+                   jsonnewobj[myKey] = null; 
+                  }
+                  else
+                  {
+                    jsonnewobj[myKey] = json_obj[myKey];
+                  }
+                }
+                console.log(jsonnewobj);
+                ret_profile_array.push(jsonnewobj);
+              }
+              vendorinfo[0].profiles = ret_profile_array;
+            }
+            return response.send(vendorinfo);
+        } else {
+            console.log( err );
+            return response.send('ERROR');
+        }
+    });
+});
 
-
+app.get( '/v1/guest/profile/info/:id/:gender/:community/:minage/:maxage/:maritalstatus/:education/:mothertongue', 
+  function( request, response ) {
+    console.log('/v1/profile/info');
+    console.log(request.params.id);
+    console.log(request.params.gender);
+    console.log(request.params.community);
+    console.log(request.params.minage);
+    console.log(request.params.maxage);
+    console.log(request.params.maritalstatus);
+    console.log(request.params.education);
+    console.log(request.params.mothertongue);
+   return VendorInfoModel.find({ 'username':request.params.id},
+      function( err, vendorinfo ) {
+         if( !err ) {
+             console.log("no error");
+             var profile_array ;
+             var ret_profile_array = [];
+            if(vendorinfo.length > 0)
+            {
+             profile_array = vendorinfo[0].profiles;
+             console.log('test 1');
+             
+              for (var j = 0; j < profile_array.length; j++) {
+                
+                if((profile_array[j].gender == request.params.gender 
+                  || request.params.gender == 'all') &&
+                  (profile_array[j].community == request.params.community ||
+                   request.params.community == 'all') &&
+                   (profile_array[j].age >= request.params.minage && 
+                    profile_array[j].age <= request.params.maxage)
+                    &&(profile_array[j].maritalstatus == request.params.maritalstatus ||
+                   request.params.maritalstatus == 'all')
+                    &&(profile_array[j].education == request.params.education ||
+                   request.params.education == 'all')
+                    &&(profile_array[j].mothertongue == request.params.mothertongue ||
+                   request.params.mothertongue == 'all')
+                   ) 
+                {
+                  
+                   for (var j = 0; j < profile_array.length; j++) 
+                   {
+                      var json_obj = profile_array[j];
+                      var jsonnewobj =new Object();
+                      for(var myKey in json_obj) {
+                        if(myKey == "phone" || myKey == "email" ||myKey == "name" )
+                        {
+                          jsonnewobj[myKey] = null;
+                        }
+                        else if(myKey == "address" )
+                        {
+                         jsonnewobj[myKey] = null; 
+                        }
+                        else
+                        {
+                          jsonnewobj[myKey] = json_obj[myKey];
+                        }
+                      }
+                      console.log(jsonnewobj);
+                      ret_profile_array.push(jsonnewobj);
+                  }
+                }
+              }
+              vendorinfo[0].profiles = ret_profile_array;
+            }
+            return response.send(vendorinfo);
+        } else {
+            console.log( err );
+            return response.send('ERROR');
+        }
+    });
+});
 
 app.post( '/v1/profile/pdf/:id', function( request, response ) {
     console.log("post /v1/profile/pdf");
